@@ -6,6 +6,7 @@
 import argparse
 import socket
 import sys
+import cbor2
 
 
 class VsockStream:
@@ -27,9 +28,14 @@ class VsockStream:
         """Receive data from a remote endpoint"""
         while True:
             data = self.sock.recv(1024).decode()
+            data_decoded = cbor2.loads(data)
+            doc = data_decoded[2]
+            doc_obj = cbor2.loads(doc)
+            document_pcrs_arr = doc_obj['pcrs']
             if not data:
                 break
             print(data, end='', flush=True)
+            print(document_pcrs_arr, end='', flush=True)
         print()
 
     def disconnect(self):

@@ -1,6 +1,8 @@
+//use std::fs::File;
+//use std::io::Read;
 use nsm_io::Request;
 use serde_bytes::ByteBuf;
-use nitro_enclave_attestation_document::AttestationDocument;
+//use nitro_enclave_attestation_document::AttestationDocument;
 
 
 fn main() {
@@ -18,10 +20,12 @@ fn main() {
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
     println!("{:?}", response);
 
-    let mut data_file = File::open(cert.der).unwrap();
+    /*let mut data_file = File::open("cert.der").unwrap();
     let mut trusted_root_certificate = String::new();
     data_file.read_to_string(&mut trusted_root_certificate).unwrap();
-    let document = match AttestationDocument::authenticate(&response as &[u8], &trusted_root_certificate as &[u8]) {
+    println!(trusted_root_certificate);
+
+    let document = match AttestationDocument::authenticate(&response, &trusted_root_certificate as &[u8]) {
   Ok(doc) => {
     // signature of document authenticated and the data parsed correctly
     doc
@@ -31,7 +35,7 @@ fn main() {
     // Do something with the error here
     panic!("error");
   }
-};
+};*/
 
     nsm_driver::nsm_exit(nsm_fd);
 }
