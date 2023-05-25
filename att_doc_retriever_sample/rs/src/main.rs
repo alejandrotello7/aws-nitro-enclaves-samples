@@ -1,5 +1,7 @@
 use nsm_io::Request;
 use serde_bytes::ByteBuf;
+use nitro_enclave_attestation_document::AttestationDocument;
+
 
 fn main() {
     let nsm_fd = nsm_driver::nsm_init();
@@ -15,6 +17,21 @@ fn main() {
 
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
     println!("{:?}", response);
+
+    let mut data_file = File::open(cert.der).unwrap();
+    let mut trusted_root_certificate = String::new();
+    data_file.read_to_string(&mut trusted_root_certificate).unwrap();
+    let document = match AttestationDocument::authenticate(&response as &[u8], &trusted_root_certificate as &[u8]) {
+  Ok(doc) => {
+    // signature of document authenticated and the data parsed correctly
+    doc
+    },
+  Err(err) => {
+    // signature of document did not authenticate, or the data was poorly formed
+    // Do something with the error here
+    panic!("error");
+  }
+};
 
     nsm_driver::nsm_exit(nsm_fd);
 }
