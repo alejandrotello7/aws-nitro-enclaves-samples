@@ -6,8 +6,6 @@
 import argparse
 import socket
 import sys
-import cbor2
-
 
 class VsockStream:
     """Client"""

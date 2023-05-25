@@ -1,6 +1,6 @@
 //use std::fs::File;
 //use std::io::Read;
-use nsm_io::{Request};
+use nsm_io::{Request, Response};
 use serde_bytes::ByteBuf;
 //use nitro_enclave_attestation_document::AttestationDocument;
 
@@ -18,10 +18,10 @@ fn main() {
     };
 
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
-   /* if let Response::Attestation{ref document} = response {
+    if let Response::Attestation{ref document} = response {
         println!("Test");
         println!("{:?}", document);
-    }*/
+    }
     println!("{:?}", response);
 
     /*let mut data_file = File::open("cert.der").unwrap();
