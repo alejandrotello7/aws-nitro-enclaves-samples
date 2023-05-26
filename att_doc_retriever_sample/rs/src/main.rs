@@ -1,7 +1,7 @@
 use aws_nitro_enclaves_cose::CoseSign1;
 //use std::fs::File;
 //use std::io::Read;
-use nsm_io::{Request, Response};
+use nsm_io::{AttestationDoc, Request, Response};
 use serde_bytes::ByteBuf;
 //use nitro_enclave_attestation_document::AttestationDocument;
 
@@ -28,11 +28,13 @@ fn main() {
     if let Response::Attestation{ref document} = response {
         println!("Test");
         println!("{:?}", document);
+        let tester = AttestationDoc::from_binary(document)     ;
+         println!("{:?}", tester);
     }
+
     println!("{:?}", response);
     //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
-    let value = oyster::verify(document, pcr_vec, 4, 4, 5).expect("TODO: panic message");
-    print(value);
+
 
     /*let mut data_file = File::open("cert.der").unwrap();
     let mut trusted_root_certificate = String::new();
