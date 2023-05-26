@@ -1,3 +1,4 @@
+use aws_nitro_enclaves_cose::CoseSign1;
 //use std::fs::File;
 //use std::io::Read;
 use nsm_io::{Request, Response};
@@ -11,6 +12,12 @@ fn main() {
     let public_key = ByteBuf::from("my super secret key");
     let hello = ByteBuf::from("hello, world!");
 
+    let pcr0 = String::from("Test");
+    let pcr1 = String::from("Test2");
+    let mut pcr_vec = Vec::new();
+    pcr_vec.push(pcr0);
+    pcr_vec.push(pcr1);
+
     let request = Request::Attestation {
         public_key: Some(public_key),
         user_data: Some(hello),
@@ -23,6 +30,9 @@ fn main() {
         println!("{:?}", document);
     }
     println!("{:?}", response);
+    //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
+    let value = oyster::verify(document, pcr_vec, 4, 4, 5).expect("TODO: panic message");
+    print(value);
 
     /*let mut data_file = File::open("cert.der").unwrap();
     let mut trusted_root_certificate = String::new();
