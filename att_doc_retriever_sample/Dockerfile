@@ -20,6 +20,8 @@ RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN rustup target install ${ARCH}-unknown-linux-musl
 
+RUN apt install musl-tools
+
 # Build the Rust application
 RUN cargo build --release --target=${ARCH}-unknown-linux-musl
 
