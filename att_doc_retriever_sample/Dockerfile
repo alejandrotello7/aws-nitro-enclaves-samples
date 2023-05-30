@@ -21,6 +21,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 RUN rustup target install ${ARCH}-unknown-linux-musl
 
 RUN apt install musl-tools -y
+RUN apt install libssl-dev -y
 
 # Build the Rust application
 RUN cargo build --release --target=${ARCH}-unknown-linux-musl
