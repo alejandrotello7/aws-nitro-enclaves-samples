@@ -8,6 +8,8 @@ edition = "2018"
 
 [dependencies]
 serde_bytes = "0.11"
+nitro-enclave-attestation-document = { git ="https://github.com/veracruz-project/nitro-enclave-attestation-document.git" }
+
 
 [dependencies.nsm-driver]
 git = "https://github.com/aws/aws-nitro-enclaves-nsm-api.git"

@@ -1,6 +1,7 @@
+use nitro_enclave_attestation_document::AttestationDocument;
 //use std::fs::File;
 //use std::io::Read;
-use nsm_io::{AttestationDoc, Request, Response};
+use nsm_io::{Request, Response};
 use serde_bytes::ByteBuf;
 //use nitro_enclave_attestation_document::AttestationDocument;
 
@@ -16,6 +17,8 @@ fn main() {
     let mut pcr_vec = Vec::new();
     pcr_vec.push(pcr0);
     pcr_vec.push(pcr1);
+    let binding = std::fs::read("cert.der").unwrap();
+    let cert = binding.as_slice();
 
     let request = Request::Attestation {
         public_key: Some(public_key),
@@ -28,30 +31,41 @@ fn main() {
     if let Response::Attestation{ref document} = response {
         println!("Test");
         println!("{:?}", document);
-        let tester = AttestationDoc::from_binary(&document.as_slice());
-         println!("{:?}", tester);
+        //let tester = AttestationDoc::from_binary(document.as_slice());
+        let _document = match AttestationDocument::authenticate(document.as_slice(),cert) {
+            Ok(doc) => {
+                // signature of document authenticated and the data parsed correctly
+                doc
+            },
+            Err(_err) => {
+                // signature of document did not authenticate, or the data was poorly formed
+                // Do something with the error here
+                panic!("error");
+            }
+        };
+            //println!("{:?}", tester);
+        }
+
+        println!("{:?}", response);
+        //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
+
+
+        /*let mut data_file = File::open("cert.der").unwrap();
+        let mut trusted_root_certificate = String::new();
+        data_file.read_to_string(&mut trusted_root_certificate).unwrap();
+        println!(trusted_root_certificate);
+
+        let document = match AttestationDocument::authenticate(&response, &trusted_root_certificate as &[u8]) {
+      Ok(doc) => {
+        // signature of document authenticated and the data parsed correctly
+        doc
+        },
+      Err(err) => {
+        // signature of document did not authenticate, or the data was poorly formed
+        // Do something with the error here
+        panic!("error");
+      }
+    };*/
+
+        nsm_driver::nsm_exit(nsm_fd);
     }
-
-    println!("{:?}", response);
-    //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
-
-
-    /*let mut data_file = File::open("cert.der").unwrap();
-    let mut trusted_root_certificate = String::new();
-    data_file.read_to_string(&mut trusted_root_certificate).unwrap();
-    println!(trusted_root_certificate);
-
-    let document = match AttestationDocument::authenticate(&response, &trusted_root_certificate as &[u8]) {
-  Ok(doc) => {
-    // signature of document authenticated and the data parsed correctly
-    doc
-    },
-  Err(err) => {
-    // signature of document did not authenticate, or the data was poorly formed
-    // Do something with the error here
-    panic!("error");
-  }
-};*/
-
-    nsm_driver::nsm_exit(nsm_fd);
-}
