@@ -1,4 +1,3 @@
-use aws_nitro_enclaves_cose::CoseSign1;
 //use std::fs::File;
 //use std::io::Read;
 use nsm_io::{AttestationDoc, Request, Response};
