@@ -27,7 +27,7 @@ fn main() {
     if let Response::Attestation{ref document} = response {
         println!("Test");
         println!("{:?}", document);
-        let tester = AttestationDoc::from_binary(document as &[u8])     ;
+        let tester = AttestationDoc::from_binary(&document)     ;
          println!("{:?}", tester);
     }
 
