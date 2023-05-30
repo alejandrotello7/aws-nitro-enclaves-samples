@@ -22,6 +22,7 @@ RUN rustup target install ${ARCH}-unknown-linux-musl
 
 RUN apt install musl-tools -y
 RUN apt install libssl-dev -y
+RUN PKG_CONFIG_SYSROOT_DIR=/
 
 # Build the Rust application
 RUN cargo build --release --target=${ARCH}-unknown-linux-musl
