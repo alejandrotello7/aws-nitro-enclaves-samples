@@ -20,9 +20,9 @@ RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN rustup target install ${ARCH}-unknown-linux-musl
 
-RUN apt install musl-tools -y
-RUN apt install libssl-dev -y
-RUN apt install pkg-config -y
+RUN apt-get install musl-tools -y
+RUN apt-get install libssl-dev -y
+RUN apt-get install pkg-config -y
 ENV PKG_CONFIG_SYSROOT_DIR=/
 ENV PKG_CONFIG_PATH=/
 RUN echo $PKG_CONFIG_SYSROOT_DIR
