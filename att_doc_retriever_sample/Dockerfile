@@ -14,8 +14,8 @@ RUN if [ -n "${ARCH}" ]; \
 COPY att_doc_retriever_sample/rs .
 RUN apt-get update && apt-get install gcc curl -y\
     && apt-get install musl-tools -y\
-    && apt-get install install libssl-dev -y\
-    && apt-get install install pkg-config -y
+    && apt-get install libssl-dev -y\
+    && apt-get install pkg-config -y
 
 
 
