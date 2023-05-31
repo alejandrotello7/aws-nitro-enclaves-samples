@@ -12,7 +12,12 @@ RUN if [ -n "${ARCH}" ]; \
     fi
 
 COPY att_doc_retriever_sample/rs .
-RUN apt-get update && apt-get install gcc curl -y
+RUN apt-get update && apt-get install gcc curl -y  \
+    && apt-get install musl-tools -y \
+    && apt-get install install libssl-dev -y \
+    && apt-get install install pkg-config -y
+
+
 
 # Get Rust
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
@@ -20,12 +25,9 @@ RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN rustup target install ${ARCH}-unknown-linux-musl
 
-RUN apt-get install musl-tools -y
-RUN apt-get install libssl-dev -y
-RUN apt-get install pkg-config -y
-ENV PKG_CONFIG_SYSROOT_DIR=/
-ENV PKG_CONFIG_PATH=/usr/lib/pkgconfig
-RUN echo $PKG_CONFIG_SYSROOT_DIR
+#ENV PKG_CONFIG_SYSROOT_DIR=/
+#ENV PKG_CONFIG_PATH=/usr/lib/pkgconfig
+#RUN echo $PKG_CONFIG_SYSROOT_DIR
 
 # Build the Rust application
 RUN cargo build --release --target=${ARCH}-unknown-linux-musl
