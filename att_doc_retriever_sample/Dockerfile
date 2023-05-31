@@ -22,7 +22,7 @@ RUN rustup target install ${ARCH}-unknown-linux-musl
 
 RUN apt install musl-tools -y
 RUN apt install libssl-dev -y
-RUN apt install pkg-config
+RUN apt install pkg-config -y
 #ENV PKG_CONFIG_SYSROOT_DIR=/
 #RUN echo $PKG_CONFIG_SYSROOT_DIR
 
