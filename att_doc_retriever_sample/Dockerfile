@@ -24,7 +24,7 @@ RUN apt-get install musl-tools -y
 RUN apt-get install libssl-dev -y
 RUN apt-get install pkg-config -y
 ENV PKG_CONFIG_SYSROOT_DIR=/
-ENV PKG_CONFIG_PATH=/usr/share/pkgconfig
+ENV PKG_CONFIG_PATH=/usr/lib/pkgconfig
 RUN echo $PKG_CONFIG_SYSROOT_DIR
 
 # Build the Rust application
