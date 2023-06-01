@@ -17,7 +17,8 @@ RUN apt-get update && apt-get install gcc curl -y\
     && apt-get install libssl-dev -y\
     && apt-get install pkg-config -y
 
-ENV OPENSSL_DIR="/usr/lib/ssl"
+ENV OPENSSL_LIB_DIR="/usr/lib/ssl"
+ENV OPENSSL_INCLUDE_DIR = "/usr/include/openssl"
 RUN echo $OPENSSL_DIR
 
 # Get Rust
