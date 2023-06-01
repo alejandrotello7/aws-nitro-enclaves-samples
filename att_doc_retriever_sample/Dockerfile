@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install gcc curl -y\
     && apt-get install pkg-config -y
 
 ENV OPENSSL_DIR="/usr/lib/ssl"
+RUN echo $OPENSSL_DIR
 
 # Get Rust
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
