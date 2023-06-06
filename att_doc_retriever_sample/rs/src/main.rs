@@ -18,8 +18,8 @@ fn main() {
     let mut pcr_vec = Vec::new();
     pcr_vec.push(pcr0);
     pcr_vec.push(pcr1);
-    let binding = std::fs::read("cert.der").unwrap();
-    let _cert = binding.as_slice();
+    //let binding = std::fs::read("cert.der").unwrap();
+    //let _cert = binding.as_slice();
 
     let request = Request::Attestation {
         public_key: Some(public_key),
