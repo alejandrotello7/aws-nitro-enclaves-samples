@@ -1,7 +1,8 @@
-use nitro_enclave_attestation_document::AttestationDocument;
+//use nitro_enclave_attestation_document::AttestationDocument;
 //use std::fs::File;
 //use std::io::Read;
-use nsm_io::{Request, Response};
+use nsm_io::{Request};
+//use nsm_io::{Response};
 use serde_bytes::ByteBuf;
 //use nitro_enclave_attestation_document::AttestationDocument;
 
@@ -18,7 +19,7 @@ fn main() {
     pcr_vec.push(pcr0);
     pcr_vec.push(pcr1);
     let binding = std::fs::read("cert.der").unwrap();
-    let cert = binding.as_slice();
+    let _cert = binding.as_slice();
 
     let request = Request::Attestation {
         public_key: Some(public_key),
@@ -66,6 +67,7 @@ fn main() {
         panic!("error");
       }
     };*/*/
+        println!("{:?}", response);
 
         nsm_driver::nsm_exit(nsm_fd);
     }
