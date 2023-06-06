@@ -13,11 +13,6 @@ fn main() {
     let public_key = ByteBuf::from("my super secret key");
     let hello = ByteBuf::from("hello, world!");
 
-    let pcr0 = String::from("Test");
-    let pcr1 = String::from("Test2");
-    let mut pcr_vec = Vec::new();
-    pcr_vec.push(pcr0);
-    pcr_vec.push(pcr1);
     //let binding = std::fs::read("cert.der").unwrap();
     //let _cert = binding.as_slice();
 
