@@ -8,8 +8,8 @@ edition = "2018"
 
 [dependencies]
 serde_bytes = "0.11"
-#nitro-enclave-attestation-document = { git ="https://github.com/alejandrotello7/nitro-enclave-attestation-document.git" }
-#openssl = { version = "0.10", features = ["vendored"] }
+nitro-enclave-attestation-document = { git ="https://github.com/alejandrotello7/nitro-enclave-attestation-document.git" }
+openssl = { version = "0.10", features = ["vendored"] }
 
 [dependencies.nsm-driver]
 git = "https://github.com/aws/aws-nitro-enclaves-nsm-api.git"
