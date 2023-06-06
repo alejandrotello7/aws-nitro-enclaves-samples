@@ -14,7 +14,7 @@ fn main() {
     let hello = ByteBuf::from("hello, world!");
 
     let binding = std::fs::read("cert.der").unwrap();
-    let _cert = binding.as_slice();
+    let cert = binding.as_slice();
 
     let request = Request::Attestation {
         public_key: Some(public_key),
