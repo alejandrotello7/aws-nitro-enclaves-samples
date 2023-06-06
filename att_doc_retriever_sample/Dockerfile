@@ -41,6 +41,7 @@ ARG ARCH
 #COPY --from=builder /root/att_doc_retriever_sample/rs/target/${ARCH}-unknown-linux-musl/release/att_doc_retriever_sample .
 
 # Copy the python client-server handler logic to the container
+COPY att_doc_retriever_sample/py/att_doc_retriever_sample .
 COPY att_doc_retriever_sample/py/att_doc_retriever_sample.py .
 
 # Copy the client-server logic from the vsock sample to the container
