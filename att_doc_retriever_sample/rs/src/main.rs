@@ -28,7 +28,7 @@ fn main() {
 
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
 
-    if let Response::Attestation{ref document} = response {
+    /*if let Response::Attestation{ref document} = response {
         println!("Test");
         println!("{:?}", document);
         //let tester = AttestationDoc::from_binary(document.as_slice());
@@ -65,7 +65,7 @@ fn main() {
         // Do something with the error here
         panic!("error");
       }
-    };*/
+    };*/*/
 
         nsm_driver::nsm_exit(nsm_fd);
     }
