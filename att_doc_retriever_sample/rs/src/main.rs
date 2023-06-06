@@ -38,7 +38,7 @@ fn main() {
             Err(_err) => {
                 // signature of document did not authenticate, or the data was poorly formed
                 // Do something with the error here
-                panic!("error");
+                panic!("error unvalid doc");
             }
         };
             //println!("{:?}", tester);
