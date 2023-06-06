@@ -22,7 +22,9 @@ fn main() {
         nonce: None,
     };
 
+
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
+    println!("After request");
 
     if let Response::Attestation{ref document} = response {
         println!("Test");
@@ -41,9 +43,7 @@ fn main() {
         };
             //println!("{:?}", tester);
         }
-
-        println!("{:?}", response);
-        //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
+     //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
 
 
         /*let mut data_file = File::open("cert.der").unwrap();
@@ -62,6 +62,8 @@ fn main() {
         panic!("error");
       }
     };*/
+        println!("After REsponse");
+
         println!("{:?}", response);
 
         nsm_driver::nsm_exit(nsm_fd);
