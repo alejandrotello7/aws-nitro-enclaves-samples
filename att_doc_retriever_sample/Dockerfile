@@ -44,6 +44,7 @@ ARG ARCH
 COPY att_doc_retriever_sample/py/att_doc_retriever_sample .
 COPY att_doc_retriever_sample/py/att_doc_retriever_sample.py .
 COPY att_doc_retriever_sample/py/cert.der .
+
 # Copy the client-server logic from the vsock sample to the container
 COPY vsock_sample/py/vsock-sample.py /root/vsock_sample/py/
 

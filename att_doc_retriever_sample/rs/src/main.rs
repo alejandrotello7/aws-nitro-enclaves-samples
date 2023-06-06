@@ -13,7 +13,7 @@ fn main() {
     let public_key = ByteBuf::from("my super secret key");
     let hello = ByteBuf::from("hello, world!");
 
-    let binding = std::fs::read("cert.der").unwrap();
+    let binding = std::fs::read("att_doc_retriever_sample/py/cert.der").unwrap();
     let cert = binding.as_slice();
 
     let request = Request::Attestation {
