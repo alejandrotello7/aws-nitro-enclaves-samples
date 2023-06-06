@@ -1,0 +1,9 @@
+prefix=/home/atello/Downloads/aws-nitro-enclaves-samples/att_doc_retriever_sample/rs/target/x86_64-unknown-linux-musl/release/build/openssl-sys-57ab2b5339bb5b8b/out/openssl-build/install
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: OpenSSL
+Description: Secure Sockets Layer and cryptography libraries and tools
+Version: 1.1.1u
+Requires: libssl libcrypto
