@@ -2,9 +2,9 @@
 //use std::fs::File;
 //use std::io::Read;
 use nsm_io::{Request};
-//use nsm_io::{Response};
+use nsm_io::{Response};
 use serde_bytes::ByteBuf;
-//use nitro_enclave_attestation_document::AttestationDocument;
+use nitro_enclave_attestation_document::AttestationDocument;
 
 
 fn main() {
@@ -13,8 +13,8 @@ fn main() {
     let public_key = ByteBuf::from("my super secret key");
     let hello = ByteBuf::from("hello, world!");
 
-    //let binding = std::fs::read("cert.der").unwrap();
-    //let _cert = binding.as_slice();
+    let binding = std::fs::read("cert.der").unwrap();
+    let _cert = binding.as_slice();
 
     let request = Request::Attestation {
         public_key: Some(public_key),
@@ -24,7 +24,7 @@ fn main() {
 
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
 
-    /*if let Response::Attestation{ref document} = response {
+    if let Response::Attestation{ref document} = response {
         println!("Test");
         println!("{:?}", document);
         //let tester = AttestationDoc::from_binary(document.as_slice());
@@ -61,7 +61,7 @@ fn main() {
         // Do something with the error here
         panic!("error");
       }
-    };*/*/
+    };*/
         println!("{:?}", response);
 
         nsm_driver::nsm_exit(nsm_fd);
