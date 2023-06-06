@@ -1,5 +1,6 @@
 //use nitro_enclave_attestation_document::AttestationDocument;
 //use std::fs::File;
+use std::fs::read;
 //use std::io::Read;
 use nsm_io::{Request};
 use nsm_io::{Response};
@@ -13,7 +14,7 @@ fn main() {
     let public_key = ByteBuf::from("my super secret key");
     let hello = ByteBuf::from("hello, world!");
 
-    let binding = std::fs::read("att_doc_retriever_sample/py/cert.der").unwrap();
+    let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
     let cert = binding.as_slice();
 
     let request = Request::Attestation {
