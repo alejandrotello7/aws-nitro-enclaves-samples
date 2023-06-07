@@ -45,7 +45,12 @@ fn main() {
                 panic!("error unvalid atte doc");
             }
         };
+            println!("PCRS:");
              println!("{:?}",document_attested.pcrs);
+            println!("Nonce: ");
+             println!("{:?}",document_attested.nonce);
+         println!("Module Id: ");
+        println!("{:?}",document_attested.module_id);
         }
 
      //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
