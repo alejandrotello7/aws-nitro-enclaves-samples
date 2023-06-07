@@ -32,7 +32,7 @@ fn main() {
         println!("Test");
         println!("{:?}", document);
         //let tester = AttestationDoc::from_binary(document.as_slice());
-        let _document = match AttestationDocument::authenticate(document.as_slice(),cert) {
+        let document_attested = match AttestationDocument::authenticate(document.as_slice(),cert) {
             Ok(doc) => {
                 // signature of document authenticated and the data parsed correctly
                 println!("Success");
@@ -45,8 +45,9 @@ fn main() {
                 panic!("error unvalid atte doc");
             }
         };
-            //println!("{:?}", tester);
+             println!("{:?}",document_attested.pcrs);
         }
+
      //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
 
 
