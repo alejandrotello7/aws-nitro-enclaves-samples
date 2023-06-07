@@ -34,11 +34,13 @@ fn main() {
         let _document = match AttestationDocument::authenticate(document.as_slice(),cert) {
             Ok(doc) => {
                 // signature of document authenticated and the data parsed correctly
+                println!("Success");
                 doc
             },
-            Err(_err) => {
+            Err(err) => {
                 // signature of document did not authenticate, or the data was poorly formed
                 // Do something with the error here
+                println!("{:?}", err);
                 panic!("error unvalid doc");
             }
         };
