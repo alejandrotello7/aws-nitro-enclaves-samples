@@ -41,7 +41,7 @@ fn main() {
                 // signature of document did not authenticate, or the data was poorly formed
                 // Do something with the error here
                 println!("{:?}", err);
-                panic!("error unvalid doc");
+                panic!("error unvalid atte doc");
             }
         };
             //println!("{:?}", tester);
