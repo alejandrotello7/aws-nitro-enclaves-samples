@@ -13,6 +13,7 @@ fn main() {
 
     let public_key = ByteBuf::from("my super secret key");
     let hello = ByteBuf::from("hello, world!");
+    let nonce = ByteBuf::from("Nonce is here");
 
     let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
     let cert = binding.as_slice();
@@ -20,7 +21,7 @@ fn main() {
     let request = Request::Attestation {
         public_key: Some(public_key),
         user_data: Some(hello),
-        nonce: None,
+        nonce: Some(nonce),
     };
 
 
