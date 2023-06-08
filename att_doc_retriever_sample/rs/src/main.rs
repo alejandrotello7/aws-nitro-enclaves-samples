@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 //use nitro_enclave_attestation_document::AttestationDocument;
 //use std::fs::File;
 use std::fs::read;
@@ -6,7 +7,28 @@ use nsm_io::{Request};
 use nsm_io::{Response};
 use serde_bytes::ByteBuf;
 use nitro_enclave_attestation_document::AttestationDocument;
+use serde::{Serialize, Deserialize};
+use std::fmt;
 
+#[derive(Serialize, Deserialize)]
+struct AttestationDocumentDecoded {
+    pcrs: HashMap<String,String>,
+    nonce: String,
+    module_id: String,
+}
+impl fmt::Display for AttestationDocumentDecoded {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "PCRData:")?;
+        writeln!(f, "PCR Values:")?;
+        for (key, value) in &self.pcrs {
+            writeln!(f, "PCR {}: {}", key, value)?;
+        }
+        writeln!(f, "Nonce: {}", self.nonce)?;
+        writeln!(f, "Module ID: {}", self.module_id)?;
+
+        Ok(())
+    }
+}
 fn convert_decimals_to_ascii(input: Option<Vec<u8>>) -> String {
     if let Some(decimals) = input {
         let mut result = String::new();
@@ -77,15 +99,27 @@ fn main() {
         };
         // println!("PCRS:");
         // println!("{:?}",document_attested.pcrs);
+        let mut document_attested_decoded = AttestationDocumentDecoded {
+            pcrs: HashMap::new(),
+            nonce: String::new(),
+            module_id: String::new(),
+        };
         println!("-----");
         for (index, pcr) in document_attested.pcrs.iter().enumerate(){
             let hex_vector = decimal_to_hex(&pcr);
             let result = remove_brackets_commas_and_spaces(&hex_vector);
             println!("PCR{} value is: {:?}",index, result);
             println!("-----");
+            let pcr_index = format!("PCR{}",index);
+            document_attested_decoded.pcrs.insert(pcr_index,result);
         }
-        println!("Nonce: {:?}",convert_decimals_to_ascii(document_attested.nonce));
         println!("Module Id: {:?}",document_attested.module_id);
+
+        document_attested_decoded.nonce = convert_decimals_to_ascii(document_attested.nonce);
+        document_attested_decoded.module_id = document_attested.module_id;
+        println!("{}",document_attested_decoded);
+
+
     }
 
     //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
@@ -113,3 +147,5 @@ fn main() {
 
     nsm_driver::nsm_exit(nsm_fd);
 }
+
+
