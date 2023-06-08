@@ -7,6 +7,19 @@ use nsm_io::{Response};
 use serde_bytes::ByteBuf;
 use nitro_enclave_attestation_document::AttestationDocument;
 
+fn convert_decimals_to_ascii(input: Option<Vec<u8>>) -> String {
+    if let Some(decimals) = input {
+        let mut result = String::new();
+
+        for decimal in decimals {
+            result.push(decimal as char);
+        }
+
+        return result;
+    }
+
+    String::new()
+}
 fn decimal_to_hex(vector: &[u8]) -> Vec<String> {
     vector.iter().map(|&decimal| format!("{:02X}", decimal)).collect()
 }
@@ -71,7 +84,7 @@ fn main() {
             println!("PCR{} value is: {:?}",index, result);
             println!("-----");
         }
-        println!("Nonce: {:?}",document_attested.nonce);
+        println!("Nonce: {:?}",convert_decimals_to_ascii(document_attested.nonce));
         println!("Module Id: {:?}",document_attested.module_id);
     }
 
