@@ -45,36 +45,40 @@ fn main() {
                 panic!("error unvalid atte doc");
             }
         };
-            println!("PCRS:");
-             println!("{:?}",document_attested.pcrs);
-            println!("Nonce: ");
-             println!("{:?}",document_attested.nonce);
-         println!("Module Id: ");
-        println!("{:?}",document_attested.module_id);
+        println!("PCRS:");
+        println!("{:?}",document_attested.pcrs);
+        for pcr in document_attested.pcrs{
+            println!("PCR value is: {:?}",pcr);
+            println!("-----");
         }
-
-     //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
-
-
-        /*let mut data_file = File::open("cert.der").unwrap();
-        let mut trusted_root_certificate = String::new();
-        data_file.read_to_string(&mut trusted_root_certificate).unwrap();
-        println!(trusted_root_certificate);
-
-        let document = match AttestationDocument::authenticate(&response, &trusted_root_certificate as &[u8]) {
-      Ok(doc) => {
-        // signature of document authenticated and the data parsed correctly
-        doc
-        },
-      Err(err) => {
-        // signature of document did not authenticate, or the data was poorly formed
-        // Do something with the error here
-        panic!("error");
-      }
-    };*/
-        println!("After REsponse");
-
-        println!("{:?}", response);
-
-        nsm_driver::nsm_exit(nsm_fd);
+        println!("Nonce: ");
+        println!("{:?}",document_attested.nonce);
+        println!("Module Id: ");
+        println!("{:?}",document_attested.module_id);
     }
+
+    //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
+
+
+    /*let mut data_file = File::open("cert.der").unwrap();
+    let mut trusted_root_certificate = String::new();
+    data_file.read_to_string(&mut trusted_root_certificate).unwrap();
+    println!(trusted_root_certificate);
+
+    let document = match AttestationDocument::authenticate(&response, &trusted_root_certificate as &[u8]) {
+  Ok(doc) => {
+    // signature of document authenticated and the data parsed correctly
+    doc
+    },
+  Err(err) => {
+    // signature of document did not authenticate, or the data was poorly formed
+    // Do something with the error here
+    panic!("error");
+  }
+};*/
+    println!("After REsponse");
+
+    println!("{:?}", response);
+
+    nsm_driver::nsm_exit(nsm_fd);
+}
