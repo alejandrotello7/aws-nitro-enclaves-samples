@@ -10,7 +10,7 @@ use nitro_enclave_attestation_document::AttestationDocument;
 fn decimal_to_hex(vector: &[u8]) -> Vec<String> {
     vector.iter().map(|&decimal| format!("{:02X}", decimal)).collect()
 }
-fn remove_brackets_and_commas<T: std::fmt::Display>(vector: &[T]) -> String {
+fn remove_brackets_commas_and_spaces<T: std::fmt::Display>(vector: &[T]) -> String {
     let mut result = String::new();
 
     for (index, element) in vector.iter().enumerate() {
@@ -20,6 +20,8 @@ fn remove_brackets_and_commas<T: std::fmt::Display>(vector: &[T]) -> String {
             result.push(' ');
         }
     }
+
+    result = result.replace(&['[', ']', ',', ' '][..], "");
 
     result
 }
@@ -65,7 +67,7 @@ fn main() {
         println!("-----");
         for (index, pcr) in document_attested.pcrs.iter().enumerate(){
             let hex_vector = decimal_to_hex(&pcr);
-            let result = remove_brackets_and_commas(&hex_vector);
+            let result = remove_brackets_commas_and_spaces(&hex_vector);
             println!("PCR{} value is: {:?}",index, result);
             println!("-----");
         }
