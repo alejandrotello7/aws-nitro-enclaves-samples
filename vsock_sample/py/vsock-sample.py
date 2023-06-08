@@ -14,7 +14,7 @@ class VsockStream:
 
     def __init__(self, conn_tmo=5):
         self.conn_tmo = conn_tmo
-        self.data = None
+        self.data = ""
 
     def connect(self, endpoint):
         """Connect to the remote endpoint"""
