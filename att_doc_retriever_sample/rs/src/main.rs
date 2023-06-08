@@ -7,7 +7,19 @@ use nsm_io::{Response};
 use serde_bytes::ByteBuf;
 use nitro_enclave_attestation_document::AttestationDocument;
 
+fn remove_brackets_and_commas<T: std::fmt::Display>(vector: &[T]) -> String {
+    let mut result = String::new();
 
+    for (index, element) in vector.iter().enumerate() {
+        result.push_str(&element.to_string());
+
+        if index < vector.len() - 1 {
+            result.push(' ');
+        }
+    }
+
+    result
+}
 fn main() {
     let nsm_fd = nsm_driver::nsm_init();
 
@@ -47,8 +59,10 @@ fn main() {
         };
         println!("PCRS:");
         println!("{:?}",document_attested.pcrs);
+        println!("-----");
         for pcr in document_attested.pcrs{
-            println!("PCR value is: {:?}",pcr);
+            let result = remove_brackets_and_commas(&pcr);
+            println!("PCR value is: {:?}",result);
             println!("-----");
         }
         println!("Nonce: ");
