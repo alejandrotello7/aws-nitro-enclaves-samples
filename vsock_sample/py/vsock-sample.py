@@ -4,13 +4,17 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import argparse
+import json
 import socket
 import sys
 
+
 class VsockStream:
     """Client"""
+
     def __init__(self, conn_tmo=5):
         self.conn_tmo = conn_tmo
+        self.data = None
 
     def connect(self, endpoint):
         """Connect to the remote endpoint"""
@@ -26,6 +30,7 @@ class VsockStream:
         """Receive data from a remote endpoint"""
         while True:
             data = self.sock.recv(1024).decode()
+            self.data = json.loads(data)
             if not data:
                 break
             print(data, end='', flush=True)
@@ -47,6 +52,7 @@ def client_handler(args):
 
 class VsockListener:
     """Server"""
+
     def __init__(self, conn_backlog=128):
         self.conn_backlog = conn_backlog
 
