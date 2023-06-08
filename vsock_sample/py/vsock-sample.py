@@ -30,10 +30,11 @@ class VsockStream:
         """Receive data from a remote endpoint"""
         while True:
             data = self.sock.recv(1024).decode()
-            self.data = data
+            self.data += data
             if not data:
                 break
             print(data, end='', flush=True)
+        self.data += ''
         print()
 
     def disconnect(self):
