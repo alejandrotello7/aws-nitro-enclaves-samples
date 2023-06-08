@@ -63,10 +63,10 @@ fn main() {
         println!("PCRS:");
         println!("{:?}",document_attested.pcrs);
         println!("-----");
-        for pcr in document_attested.pcrs{
+        for (index, pcr) in document_attested.pcrs.iter().enumerate(){
             let hex_vector = decimal_to_hex(&pcr);
             let result = remove_brackets_and_commas(&hex_vector);
-            println!("PCR value is: {:?}",result);
+            println!("PCR{} value is: {:?}",index, result);
             println!("-----");
         }
         println!("Nonce: ");
