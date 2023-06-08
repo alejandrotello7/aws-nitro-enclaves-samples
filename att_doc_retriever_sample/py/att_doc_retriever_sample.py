@@ -52,7 +52,7 @@ def main():
                                           help="Connect to a given cid and port.")
     client_parser.add_argument("cid", type=int, help="The remote endpoint CID.")
     client_parser.add_argument("port", type=int, help="The remote endpoint port.")
-    client_parser.add_argument("pcr0", help="PCR0 value of the enclave image. ")
+    # client_parser.add_argument("pcr0", help="PCR0 value of the enclave image. ")
     client_parser.set_defaults(func=client_handler)
 
     server_parser = subparsers.add_parser("server", description="Server",

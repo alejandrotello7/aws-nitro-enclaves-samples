@@ -119,6 +119,9 @@ fn main() {
         document_attested_decoded.module_id = document_attested.module_id;
         println!("{}",document_attested_decoded);
 
+        let json = serde_json::to_string(&document_attested_decoded).unwrap();
+        println!("{}",json);
+
 
     }
 
