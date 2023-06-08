@@ -78,16 +78,16 @@ fn main() {
 
 
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
-    println!("After request");
+    // println!("After request");
 
     if let Response::Attestation{ref document} = response {
-        println!("Test");
+        // println!("Test");
         // println!("{:?}", document);
         //let tester = AttestationDoc::from_binary(document.as_slice());
         let document_attested = match AttestationDocument::authenticate(document.as_slice(),cert) {
             Ok(doc) => {
                 // signature of document authenticated and the data parsed correctly
-                println!("Success");
+                // println!("Success");
                 doc
             },
             Err(err) => {
@@ -104,20 +104,20 @@ fn main() {
             nonce: String::new(),
             module_id: String::new(),
         };
-        println!("-----");
+        // println!("-----");
         for (index, pcr) in document_attested.pcrs.iter().enumerate(){
             let hex_vector = decimal_to_hex(&pcr);
             let result = remove_brackets_commas_and_spaces(&hex_vector);
-            println!("PCR{} value is: {:?}",index, result);
-            println!("-----");
+            // println!("PCR{} value is: {:?}",index, result);
+            // println!("-----");
             let pcr_index = format!("PCR{}",index);
             document_attested_decoded.pcrs.insert(pcr_index,result);
         }
-        println!("Module Id: {:?}",document_attested.module_id);
+        // println!("Module Id: {:?}",document_attested.module_id);
 
         document_attested_decoded.nonce = convert_decimals_to_ascii(document_attested.nonce);
         document_attested_decoded.module_id = document_attested.module_id;
-        println!("{}",document_attested_decoded);
+        // println!("{}",document_attested_decoded);
 
         let json = serde_json::to_string(&document_attested_decoded).unwrap();
         println!("{}",json);
@@ -144,7 +144,7 @@ fn main() {
     panic!("error");
   }
 };*/
-    println!("After REsponse");
+    // println!("After REsponse");
 
     // println!("{:?}", response);
 
