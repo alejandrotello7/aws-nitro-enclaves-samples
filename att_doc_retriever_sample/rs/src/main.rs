@@ -7,6 +7,9 @@ use nsm_io::{Response};
 use serde_bytes::ByteBuf;
 use nitro_enclave_attestation_document::AttestationDocument;
 
+fn decimal_to_hex(vector: &[u8]) -> Vec<String> {
+    vector.iter().map(|&decimal| format!("{:02X}", decimal)).collect()
+}
 fn remove_brackets_and_commas<T: std::fmt::Display>(vector: &[T]) -> String {
     let mut result = String::new();
 
@@ -61,7 +64,8 @@ fn main() {
         println!("{:?}",document_attested.pcrs);
         println!("-----");
         for pcr in document_attested.pcrs{
-            let result = remove_brackets_and_commas(&pcr);
+            let hex_vector = decimal_to_hex(&pcr);
+            let result = remove_brackets_and_commas(&hex_vector);
             println!("PCR value is: {:?}",result);
             println!("-----");
         }
