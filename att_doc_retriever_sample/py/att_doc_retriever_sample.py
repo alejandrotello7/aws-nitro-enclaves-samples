@@ -28,6 +28,8 @@ def client_handler(args):
     endpoint = (args.cid, args.port)
     client.connect(endpoint)
     client.recv_data()
+    print("Printed from member")
+    print(client.data)
     client.disconnect()
 
 
