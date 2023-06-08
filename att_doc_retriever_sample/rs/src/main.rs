@@ -47,7 +47,7 @@ fn main() {
 
     if let Response::Attestation{ref document} = response {
         println!("Test");
-        println!("{:?}", document);
+        // println!("{:?}", document);
         //let tester = AttestationDoc::from_binary(document.as_slice());
         let document_attested = match AttestationDocument::authenticate(document.as_slice(),cert) {
             Ok(doc) => {
@@ -62,8 +62,8 @@ fn main() {
                 panic!("error unvalid atte doc");
             }
         };
-        println!("PCRS:");
-        println!("{:?}",document_attested.pcrs);
+        // println!("PCRS:");
+        // println!("{:?}",document_attested.pcrs);
         println!("-----");
         for (index, pcr) in document_attested.pcrs.iter().enumerate(){
             let hex_vector = decimal_to_hex(&pcr);
@@ -71,10 +71,8 @@ fn main() {
             println!("PCR{} value is: {:?}",index, result);
             println!("-----");
         }
-        println!("Nonce: ");
-        println!("{:?}",document_attested.nonce);
-        println!("Module Id: ");
-        println!("{:?}",document_attested.module_id);
+        println!("Nonce: {:?}",document_attested.nonce);
+        println!("Module Id: {:?}",document_attested.module_id);
     }
 
     //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
@@ -98,7 +96,7 @@ fn main() {
 };*/
     println!("After REsponse");
 
-    println!("{:?}", response);
+    // println!("{:?}", response);
 
     nsm_driver::nsm_exit(nsm_fd);
 }
