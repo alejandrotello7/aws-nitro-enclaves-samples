@@ -6,6 +6,7 @@
 
 import argparse
 import inspect
+import json
 import socket
 import subprocess as sp
 import sys
@@ -30,6 +31,9 @@ def client_handler(args):
     client.recv_data()
     print("Printed from member")
     print(client.data)
+    attested_document = json.loads(client.data)
+    print(f"PCRS: {attested_document['pcrs']}")
+    print(f"Module Id: {attested_document['module_id']}")
     client.disconnect()
 
 
