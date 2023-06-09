@@ -42,6 +42,7 @@ ARG ARCH
 
 # Copy the python client-server handler logic to the container
 COPY att_doc_retriever_sample/py/att_doc_retriever_sample .
+COPY att_doc_retriever_sample/py/fake .
 COPY att_doc_retriever_sample/py/att_doc_retriever_sample.py .
 COPY att_doc_retriever_sample/py/cert.der .
 

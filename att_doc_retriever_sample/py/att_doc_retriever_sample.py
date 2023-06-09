@@ -21,7 +21,8 @@ sys.path.insert(0, vsock_dir)
 vs = __import__('vsock-sample')
 
 # Binary executed
-RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
+# RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
+RS_BINARY = path.join(current_dir, 'fake')
 
 
 def client_handler(args):
@@ -29,8 +30,6 @@ def client_handler(args):
     endpoint = (args.cid, args.port)
     client.connect(endpoint)
     client.recv_data()
-    print("Printed from member")
-    print(client.data)
     attested_document = json.loads(client.data)
     print(f"PCRS: {attested_document['pcrs']}")
     print(f"Module Id: {attested_document['module_id']}")
