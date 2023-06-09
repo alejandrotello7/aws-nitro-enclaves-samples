@@ -15,6 +15,7 @@ struct AttestationDocumentDecoded {
     pcrs: HashMap<String,String>,
     nonce: String,
     module_id: String,
+    public_key: String,
 }
 impl fmt::Display for AttestationDocumentDecoded {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -60,6 +61,13 @@ fn remove_brackets_commas_and_spaces<T: std::fmt::Display>(vector: &[T]) -> Stri
 
     result
 }
+fn option_vec_u8_to_string(data: Option<Vec<u8>>) -> String {
+    match data {
+        Some(bytes) => String::from_utf8_lossy(&bytes).to_string(),
+        None => String::new(),
+    }
+}
+
 fn main() {
     let nsm_fd = nsm_driver::nsm_init();
 
@@ -103,6 +111,7 @@ fn main() {
             pcrs: HashMap::new(),
             nonce: String::new(),
             module_id: String::new(),
+            public_key: String::new(),
         };
         // println!("-----");
         for (index, pcr) in document_attested.pcrs.iter().enumerate(){
@@ -117,6 +126,7 @@ fn main() {
 
         document_attested_decoded.nonce = convert_decimals_to_ascii(document_attested.nonce);
         document_attested_decoded.module_id = document_attested.module_id;
+        document_attested_decoded.public_key = option_vec_u8_to_string(document_attested.public_key);
         // println!("{}",document_attested_decoded);
 
         let json = serde_json::to_string(&document_attested_decoded).unwrap();

@@ -33,6 +33,8 @@ def client_handler(args):
     attested_document = json.loads(client.data)
     print(f"PCRS: {attested_document['pcrs']}")
     print(f"Module Id: {attested_document['module_id']}")
+    print(f"Nonce: {attested_document['nonce']}")
+    print(f"Public Key: {attested_document['public_key']}")
     client.disconnect()
 
 
