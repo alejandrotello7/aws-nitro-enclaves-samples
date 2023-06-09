@@ -30,7 +30,6 @@ def client_handler(args):
     endpoint = (args.cid, args.port)
     client.connect(endpoint)
     client.recv_data()
-    print(client.data)
     attested_document = json.loads(client.data)
     print(f"PCRS: {attested_document['pcrs']}")
     print(f"Module Id: {attested_document['module_id']}")
