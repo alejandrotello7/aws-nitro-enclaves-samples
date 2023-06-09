@@ -22,7 +22,7 @@ vs = __import__('vsock-sample')
 
 # Binary executed
 # RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
-RS_BINARY = path.join(current_dir, 'fake')
+RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
 
 
 def client_handler(args):
