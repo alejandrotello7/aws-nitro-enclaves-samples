@@ -23,6 +23,7 @@ struct AttestationDocumentDecoded {
     nonce: String,
     module_id: String,
     public_key: String,
+    private_key_path: String,
 }
 impl fmt::Display for AttestationDocumentDecoded {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -100,12 +101,12 @@ fn main() {
     let mut file = File::create(private_key_path).unwrap();
     file.write_all(&private_key).unwrap();
 
-    println!("Private key written to: {}", private_key_path);
+    // println!("Private key written to: {}", private_key_path);
 
     // Print the content of the private key file
-    let mut file = File::open(private_key_path).unwrap();
-    let mut content = Vec::new();
-    file.read_to_end(&mut content).unwrap();
+    // let mut file = File::open(private_key_path).unwrap();
+    // let mut content = Vec::new();
+    // file.read_to_end(&mut content).unwrap();
 
 
     let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
@@ -145,6 +146,7 @@ fn main() {
             nonce: String::new(),
             module_id: String::new(),
             public_key: String::new(),
+            private_key_path: String::new(),
         };
         // println!("-----");
         for (index, pcr) in document_attested.pcrs.iter().enumerate(){
@@ -160,6 +162,8 @@ fn main() {
         document_attested_decoded.nonce = convert_decimals_to_ascii(document_attested.nonce);
         document_attested_decoded.module_id = document_attested.module_id;
         document_attested_decoded.public_key = option_vec_u8_to_string(document_attested.public_key);
+        document_attested_decoded.private_key_path = private_key_path.parse().unwrap();
+
         // println!("{}",document_attested_decoded);
 
         let json = serde_json::to_string(&document_attested_decoded).unwrap();

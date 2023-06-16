@@ -45,6 +45,9 @@ def server_handler(args):
     # Execute binary and send the output to client
     proc = sp.Popen([RS_BINARY], stdout=sp.PIPE)
     out, err = proc.communicate()
+    attested_document_server = json.loads(out)
+    print(f"Private Key Path: {attested_document_server['private_key_path']}\n")
+    attested_document_server.pop("private_key_path", None)
     server.send_data(out)
 
 
