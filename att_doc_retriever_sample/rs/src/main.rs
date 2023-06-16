@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 //use nitro_enclave_attestation_document::AttestationDocument;
 //use std::fs::File;
-use std::fs::read;
+use std::fs::{File, read};
 //use std::io::Read;
 use nsm_io::{Request};
 use nsm_io::{Response};
@@ -9,6 +9,7 @@ use serde_bytes::ByteBuf;
 use nitro_enclave_attestation_document::AttestationDocument;
 use serde::{Serialize, Deserialize};
 use std::fmt;
+use std::io::{Read, Write};
 use std::vec::Vec;
 
 use openssl::rsa::Rsa;
@@ -73,14 +74,17 @@ fn option_vec_u8_to_string(data: Option<Vec<u8>>) -> String {
         None => String::new(),
     }
 }
-fn generate_rsa_key() -> ByteBuf{
+fn generate_rsa_key() -> (ByteBuf, Vec<u8>) {
     let rsa = Rsa::generate(2048).unwrap();
     let pkey = PKey::from_rsa(rsa).unwrap();
 
     let pub_key: Vec<u8> = pkey.public_key_to_pem().unwrap();
+    // let pub_key: Vec<u8> = pkey.public_key_to_der().unwrap();
 
+    let private_key: Vec<u8> = pkey.private_key_to_pem_pkcs8().unwrap();
     let public_key = ByteBuf::from(pub_key);
-    return public_key;
+
+    return (public_key,private_key);
 }
 
 fn main() {
@@ -89,7 +93,20 @@ fn main() {
     // let public_key = ByteBuf::from("my super secret keys");
     let hello = ByteBuf::from("hello, world!");
     let nonce = ByteBuf::from("Nonce is here");
-    let public_key = generate_rsa_key();
+    let (public_key, private_key) = generate_rsa_key();
+
+    // Write the private key to a file
+    let private_key_path = "private_key.pem";
+    let mut file = File::create(private_key_path).unwrap();
+    file.write_all(&private_key).unwrap();
+
+    println!("Private key written to: {}", private_key_path);
+
+    // Print the content of the private key file
+    let mut file = File::open(private_key_path).unwrap();
+    let mut content = Vec::new();
+    file.read_to_end(&mut content).unwrap();
+
 
     let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
     let cert = binding.as_slice();
