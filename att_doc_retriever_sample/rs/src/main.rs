@@ -9,6 +9,12 @@ use serde_bytes::ByteBuf;
 use nitro_enclave_attestation_document::AttestationDocument;
 use serde::{Serialize, Deserialize};
 use std::fmt;
+use std::vec::Vec;
+
+use openssl::rsa::Rsa;
+use openssl::pkey::PKey;
+use std::str;
+
 
 #[derive(Serialize, Deserialize)]
 struct AttestationDocumentDecoded {
@@ -67,11 +73,15 @@ fn option_vec_u8_to_string(data: Option<Vec<u8>>) -> String {
         None => String::new(),
     }
 }
-
 fn main() {
     let nsm_fd = nsm_driver::nsm_init();
+    let rsa = Rsa::generate(2048).unwrap();
+    let pkey = PKey::from_rsa(rsa).unwrap();
 
-    let public_key = ByteBuf::from("my super secret key");
+    let pub_key: Vec<u8> = pkey.public_key_to_pem().unwrap();
+
+    let public_key = ByteBuf::from(pub_key);
+    // let public_key = ByteBuf::from("my super secret key");
     let hello = ByteBuf::from("hello, world!");
     let nonce = ByteBuf::from("Nonce is here");
 
