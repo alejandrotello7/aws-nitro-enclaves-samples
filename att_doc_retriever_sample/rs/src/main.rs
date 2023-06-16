@@ -81,7 +81,7 @@ fn main() {
     let pub_key: Vec<u8> = pkey.public_key_to_pem().unwrap();
 
     let public_key = ByteBuf::from(pub_key);
-    // let public_key = ByteBuf::from("my super secret key");
+    // let public_key = ByteBuf::from("my super secret keys");
     let hello = ByteBuf::from("hello, world!");
     let nonce = ByteBuf::from("Nonce is here");
 
