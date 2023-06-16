@@ -73,17 +73,23 @@ fn option_vec_u8_to_string(data: Option<Vec<u8>>) -> String {
         None => String::new(),
     }
 }
-fn main() {
-    let nsm_fd = nsm_driver::nsm_init();
+fn generate_rsa_key() -> ByteBuf{
     let rsa = Rsa::generate(2048).unwrap();
     let pkey = PKey::from_rsa(rsa).unwrap();
 
     let pub_key: Vec<u8> = pkey.public_key_to_pem().unwrap();
 
     let public_key = ByteBuf::from(pub_key);
+    return public_key;
+}
+
+fn main() {
+    let nsm_fd = nsm_driver::nsm_init();
+
     // let public_key = ByteBuf::from("my super secret keys");
     let hello = ByteBuf::from("hello, world!");
     let nonce = ByteBuf::from("Nonce is here");
+    let public_key = generate_rsa_key();
 
     let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
     let cert = binding.as_slice();

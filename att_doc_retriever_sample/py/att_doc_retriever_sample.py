@@ -31,10 +31,10 @@ def client_handler(args):
     client.connect(endpoint)
     client.recv_data()
     attested_document = json.loads(client.data)
-    print(f"PCRS: {attested_document['pcrs']}")
-    print(f"Module Id: {attested_document['module_id']}")
-    print(f"Nonce: {attested_document['nonce']}")
-    print(f"Public Key: {attested_document['public_key']}")
+    print(f"PCRS: {attested_document['pcrs']}\n")
+    print(f"Module Id: {attested_document['module_id']}\n")
+    print(f"Nonce: {attested_document['nonce']}\n")
+    print(f"Public Key: {attested_document['public_key']}\n")
     client.disconnect()
 
 
