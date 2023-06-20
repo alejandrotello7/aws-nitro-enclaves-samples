@@ -7,16 +7,14 @@
 import argparse
 import inspect
 import json
-import socket
+import os
 import subprocess as sp
 import sys
-import time
-import os
+from os import path
 
-from os import path, getcwd
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization, hashes
-from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives.asymmetric import padding
 
 # import file from different location
 current_dir = path.dirname(path.abspath(inspect.getfile(inspect.currentframe())))
@@ -62,6 +60,11 @@ def server_handler(args):
     server = vs.VsockListener()
     server.bind(args.port)
 
+    message = "Hello, World!"
+    public_key = "public_key.pem"
+    encoded_message = encode_message(message, public_key)
+    print("Encoded message:", encoded_message)
+
     # Execute binary and send the output to client
     proc = sp.Popen([RS_BINARY], stdout=sp.PIPE)
     out, err = proc.communicate()
@@ -70,10 +73,7 @@ def server_handler(args):
     attested_document_server = json.loads(out)
     print(f"Private Key Path: {attested_document_server['private_key_path']}\n")
     print(f"Public Key Path: {attested_document_server['public_key_path']}\n")
-    private_key_absolute_path = os.path.abspath(attested_document_server['private_key_path'])
-    message = "Hello, World!"
-    encoded_message = encode_message(message, attested_document_server['public_key_path'])
-    print("Encoded message:", encoded_message)
+
 
     server.send_data(out)
 
