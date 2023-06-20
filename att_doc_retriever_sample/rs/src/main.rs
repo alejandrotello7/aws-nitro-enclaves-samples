@@ -24,6 +24,7 @@ struct AttestationDocumentDecoded {
     module_id: String,
     public_key: String,
     private_key_path: String,
+    public_key_path: String,
 }
 impl fmt::Display for AttestationDocumentDecoded {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -101,6 +102,10 @@ fn main() {
     let mut file = File::create(private_key_path).unwrap();
     file.write_all(&private_key).unwrap();
 
+    let public_key_path = "public_key.pem";
+    let mut public_key_file = File::create(public_key_path).unwrap();
+    public_key_file.write_all((&public_key).as_ref()).unwrap();
+
     // println!("Private key written to: {}", private_key_path);
 
     // Print the content of the private key file
@@ -147,6 +152,8 @@ fn main() {
             module_id: String::new(),
             public_key: String::new(),
             private_key_path: String::new(),
+            public_key_path: String::new(),
+
         };
         // println!("-----");
         for (index, pcr) in document_attested.pcrs.iter().enumerate(){
@@ -163,6 +170,8 @@ fn main() {
         document_attested_decoded.module_id = document_attested.module_id;
         document_attested_decoded.public_key = option_vec_u8_to_string(document_attested.public_key);
         document_attested_decoded.private_key_path = private_key_path.parse().unwrap();
+        document_attested_decoded.public_key_path = public_key_path.parse().unwrap();
+
 
         // println!("{}",document_attested_decoded);
 
