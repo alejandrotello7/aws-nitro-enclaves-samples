@@ -39,7 +39,7 @@ ARG ARCH
 
 # Copy the Rust compiled binary from previous image
 #COPY --from=builder /root/att_doc_retriever_sample/rs/target/${ARCH}-unknown-linux-musl/release/att_doc_retriever_sample .
-
+RUN pip install cryptography
 # Copy the python client-server handler logic to the container
 COPY att_doc_retriever_sample/py/att_doc_retriever_sample .
 COPY att_doc_retriever_sample/py/att_doc_retriever_sample.py .
