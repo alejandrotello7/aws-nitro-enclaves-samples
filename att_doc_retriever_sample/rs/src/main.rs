@@ -9,12 +9,13 @@ use serde_bytes::ByteBuf;
 use nitro_enclave_attestation_document::AttestationDocument;
 use serde::{Serialize, Deserialize};
 use std::fmt;
-use std::io::{Write};
+use std::io::{Read, Write};
 use std::vec::Vec;
 
 use openssl::rsa::Rsa;
 use openssl::pkey::PKey;
 use std::str;
+
 
 
 #[derive(Serialize, Deserialize)]
