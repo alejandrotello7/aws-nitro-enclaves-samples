@@ -50,10 +50,11 @@ def server_handler(args):
     #Testing private key logic
     attested_document_server = json.loads(out)
     print(f"Private Key Path: {attested_document_server['private_key_path']}\n")
-    print(f"Private Key Path: {attested_document_server['public_key_path']}\n")
+    print(f"Public Key Path: {attested_document_server['public_key_path']}\n")
     private_key_absolute_path = os.path.abspath(attested_document_server['private_key_path'])
-    print(f"Private Key Absolute Path {private_key_absolute_path}\n")
-    attested_document_server.pop("private_key_path", None)
+    with open(private_key_absolute_path, "r") as private_key_file:
+        private_pem_content = private_key_file.read()
+    print(f"PEM CONTENT: {private_pem_content}\n")
 
     server.send_data(out)
 
