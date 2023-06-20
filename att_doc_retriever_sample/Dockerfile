@@ -37,9 +37,17 @@ FROM python:3.7.9-alpine3.12
 WORKDIR /root/att_doc_retriever_sample/py/
 ARG ARCH
 
+RUN apk add --no-cache \
+    build-base \
+    libffi-dev \
+    openssl-dev \
+    cargo
+
+RUN pip install cryptography
+
+
 # Copy the Rust compiled binary from previous image
 #COPY --from=builder /root/att_doc_retriever_sample/rs/target/${ARCH}-unknown-linux-musl/release/att_doc_retriever_sample .
-RUN pip install cryptography
 # Copy the python client-server handler logic to the container
 COPY att_doc_retriever_sample/py/att_doc_retriever_sample .
 COPY att_doc_retriever_sample/py/att_doc_retriever_sample.py .
