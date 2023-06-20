@@ -28,19 +28,22 @@ RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
 
 
 def encode_message(message, public_key_path):
-    # Load the public key from the file
+    # Load the public key from file
     with open(public_key_path, "rb") as key_file:
         public_key = serialization.load_pem_public_key(key_file.read(), backend=default_backend())
 
-    # Encrypt the message using the public key
-    encoded_message = public_key.encrypt(message.encode("utf-8"),
-                                         padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                                                      algorithm=hashes.SHA256(), label=None))
+    # Encode the message
+    encoded_message = public_key.encrypt(
+        message.encode("utf-8"),
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
 
-    # Convert the encoded message to a hex string
-    encoded_message_hex = encoded_message.hex()
+    return encoded_message
 
-    return encoded_message_hex
 
 
 def client_handler(args):
@@ -60,11 +63,6 @@ def server_handler(args):
     server = vs.VsockListener()
     server.bind(args.port)
 
-    message = "Hello, World!"
-    public_key = "public_key.pem"
-    encoded_message = encode_message(message, public_key)
-    print("Encoded message:", encoded_message)
-
     # Execute binary and send the output to client
     proc = sp.Popen([RS_BINARY], stdout=sp.PIPE)
     out, err = proc.communicate()
@@ -73,7 +71,9 @@ def server_handler(args):
     attested_document_server = json.loads(out)
     print(f"Private Key Path: {attested_document_server['private_key_path']}\n")
     print(f"Public Key Path: {attested_document_server['public_key_path']}\n")
-
+    message = "Hello, World!"
+    encoded_message = encode_message(message, attested_document_server['public_key_path'])
+    print("Encoded message:", encoded_message)
 
     server.send_data(out)
 
