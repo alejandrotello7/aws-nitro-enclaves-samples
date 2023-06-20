@@ -27,25 +27,6 @@ vs = __import__('vsock-sample')
 RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
 
 
-def encode_message(message, public_key_path):
-    # Load the public key from file
-    with open(public_key_path, "rb") as key_file:
-        public_key = serialization.load_pem_public_key(key_file.read(), backend=default_backend())
-
-    # Encode the message
-    encoded_message = public_key.encrypt(
-        message.encode("utf-8"),
-        padding.OAEP(
-            mgf=padding.MGF1(algorithm=hashes.SHA256()),
-            algorithm=hashes.SHA256(),
-            label=None
-        )
-    )
-
-    return encoded_message
-
-
-
 def client_handler(args):
     client = vs.VsockStream()
     endpoint = (args.cid, args.port)
