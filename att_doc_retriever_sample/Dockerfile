@@ -43,6 +43,8 @@ RUN apk add --no-cache \
     openssl-dev \
     cargo
 
+RUN apk add --update rust
+
 RUN pip install cryptography
 
 
