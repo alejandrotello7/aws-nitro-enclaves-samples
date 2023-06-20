@@ -46,6 +46,8 @@ RUN apk add --no-cache \
 
 RUN apk add --update rust
 
+RUN pip install -U pip
+
 RUN pip install cryptography
 
 
