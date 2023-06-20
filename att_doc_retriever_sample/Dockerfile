@@ -37,6 +37,7 @@ FROM python:3.7.9-alpine3.12
 WORKDIR /root/att_doc_retriever_sample/py/
 ARG ARCH
 
+RUN apk update
 RUN apk add --no-cache \
     build-base \
     libffi-dev \
