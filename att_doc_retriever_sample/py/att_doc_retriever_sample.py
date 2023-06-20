@@ -72,8 +72,12 @@ def server_handler(args):
     print(f"Private Key Path: {attested_document_server['private_key_path']}\n")
     print(f"Public Key Path: {attested_document_server['public_key_path']}\n")
     message = "Hello, World!"
-    encoded_message = encode_message(message, attested_document_server['public_key_path'])
-    print("Encoded message:", encoded_message)
+    if os.path.exists(attested_document_server['private_key_path']):
+        print("FIle exists")
+    else:
+        print("FIle doesn't exist")
+    # encoded_message = encode_message(message, attested_document_server['public_key_path'])
+    # print("Encoded message:", encoded_message)
 
     server.send_data(out)
 
