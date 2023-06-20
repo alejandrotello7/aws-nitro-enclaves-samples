@@ -12,9 +12,6 @@ import subprocess as sp
 import sys
 from os import path
 
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization, hashes
-from cryptography.hazmat.primitives.asymmetric import padding
 
 # import file from different location
 current_dir = path.dirname(path.abspath(inspect.getfile(inspect.currentframe())))
@@ -52,13 +49,6 @@ def server_handler(args):
     attested_document_server = json.loads(out)
     print(f"Private Key Path: {attested_document_server['private_key_path']}\n")
     print(f"Public Key Path: {attested_document_server['public_key_path']}\n")
-    message = "Hello, World!"
-    if os.path.exists(attested_document_server['private_key_path']):
-        print("FIle exists")
-    else:
-        print("FIle doesn't exist")
-    # encoded_message = encode_message(message, attested_document_server['public_key_path'])
-    # print("Encoded message:", encoded_message)
 
     server.send_data(out)
 
