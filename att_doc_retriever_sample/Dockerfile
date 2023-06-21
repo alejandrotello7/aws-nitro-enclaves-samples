@@ -51,7 +51,7 @@ RUN apt-get update && apt-get install gcc curl -y
 #    libffi-dev \
 #    openssl-dev \
 #    cargo
-RUN apt-get install python3-pip
+RUN apt-get install python3-pip -y
 RUN pip install cryptography
 
 
