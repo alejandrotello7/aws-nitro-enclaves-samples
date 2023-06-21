@@ -33,7 +33,7 @@
 ## Build the Rust application
 #RUN cargo build --release --target=${ARCH}-unknown-linux-musl
 
-#FROM python:3.7.9-alpine3.12
+FROM python:3.7.9-alpine3.12
 WORKDIR /root/att_doc_retriever_sample/py/
 ARG ARCH
 
