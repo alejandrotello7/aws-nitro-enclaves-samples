@@ -38,11 +38,11 @@ WORKDIR /root/att_doc_retriever_sample/py/
 ARG ARCH
 
 RUN apk update
-#RUN apk add --no-cache \
+RUN apk add --no-cache \
 #    build-base \
-#    libffi-dev \
-#    openssl-dev \
-#    cargo
+    libffi-dev \
+    openssl-dev \
+    cargo
 
 RUN pip install -U pip
 
