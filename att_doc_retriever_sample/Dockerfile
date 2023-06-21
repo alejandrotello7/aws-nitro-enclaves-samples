@@ -40,10 +40,10 @@ ARG ARCH
 RUN apt-get update && apt-get install gcc curl -y
 
 # Get Rust
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
-
-ENV PATH="/root/.cargo/bin:${PATH}"
-RUN rustup target install ${ARCH}-unknown-linux-musl
+#RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+#
+#ENV PATH="/root/.cargo/bin:${PATH}"
+#RUN rustup target install ${ARCH}-unknown-linux-musl
 
 #RUN apk update
 #RUN apk add --no-cache \
