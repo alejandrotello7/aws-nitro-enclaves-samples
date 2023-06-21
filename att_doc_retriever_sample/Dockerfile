@@ -33,18 +33,16 @@
 ## Build the Rust application
 #RUN cargo build --release --target=${ARCH}-unknown-linux-musl
 
-FROM python:3.7.9-alpine3.12
+#FROM python:3.7.9-alpine3.12
 WORKDIR /root/att_doc_retriever_sample/py/
 ARG ARCH
 
 RUN apk update
-RUN apk add --no-cache \
-    build-base \
-    libffi-dev \
-    openssl-dev \
-    cargo
-
-RUN apk add --update rust
+#RUN apk add --no-cache \
+#    build-base \
+#    libffi-dev \
+#    openssl-dev \
+#    cargo
 
 RUN pip install -U pip
 
