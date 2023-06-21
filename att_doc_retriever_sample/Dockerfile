@@ -33,18 +33,24 @@
 ## Build the Rust application
 #RUN cargo build --release --target=${ARCH}-unknown-linux-musl
 
-FROM python:3.7.9-alpine3.12
+#FROM python:3.7.9-alpine3.12
+FROM ubuntu:latest
 WORKDIR /root/att_doc_retriever_sample/py/
 ARG ARCH
+RUN apt-get update && apt-get install gcc curl -y
 
-RUN apk update
-RUN apk add --no-cache \
-#    build-base \
-    libffi-dev \
-    openssl-dev \
-    cargo
+# Get Rust
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 
-RUN pip install -U pip
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN rustup target install ${ARCH}-unknown-linux-musl
+
+#RUN apk update
+#RUN apk add --no-cache \
+##    build-base \
+#    libffi-dev \
+#    openssl-dev \
+#    cargo
 
 RUN pip install cryptography
 
