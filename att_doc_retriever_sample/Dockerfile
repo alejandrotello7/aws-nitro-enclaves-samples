@@ -42,7 +42,7 @@ RUN apk add --no-cache \
 #    build-base \
     libffi-dev \
     openssl-dev \
-#    cargo
+    cargo
 
 RUN pip install -U pip
 
