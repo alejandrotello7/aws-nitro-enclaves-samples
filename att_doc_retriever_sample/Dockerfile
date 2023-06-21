@@ -38,9 +38,9 @@ WORKDIR /root/att_doc_retriever_sample/py/
 ARG ARCH
 
 RUN apk update
-RUN apk add \
+RUN apk add libffi-dev  \
 #    build-base \
-    libffi-dev \
+#    libffi-dev \
     openssl-dev \
 
 RUN pip install -U pip
