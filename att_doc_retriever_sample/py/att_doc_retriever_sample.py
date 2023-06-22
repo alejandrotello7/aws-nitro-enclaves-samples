@@ -42,7 +42,6 @@ def encode_message(message, public_key_path):
 
     return encoded_message
 
-
 def decode_message(encoded_message, private_key_path):
     # Load the private key from file
     with open(private_key_path, "rb") as key_file:
@@ -52,13 +51,14 @@ def decode_message(encoded_message, private_key_path):
     decoded_message = private_key.decrypt(
         encoded_message,
         padding.OAEP(
-            mgf=padding.MGF1(algorithm=padding._MGF1_SUPPORTED_DIGESTS[0]),
-            algorithm=padding._OAEP_SUPPORTED_HASHES[0],
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
             label=None
         )
     )
 
     return decoded_message.decode("utf-8")
+
 
 
 def client_handler(args):
@@ -90,20 +90,12 @@ def server_handler(args):
     public_key_path = "public_key.pem"
     message = "Hello, world!"
     encoded_message = encode_message(message, public_key_path)
-
-    file_path = "private_key.pem"
-
-    with open(file_path, "r") as file:
-        pem_content = file.read()
-
-    print(pem_content)
-
-    # private_key_path = "private_key.pem"
-    # decoded_message = decode_message(encoded_message, private_key_path)
+    private_key_path = "private_key.pem"
+    decoded_message = decode_message(encoded_message, private_key_path)
 
     print(f"Normal Message: {message}\n")
     print(f"Encoded Message: {encoded_message}\n")
-    # print(f"Decoded Message: {decoded_message}\n")
+    print(f"Decoded Message: {decoded_message}\n")
 
     server.send_data(out)
 

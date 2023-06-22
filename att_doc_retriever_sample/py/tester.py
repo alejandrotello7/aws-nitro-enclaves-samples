@@ -19,10 +19,31 @@ def encode_message(message, public_key_path):
 
     return encoded_message
 
+def decode_message(encoded_message, private_key_path):
+    # Load the private key from file
+    with open(private_key_path, "rb") as key_file:
+        private_key = serialization.load_pem_private_key(key_file.read(), password=None)
+
+    # Decode the message
+    decoded_message = private_key.decrypt(
+        encoded_message,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+
+    return decoded_message.decode("utf-8")
+
 # Usage
-public_key_path = "public_key.pem"
+public_key_path = "tester_public.pem"
+private_key_path = "tester_private.pem"
 message = "Hello, world!"
 
 encoded_message = encode_message(message, public_key_path)
 print(message)
 print(encoded_message)
+
+decode_messages = decode_message(encoded_message, private_key_path)
+print(decode_messages)
