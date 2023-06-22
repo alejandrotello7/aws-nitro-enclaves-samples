@@ -91,12 +91,19 @@ def server_handler(args):
     message = "Hello, world!"
     encoded_message = encode_message(message, public_key_path)
 
-    private_key_path = "private_key.pem"
-    decoded_message = decode_message(encoded_message, private_key_path)
+    file_path = "private_key.pem"
+
+    with open(file_path, "r") as file:
+        pem_content = file.read()
+
+    print(pem_content)
+
+    # private_key_path = "private_key.pem"
+    # decoded_message = decode_message(encoded_message, private_key_path)
 
     print(f"Normal Message: {message}\n")
     print(f"Encoded Message: {encoded_message}\n")
-    print(f"Decoded Message: {decoded_message}\n")
+    # print(f"Decoded Message: {decoded_message}\n")
 
     server.send_data(out)
 
