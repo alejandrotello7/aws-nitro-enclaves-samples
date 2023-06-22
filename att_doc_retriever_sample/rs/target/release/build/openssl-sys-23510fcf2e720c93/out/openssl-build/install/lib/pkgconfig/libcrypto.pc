@@ -1,0 +1,12 @@
+prefix=/home/atello/Downloads/aws-nitro-enclaves-samples/att_doc_retriever_sample/rs/target/release/build/openssl-sys-23510fcf2e720c93/out/openssl-build/install
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+enginesdir=${libdir}/engines-1.1
+
+Name: OpenSSL-libcrypto
+Description: OpenSSL cryptography library
+Version: 1.1.1u
+Libs: -L${libdir} -lcrypto
+Libs.private: -ldl -pthread 
+Cflags: -I${includedir}

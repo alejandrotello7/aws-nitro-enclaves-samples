@@ -1,0 +1,11 @@
+/home/atello/Downloads/aws-nitro-enclaves-samples/att_doc_retriever_sample/rs/target/release/deps/serde_bytes-c80543db3dcf2b10.rmeta: /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/lib.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/bytes.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/de.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/ser.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/bytebuf.rs
+
+/home/atello/Downloads/aws-nitro-enclaves-samples/att_doc_retriever_sample/rs/target/release/deps/libserde_bytes-c80543db3dcf2b10.rlib: /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/lib.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/bytes.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/de.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/ser.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/bytebuf.rs
+
+/home/atello/Downloads/aws-nitro-enclaves-samples/att_doc_retriever_sample/rs/target/release/deps/serde_bytes-c80543db3dcf2b10.d: /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/lib.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/bytes.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/de.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/ser.rs /home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/bytebuf.rs
+
+/home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/lib.rs:
+/home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/bytes.rs:
+/home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/de.rs:
+/home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/ser.rs:
+/home/atello/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_bytes-0.11.9/src/bytebuf.rs:
