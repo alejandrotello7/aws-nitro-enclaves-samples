@@ -7,14 +7,9 @@
 import argparse
 import inspect
 import json
-import os
 import subprocess as sp
 import sys
 from os import path
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization, hashes
-from cryptography.hazmat.primitives.asymmetric import padding
-
 
 # import file from different location
 current_dir = path.dirname(path.abspath(inspect.getfile(inspect.currentframe())))
