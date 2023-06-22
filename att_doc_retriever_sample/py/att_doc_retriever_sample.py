@@ -26,22 +26,22 @@ vs = __import__('vsock-sample')
 # RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
 RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
 
-def encode_message(message, public_key_path):
-    # Load the public key from file
-    with open(public_key_path, "rb") as key_file:
-        public_key = serialization.load_pem_public_key(key_file.read(), backend=default_backend())
-
-    # Encode the message
-    encoded_message = public_key.encrypt(
-        message.encode("utf-8"),
-        padding.OAEP(
-            mgf=padding.MGF1(algorithm=hashes.SHA256()),
-            algorithm=hashes.SHA256(),
-            label=None
-        )
-    )
-
-    return encoded_message
+# def encode_message(message, public_key_path):
+#     # Load the public key from file
+#     with open(public_key_path, "rb") as key_file:
+#         public_key = serialization.load_pem_public_key(key_file.read(), backend=default_backend())
+#
+#     # Encode the message
+#     encoded_message = public_key.encrypt(
+#         message.encode("utf-8"),
+#         padding.OAEP(
+#             mgf=padding.MGF1(algorithm=hashes.SHA256()),
+#             algorithm=hashes.SHA256(),
+#             label=None
+#         )
+#     )
+#
+#     return encoded_message
 def client_handler(args):
     client = vs.VsockStream()
     endpoint = (args.cid, args.port)
@@ -68,11 +68,11 @@ def server_handler(args):
     print(f"Private Key Path: {attested_document_server['private_key_path']}\n")
     print(f"Public Key Path: {attested_document_server['public_key_path']}\n")
 
-    public_key_path = "public_key.pem"
-    message = "Hello, world!"
-    encoded_message = encode_message(message, public_key_path)
-    print(message)
-    print(encoded_message)
+    # public_key_path = "public_key.pem"
+    # message = "Hello, world!"
+    # encoded_message = encode_message(message, public_key_path)
+    # print(message)
+    # print(encoded_message)
 
     server.send_data(out)
 
