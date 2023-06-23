@@ -111,6 +111,8 @@ def server_handler(args):
 
     server.send_data(out)
 
+    print("Server Connection Closed")
+
 
 def main():
     parser = argparse.ArgumentParser(prog='vsock-sample')
