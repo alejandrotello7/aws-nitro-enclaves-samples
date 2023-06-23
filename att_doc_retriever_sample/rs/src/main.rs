@@ -128,19 +128,16 @@ fn main() {
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
 
     if let Response::Attestation{ref document} = response {
-        let x = true;
         let document_attested = match AttestationDocument::authenticate(document.as_slice(),cert) {
             Ok(doc) => {
                 doc
             },
             Err(err) => {
-                let _ = !x;
                 println!("{:?}", err);
                 panic!("error unvalid atte doc");
             }
         };
-        if x{
-            let mut document_attested_decoded = AttestationDocumentDecoded {
+        let mut document_attested_decoded = AttestationDocumentDecoded {
             pcrs: HashMap::new(),
             nonce: String::new(),
             module_id: String::new(),
@@ -171,8 +168,6 @@ fn main() {
 
         let json = serde_json::to_string(&document_attested_decoded).unwrap();
         println!("{}",json);
-
-        }
 
 
     }
