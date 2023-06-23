@@ -115,7 +115,7 @@ fn main() {
     // file.read_to_end(&mut content).unwrap();
 
 
-    let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
+    let binding = read("/root/att_doc_retriever_sample/py/fake_cert.der").unwrap();
     let cert = binding.as_slice();
 
     let request = Request::Attestation {
@@ -126,27 +126,17 @@ fn main() {
 
 
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
-    // println!("After request");
 
     if let Response::Attestation{ref document} = response {
-        // println!("Test");
-        // println!("{:?}", document);
-        //let tester = AttestationDoc::from_binary(document.as_slice());
         let document_attested = match AttestationDocument::authenticate(document.as_slice(),cert) {
             Ok(doc) => {
-                // signature of document authenticated and the data parsed correctly
-                // println!("Success");
                 doc
             },
             Err(err) => {
-                // signature of document did not authenticate, or the data was poorly formed
-                // Do something with the error here
                 println!("{:?}", err);
                 panic!("error unvalid atte doc");
             }
         };
-        // println!("PCRS:");
-        // println!("{:?}",document_attested.pcrs);
         let mut document_attested_decoded = AttestationDocumentDecoded {
             pcrs: HashMap::new(),
             nonce: String::new(),
