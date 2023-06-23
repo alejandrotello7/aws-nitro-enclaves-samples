@@ -81,10 +81,11 @@ class VsockListener:
 
     def send_data(self, data):
         """Send data to a renote endpoint"""
-        while True:
-            (to_client, (remote_cid, remote_port)) = self.sock.accept()
-            to_client.sendall(data)
-            to_client.close()
+        # while True:
+        (to_client, (remote_cid, remote_port)) = self.sock.accept()
+        to_client.sendall(data)
+        to_client.close()
+        return
 
 def server_handler(args):
     server = VsockListener()
