@@ -115,7 +115,7 @@ fn main() {
     // file.read_to_end(&mut content).unwrap();
 
 
-    let binding = read("/root/att_doc_retriever_sample/py/fake_cert.der").unwrap();
+    let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
     let cert = binding.as_slice();
 
     let request = Request::Attestation {
