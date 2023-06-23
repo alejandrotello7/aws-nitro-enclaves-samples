@@ -61,6 +61,7 @@ def decode_message(encoded_message, private_key_path):
 
     return decoded_message.decode("utf-8")
 
+
 def write_string_to_file(string, file_path):
     try:
         with open(file_path, "w") as file:
@@ -68,6 +69,7 @@ def write_string_to_file(string, file_path):
         print("String successfully written to file.")
     except IOError:
         print("An error occurred while writing to the file.")
+
 
 def client_handler(args):
     client = vs.VsockStream()
@@ -115,6 +117,14 @@ def server_handler(args):
     server.recv_data()
 
 
+def decoder_handler(args):
+    client = vs.VsockStream()
+    endpoint = (args.cid, args.port)
+    client.connect(endpoint)
+    msg = args.message
+    client.send_data(msg.encode())
+    client.disconnect()
+
 
 def main():
     parser = argparse.ArgumentParser(prog='vsock-sample')
@@ -135,6 +145,12 @@ def main():
     server_parser.add_argument("port", type=int, help="The local port to listen on.")
     server_parser.set_defaults(func=server_handler)
 
+    decoder_parser = subparsers.add_parser("encoder", description="Client",
+                                           help="Decode a given message, given a cid and port.")
+    decoder_parser.add_argument("cid", type=int, help="The remote endpoint CID.")
+    decoder_parser.add_argument("port", type=int, help="The remote endpoint port.")
+    decoder_parser.add_argument("message", help="The message encoded.")
+    decoder_parser.set_defaults(func=decoder_handler)
 
     if len(sys.argv) < 2:
         parser.print_usage()
