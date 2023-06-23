@@ -84,7 +84,8 @@ class VsockListener:
         while True:
             (to_client, (remote_cid, remote_port)) = self.sock.accept()
             to_client.sendall(data)
-            to_client.close()
+            break
+        return
 
 
 def server_handler(args):
