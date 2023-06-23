@@ -112,6 +112,7 @@ def server_handler(args):
     server.send_data(out)
 
     print("Server Connection Closed")
+    server.disconnect()
 
 
 def main():
