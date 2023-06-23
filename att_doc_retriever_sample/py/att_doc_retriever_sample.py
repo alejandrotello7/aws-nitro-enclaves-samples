@@ -110,8 +110,6 @@ def server_handler(args):
     print(f"Decoded Message: {decoded_message}\n")
 
     server.send_data(out)
-    server.bind(args.port)
-
     print("Server Connection Closed")
 
 
