@@ -85,7 +85,6 @@ class VsockListener:
             (to_client, (remote_cid, remote_port)) = self.sock.accept()
             to_client.sendall(data)
             to_client.close()
-            print("close")
 
 def server_handler(args):
     server = VsockListener()

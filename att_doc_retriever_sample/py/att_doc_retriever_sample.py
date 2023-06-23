@@ -112,6 +112,12 @@ def server_handler(args):
     server.send_data(out)
     print("Server Connection Closed")
 
+def decoder_handler(args):
+    server = vs.VsockListener()
+    server.bind(args.port)
+    server.recv_data()
+
+
 
 
 def main():
@@ -132,6 +138,11 @@ def main():
                                           help="Listen on a given port.")
     server_parser.add_argument("port", type=int, help="The local port to listen on.")
     server_parser.set_defaults(func=server_handler)
+
+    decoder_parser = subparsers.add_parser("decoder", description="Decoder Process", help="Test process")
+    decoder_parser.add_argument("port", type=int, help="The local port to listen on.")
+    server_parser.set_defaults(func=decoder_handler)
+
 
     if len(sys.argv) < 2:
         parser.print_usage()
