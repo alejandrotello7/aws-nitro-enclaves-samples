@@ -112,7 +112,7 @@ def server_handler(args):
     server.send_data(out)
 
     print("Server Connection Closed")
-    server.disconnect()
+    # server.disconnect()
 
 def main():
     parser = argparse.ArgumentParser(prog='vsock-sample')
