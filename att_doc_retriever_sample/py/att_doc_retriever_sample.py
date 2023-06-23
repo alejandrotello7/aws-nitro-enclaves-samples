@@ -114,7 +114,6 @@ def server_handler(args):
     print("Server Connection Closed")
     server.disconnect()
 
-
 def main():
     parser = argparse.ArgumentParser(prog='vsock-sample')
     parser.add_argument("--version", action="version",
