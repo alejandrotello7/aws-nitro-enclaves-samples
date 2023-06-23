@@ -9,6 +9,7 @@ import inspect
 import json
 import subprocess as sp
 import sys
+import time
 from os import path
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization, hashes
@@ -110,6 +111,7 @@ def server_handler(args):
     print(f"Decoded Message: {decoded_message}\n")
 
     server.send_data(out)
+    time.sleep(180)
     print("Server Connection Closed")
 
 
