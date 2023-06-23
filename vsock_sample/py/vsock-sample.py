@@ -110,6 +110,7 @@ class VsockListener:
                     break
 
                 # Decode the received data
+                print(f"Encryped message inside enclave: {encoded_data}\n")
                 decoded_data = private_key.decrypt(
                     encoded_data,
                     padding.OAEP(
@@ -119,7 +120,7 @@ class VsockListener:
                     )
                 )
 
-                print(decoded_data.decode(), end='', flush=True)
+                print(f"Decrypted message inside enclave: {decoded_data.decode()}", end='', flush=True)
 
             print()
             from_client.close()
