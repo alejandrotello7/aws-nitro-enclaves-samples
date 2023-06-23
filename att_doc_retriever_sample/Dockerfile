@@ -69,10 +69,3 @@ COPY vsock_sample/py/vsock-sample.py /root/vsock_sample/py/
 
 # 5010 is the socket port
 CMD ["python3", "/root/att_doc_retriever_sample/py/att_doc_retriever_sample.py", "server", "5010"]
-
-FROM python:3.7.9-alpine3.12
-WORKDIR /root/att_doc_retriever_sample/py/
-ARG ARCH
-
-# 5010 is the socket port
-CMD ["/bin/bash"]
