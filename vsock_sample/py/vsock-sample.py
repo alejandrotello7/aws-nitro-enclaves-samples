@@ -88,6 +88,22 @@ class VsockListener:
         to_client.close()
         return
 
+    def decode_data(self):
+        while True:
+            print("Waiting for data....")
+            (from_client, (remote_cid, remote_port)) = self.sock.accept()
+            # Read 1024 bytes at a time
+            while True:
+                try:
+                    data = from_client.recv(1024).decode()
+                except socket.error:
+                    break
+                if not data:
+                    break
+                print(data, end='', flush=True)
+            print()
+            from_client.close()
+
 def server_handler(args):
     server = VsockListener()
     server.bind(args.port)

@@ -121,8 +121,10 @@ def decoder_handler(args):
     client = vs.VsockStream()
     endpoint = (args.cid, args.port)
     client.connect(endpoint)
-    msg = args.message
-    client.send_data(msg.encode())
+    message = args.message
+    public_key_path = "public_key.pem"
+    encoded_message = encode_message(message, public_key_path)
+    client.send_data(encoded_message)
     client.disconnect()
 
 
