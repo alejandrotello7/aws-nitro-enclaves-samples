@@ -66,6 +66,7 @@ class VsockListener:
     def recv_data(self):
         """Receive data from a remote endpoint"""
         while True:
+            print("Waiting for data....")
             (from_client, (remote_cid, remote_port)) = self.sock.accept()
             # Read 1024 bytes at a time
             while True:

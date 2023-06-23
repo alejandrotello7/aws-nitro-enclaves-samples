@@ -111,8 +111,8 @@ def server_handler(args):
     print(f"Decoded Message: {decoded_message}\n")
 
     server.send_data(out)
-    time.sleep(180)
     print("Server Connection Closed")
+    server.recv_data()
 
 
 
