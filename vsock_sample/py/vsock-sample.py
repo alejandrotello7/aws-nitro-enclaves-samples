@@ -7,7 +7,9 @@ import argparse
 import json
 import socket
 import sys
-
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives.asymmetric import padding
 
 class VsockStream:
     """Client"""
@@ -89,18 +91,36 @@ class VsockListener:
         return
 
     def decode_data(self):
+        """Receive and decode data from a remote endpoint"""
+        # Load the private key from file
+        private_key_path = "private_key.pem"
+        with open(private_key_path, "rb") as key_file:
+            private_key = serialization.load_pem_private_key(key_file.read(), password=None)
+
         while True:
             print("Waiting for data....")
             (from_client, (remote_cid, remote_port)) = self.sock.accept()
             # Read 1024 bytes at a time
             while True:
                 try:
-                    data = from_client.recv(1024).decode()
+                    encoded_data = from_client.recv(1024)
                 except socket.error:
                     break
-                if not data:
+                if not encoded_data:
                     break
-                print(data, end='', flush=True)
+
+                # Decode the received data
+                decoded_data = private_key.decrypt(
+                    encoded_data,
+                    padding.OAEP(
+                        mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                        algorithm=hashes.SHA256(),
+                        label=None
+                    )
+                )
+
+                print(decoded_data.decode(), end='', flush=True)
+
             print()
             from_client.close()
 

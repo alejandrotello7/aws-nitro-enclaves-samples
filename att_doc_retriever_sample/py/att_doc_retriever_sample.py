@@ -114,7 +114,7 @@ def server_handler(args):
 
     server.send_data(out)
     print("Server Connection Closed")
-    server.recv_data()
+    server.decode_data()
 
 
 def decoder_handler(args):
