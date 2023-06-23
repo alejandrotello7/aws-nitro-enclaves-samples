@@ -42,6 +42,7 @@ def encode_message(message, public_key_path):
 
     return encoded_message
 
+
 def decode_message(encoded_message, private_key_path):
     # Load the private key from file
     with open(private_key_path, "rb") as key_file:
@@ -59,7 +60,13 @@ def decode_message(encoded_message, private_key_path):
 
     return decoded_message.decode("utf-8")
 
-
+def write_string_to_file(string, file_path):
+    try:
+        with open(file_path, "w") as file:
+            file.write(string)
+        print("String successfully written to file.")
+    except IOError:
+        print("An error occurred while writing to the file.")
 
 def client_handler(args):
     client = vs.VsockStream()
@@ -71,6 +78,11 @@ def client_handler(args):
     print(f"Module Id: {attested_document['module_id']}\n")
     print(f"Nonce: {attested_document['nonce']}\n")
     print(f"Public Key: {attested_document['public_key']}\n")
+
+    public_key = attested_document['public_key']
+    file_path = "public_key.pem"
+    write_string_to_file(public_key, file_path)
+
     client.disconnect()
 
 
