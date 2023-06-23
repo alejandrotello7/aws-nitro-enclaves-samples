@@ -110,9 +110,9 @@ def server_handler(args):
     print(f"Decoded Message: {decoded_message}\n")
 
     server.send_data(out)
-
     print("Server Connection Closed")
-    # server.disconnect()
+
+
 
 def main():
     parser = argparse.ArgumentParser(prog='vsock-sample')
