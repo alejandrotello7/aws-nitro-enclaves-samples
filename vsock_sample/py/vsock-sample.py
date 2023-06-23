@@ -86,7 +86,6 @@ class VsockListener:
             to_client.sendall(data)
             to_client.close()
             break
-        return
 
 
 def server_handler(args):
