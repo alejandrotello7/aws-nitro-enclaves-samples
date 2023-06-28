@@ -98,6 +98,7 @@ class TLSClient:
         self.client_sock = None
 
     def connect(self):
+        print("Connect func started...")
         self.client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
