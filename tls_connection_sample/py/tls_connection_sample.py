@@ -84,7 +84,7 @@ class TLSServer:
 
 class TLSClient:
     def __init__(self, cid, port):
-        self.cid = cid
+        self.cid = str(cid)
         self.port = port
         self.client_sock = None
 

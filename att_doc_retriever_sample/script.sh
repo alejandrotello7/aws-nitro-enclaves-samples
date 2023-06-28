@@ -11,3 +11,4 @@ sudo nitro-cli run-enclave --cpu-count 2 --memory 1936 --enclave-cid 16 --eif-pa
 
 # Run Python script
 python3 py/att_doc_retriever_sample.py client 16 5010
+
