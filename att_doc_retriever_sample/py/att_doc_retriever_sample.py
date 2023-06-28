@@ -183,7 +183,6 @@ def main():
                                           help="Connect to a given cid and port.")
     tls_client.add_argument("cid", type=int, help="The remote endpoint CID.")
     tls_client.add_argument("port", type=int, help="The remote endpoint port.")
-    # client_parser.add_argument("pcr0", help="PCR0 value of the enclave image. ")
     tls_client.set_defaults(func=client_handler_tls)
 
     if len(sys.argv) < 2:

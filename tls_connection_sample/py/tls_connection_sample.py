@@ -15,7 +15,7 @@ class TLSServer:
         self.port = port
         self.server_sock = None
 
-    def generate_certificate(self):
+    def generate_certificate(self, common_name):
         private_key = rsa.generate_private_key(
             public_exponent=65537,
             key_size=2048,
@@ -24,7 +24,7 @@ class TLSServer:
         public_key = private_key.public_key()
         builder = x509.CertificateBuilder()
         builder = builder.subject_name(x509.Name([
-            x509.NameAttribute(x509.NameOID.COMMON_NAME, 'localhost')
+            x509.NameAttribute(x509.NameOID.COMMON_NAME, common_name)
         ]))
         builder = builder.issuer_name(x509.Name([
             x509.NameAttribute(x509.NameOID.COMMON_NAME, 'localhost')
@@ -37,7 +37,7 @@ class TLSServer:
         builder = builder.public_key(public_key)
         builder = builder.add_extension(
             x509.SubjectAlternativeName([
-                x509.DNSName('localhost')
+                x509.DNSName(common_name)
             ]),
             critical=False
         )
@@ -57,7 +57,16 @@ class TLSServer:
             ))
 
     def start(self):
-        self.generate_certificate()
+        common_name = '16'  # Default common name if not specified
+        if self.port == 5010:
+            common_name = '16'
+        elif self.port == 5011:
+            common_name = 'client1'
+        elif self.port == 5012:
+            common_name = 'client2'
+        # Add more conditions for different clients as needed
+
+        self.generate_certificate(common_name)
 
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_address = ('', self.port)
