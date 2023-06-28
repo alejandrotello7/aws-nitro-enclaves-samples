@@ -102,10 +102,14 @@ class TLSClient:
         self.client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        print("Context created")
+
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=self.cid)
 
         server_address = (self.cid, self.port)
         ssl_client_sock.connect(server_address)
+
+        print("Client connected")
 
         data = ssl_client_sock.recv(1024)
         print('Received from server:', data.decode())
