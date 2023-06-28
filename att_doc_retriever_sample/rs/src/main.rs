@@ -82,8 +82,6 @@ fn generate_rsa_key() -> (ByteBuf, Vec<u8>) {
     let pkey = PKey::from_rsa(rsa).unwrap();
 
     let pub_key: Vec<u8> = pkey.public_key_to_pem().unwrap();
-    // let pub_key: Vec<u8> = pkey.public_key_to_der().unwrap();
-
     let private_key: Vec<u8> = pkey.private_key_to_pem_pkcs8().unwrap();
     let public_key = ByteBuf::from(pub_key);
 

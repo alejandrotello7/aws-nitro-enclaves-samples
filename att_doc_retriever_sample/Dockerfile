@@ -68,4 +68,5 @@ COPY att_doc_retriever_sample/py/fake_cert.der .
 COPY vsock_sample/py/vsock-sample.py /root/vsock_sample/py/
 
 # 5010 is the socket port
-CMD ["python3", "/root/att_doc_retriever_sample/py/att_doc_retriever_sample.py", "server", "5010"]
+#CMD ["python3", "/root/att_doc_retriever_sample/py/att_doc_retriever_sample.py", "server", "5010"]
+CMD ["python3", "/root/att_doc_retriever_sample/py/att_doc_retriever_sample.py", "tls_server", "5010"]

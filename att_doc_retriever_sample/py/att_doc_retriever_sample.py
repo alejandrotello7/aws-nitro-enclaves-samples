@@ -16,10 +16,18 @@ from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
 # import file from different location
+
 current_dir = path.dirname(path.abspath(inspect.getfile(inspect.currentframe())))
 vsock_dir = path.join(path.dirname(path.dirname(current_dir)), 'vsock_sample/py')
 sys.path.insert(0, vsock_dir)
 vs = __import__('vsock-sample')
+
+# import tls modules
+tls_dir = path.join(path.dirname(path.dirname(current_dir)), 'tls_connection_sample/py')
+sys.path.insert(0, tls_dir)
+tls = __import__('tls_connection_sample')
+
+
 
 # Binary executed
 # RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
@@ -128,6 +136,18 @@ def decoder_handler(args):
     client.disconnect()
 
 
+def server_handler_tls(args):
+    port = args.port
+    server = tls.TLSServer('server.crt', 'server.key', port)
+    server.start()
+
+
+def client_handler_tls(args):
+    port = args.port
+    cid = args.cid
+    client = tls.TLSClient(cid, port)
+    client.connect()
+
 def main():
     parser = argparse.ArgumentParser(prog='vsock-sample')
     parser.add_argument("--version", action="version",
@@ -153,6 +173,18 @@ def main():
     decoder_parser.add_argument("port", type=int, help="The remote endpoint port.")
     decoder_parser.add_argument("message", help="The message encoded.")
     decoder_parser.set_defaults(func=decoder_handler)
+
+    tls_server = subparsers.add_parser("tls_server", description="TLS Server Handler",
+                                        help="Listen on a given port.")
+    tls_server.add_argument("port", type=int, help="The local port to listen on.")
+    tls_server.set_defaults(func=server_handler_tls)
+
+    tls_client = subparsers.add_parser("tls_client", description="TLS Client",
+                                          help="Connect to a given cid and port.")
+    tls_client.add_argument("cid", type=int, help="The remote endpoint CID.")
+    tls_client.add_argument("port", type=int, help="The remote endpoint port.")
+    # client_parser.add_argument("pcr0", help="PCR0 value of the enclave image. ")
+    tls_client.set_defaults(func=client_handler_tls)
 
     if len(sys.argv) < 2:
         parser.print_usage()

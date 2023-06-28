@@ -68,7 +68,6 @@ class VsockListener:
     def recv_data(self):
         """Receive data from a remote endpoint"""
         while True:
-            print("Waiting for data....")
             (from_client, (remote_cid, remote_port)) = self.sock.accept()
             # Read 1024 bytes at a time
             while True:
@@ -82,13 +81,15 @@ class VsockListener:
             print()
             from_client.close()
 
-    def send_data(self, data):
-        """Send data to a renote endpoint"""
-        # while True:
-        (to_client, (remote_cid, remote_port)) = self.sock.accept()
-        to_client.sendall(data)
-        to_client.close()
-        return
+        def send_data(self, data):
+            """Send data to a renote endpoint"""
+            # while True:
+            (to_client, (remote_cid, remote_port)) = self.sock.accept()
+            to_client.sendall(data)
+            to_client.close()
+            return
+            print("Waiting for data....")
+
 
     def decode_data(self):
         """Receive and decode data from a remote endpoint"""
