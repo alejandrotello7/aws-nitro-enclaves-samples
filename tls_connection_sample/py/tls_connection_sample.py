@@ -8,6 +8,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import hashes
 
+
 class TLSServer:
     def __init__(self, certfile, keyfile, cid, port):
         self.certfile = certfile
@@ -15,6 +16,7 @@ class TLSServer:
         self.cid = cid
         self.port = port
         self.server_sock = None
+        self.ca_cert_data = None
 
     def generate_certificate(self, common_name):
         private_key = rsa.generate_private_key(
@@ -71,12 +73,15 @@ class TLSServer:
 
         with open(self.certfile, 'r') as ca_cert_file:
             print('Contents of ca.crt:')
-            print(ca_cert_file.read())
-
+            self.ca_cert_data = ca_cert_file.read()
+            print(self.ca_cert_data)
 
         while True:
             client_sock, client_address = self.server_sock.accept()
             print('Client connected:', client_address)
+            client_sock.sendall(self.ca_cert_data)
+            client_sock.close()
+            return
 
             context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
             context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
@@ -96,10 +101,27 @@ class TLSClient:
         self.port = port
         self.ca_certfile = ca_certfile
         self.client_sock = None
+        self.ca_cert_data = None
+
+    def write_string_to_file(self, string, file_path):
+        try:
+            with open(file_path, "w") as file:
+                file.write(string)
+            print("String successfully written to file.")
+        except IOError:
+            print("An error occurred while writing to the file.")
 
     def retrieve_ca_certificate(self):
         self.sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         self.sock.connect((self.cid, self.port))
+        while True:
+            data = self.sock.recv(1024).decode()
+            self.ca_cert_data += data
+            if not data:
+                break
+            print(data, end='', flush=True)
+        self.ca_cert_data += ''
+        print()
 
         # try:
         #     with open(self.ca_certfile, 'wb') as ca_cert_file:
@@ -111,6 +133,8 @@ class TLSClient:
 
     def connect(self):
         self.retrieve_ca_certificate()
+        file_path = 'ca_test.crt'
+        self.write_string_to_file(self.ca_cert_data, file_path)
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         server_address = (self.cid, self.port)
