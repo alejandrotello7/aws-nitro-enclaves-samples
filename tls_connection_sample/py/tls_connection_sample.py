@@ -141,16 +141,13 @@ class TLSClient:
         self.retrieve_ca_certificate()
         file_path = 'ca.crt'
         self.write_string_to_file(self.ca_cert_data, file_path)
-        destination_folder = 'py/'
-        shutil.move(file_path, destination_folder)
-
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         server_address = (self.cid, self.port)
         self.client_sock.connect(server_address)
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
         context.load_verify_locations(cafile=self.ca_certfile)
-        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
+        ssl_client_sock = context.wrap_socket(self.client_sock)
 
         print("Client connected")
 
