@@ -62,12 +62,11 @@ class TLSServer:
         self.generate_certificate(common_name)
 
         self.server_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
-        server_address = (socket.AF_VSOCK, self.cid, self.port)
-        self.server_sock.bind(server_address)
+        self.server_sock.bind((self.cid, self.port))
         self.server_sock.listen(1)
 
         print('Server started on CID:', self.cid, 'Port:', self.port)
-        print('Address:', server_address)
+        print('Address:', self.cid, self.port)
 
         while True:
             client_sock, client_address = self.server_sock.accept()
