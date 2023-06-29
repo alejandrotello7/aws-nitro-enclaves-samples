@@ -69,11 +69,13 @@ class TLSServer:
         self.generate_certificate(common_name)
 
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_address = ('', self.port)
+        server_address = ('16', self.port)
         self.server_sock.bind(server_address)
         self.server_sock.listen(1)
 
         print('Server started on port', self.port)
+        print(f"Address: {server_address}")
+
 
         while True:
             client_sock, client_address = self.server_sock.accept()
@@ -105,8 +107,8 @@ class TLSClient:
         print("Context created")
 
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=self.cid)
-
         server_address = (self.cid, self.port)
+        print(f"Address: {server_address}")
         ssl_client_sock.connect(server_address)
 
         print("Client connected")
