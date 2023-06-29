@@ -61,7 +61,7 @@ class TLSServer:
         self.generate_certificate(common_name)
 
         self.server_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
-        server_address = (self.cid, self.port)
+        server_address = (socket.VMADDR_CID_ANY, self.port)
         self.server_sock.bind(server_address)
         self.server_sock.listen(1)
 
