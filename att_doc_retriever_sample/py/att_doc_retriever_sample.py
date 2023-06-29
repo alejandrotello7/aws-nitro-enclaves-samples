@@ -145,7 +145,8 @@ def server_handler_tls(args):
 def client_handler_tls(args):
     port = args.port
     cid = args.cid
-    client = tls.TLSClient(cid, port)
+    ca_certfile = 'ca.crt'
+    client = tls.TLSClient(cid, port, ca_certfile)
     client.connect()
 
 def main():

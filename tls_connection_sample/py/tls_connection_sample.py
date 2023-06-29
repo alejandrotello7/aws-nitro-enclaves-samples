@@ -7,7 +7,6 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import hashes
 
-
 class TLSServer:
     def __init__(self, certfile, keyfile, cid, port):
         self.certfile = certfile
@@ -62,11 +61,12 @@ class TLSServer:
         self.generate_certificate(common_name)
 
         self.server_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
-        self.server_sock.bind((self.cid, self.port))
+        server_address = (socket.AF_VSOCK, self.cid, self.port)
+        self.server_sock.bind(server_address)
         self.server_sock.listen(1)
 
         print('Server started on CID:', self.cid, 'Port:', self.port)
-        print('Address:', self.cid, self.port)
+        print('Address:', server_address)
 
         while True:
             client_sock, client_address = self.server_sock.accept()
@@ -84,21 +84,27 @@ class TLSServer:
             client_sock.close()
 
 
-
 class TLSClient:
-    def __init__(self, cid, port):
+    def __init__(self, cid, port, ca_certfile):
         self.cid = cid
         self.port = port
+        self.ca_certfile = ca_certfile
         self.client_sock = None
 
+    def retrieve_ca_certificate(self):
+        with open(self.ca_certfile, 'wb') as ca_cert_file:
+            ca_cert_file.write(ssl.get_server_certificate((self.cid, self.port)).encode())
+
     def connect(self):
+        self.retrieve_ca_certificate()
+
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
+        server_address = (socket.AF_VSOCK, self.cid, self.port)
+        self.client_sock.connect(server_address)
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        context.load_verify_locations(cafile=self.ca_certfile)
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
-        server_address = (self.cid, self.port)
-
-        ssl_client_sock.connect(server_address)
 
         print("Client connected")
 
