@@ -86,6 +86,8 @@ def start(self):
         client_sock.close()
 
 
+
+
 class TLSClient:
     def __init__(self, cid, port, ca_certfile):
         self.cid = cid
@@ -94,8 +96,10 @@ class TLSClient:
         self.client_sock = None
 
     def retrieve_ca_certificate(self):
-        with open('ca.crt', 'w') as ca_cert_file:
-            ca_cert_file.write(ssl.get_server_certificate((str(self.cid) + ':' + str(self.port))).encode())
+        ca_cert_file = open('ca.crt', 'wb')
+        server_address = str(self.cid) + ':' + str(self.port)
+        ca_cert_file.write(ssl.get_server_certificate(server_address).encode())
+        ca_cert_file.close()
 
     def connect(self):
         self.retrieve_ca_certificate()
