@@ -93,7 +93,7 @@ class TLSClient:
 
     def retrieve_ca_certificate(self):
         with open(self.ca_certfile, 'wb') as ca_cert_file:
-            ca_cert_file.write(ssl.get_server_certificate((self.cid, self.port)).encode())
+            ca_cert_file.write(ssl.get_server_certificate((str(self.cid), str(self.port))).encode())
 
     def connect(self):
         self.retrieve_ca_certificate()
