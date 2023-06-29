@@ -79,7 +79,7 @@ class TLSServer:
         while True:
             client_sock, client_address = self.server_sock.accept()
             print('Client connected:', client_address)
-            client_sock.sendall(self.ca_cert_data)
+            client_sock.sendall(self.ca_cert_data.encode())
             client_sock.close()
             return
 
