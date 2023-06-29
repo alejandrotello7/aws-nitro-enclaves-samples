@@ -16,7 +16,7 @@ class TLSServer:
         self.cid = cid
         self.port = port
         self.server_sock = None
-        self.ca_cert_data = None
+        self.ca_cert_data = ""
 
     def generate_certificate(self, common_name):
         private_key = rsa.generate_private_key(
@@ -101,7 +101,7 @@ class TLSClient:
         self.port = port
         self.ca_certfile = ca_certfile
         self.client_sock = None
-        self.ca_cert_data = None
+        self.ca_cert_data = ""
 
     def write_string_to_file(self, string, file_path):
         try:
