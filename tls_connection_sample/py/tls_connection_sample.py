@@ -94,17 +94,19 @@ class TLSServer:
         server_address = (socket.VMADDR_CID_ANY, self.port)
         self.server_sock.bind(server_address)
         self.server_sock.listen(1)
-        client_sock, client_address = self.server_sock.accept()
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
         context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
-        ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
+        while True:
+            client_sock, client_address = self.server_sock.accept()
+            print('CLient connected')
+            ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
 
-        data = ssl_client_sock.recv(1024)
-        print('Received from client:', data.decode())
-        ssl_client_sock.send(b'Hello from the server!')
+            data = ssl_client_sock.recv(1024)
+            print('Received from client:', data.decode())
+            ssl_client_sock.send(b'Hello from the server!')
 
-        ssl_client_sock.close()
-        client_sock.close()
+            ssl_client_sock.close()
+            client_sock.close()
 
 class TLSClient:
     def __init__(self, cid, port, ca_certfile):
