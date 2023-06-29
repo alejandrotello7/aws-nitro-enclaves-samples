@@ -133,7 +133,6 @@ class TLSClient:
             if not data:
                 break
             print(data, end='', flush=True)
-        self.ca_cert_data += ''
         print()
         self.sock.close()
 
