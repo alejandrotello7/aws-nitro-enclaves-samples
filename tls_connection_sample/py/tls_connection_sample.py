@@ -7,6 +7,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import hashes
+import shutil
 
 
 class TLSServer:
@@ -140,6 +141,8 @@ class TLSClient:
         self.retrieve_ca_certificate()
         file_path = 'ca.crt'
         self.write_string_to_file(self.ca_cert_data, file_path)
+        destination_folder = 'py/'
+        shutil.move(file_path, destination_folder)
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         server_address = (self.cid, self.port)
