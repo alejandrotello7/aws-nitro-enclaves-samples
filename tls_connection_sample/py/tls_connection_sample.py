@@ -97,6 +97,7 @@ class TLSClient:
         self.ca_certfile = ca_certfile
         self.client_sock = None
 
+    def retrieve_ca_certificate(self):
         self.sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         self.sock.connect((self.cid, self.port))
 
