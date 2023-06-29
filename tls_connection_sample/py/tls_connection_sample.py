@@ -7,6 +7,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import hashes
 
+
 class TLSServer:
     def __init__(self, certfile, keyfile, cid, port):
         self.certfile = certfile
@@ -56,32 +57,33 @@ class TLSServer:
                 encryption_algorithm=serialization.NoEncryption()
             ))
 
-    def start(self):
-        common_name = str(self.cid)  # Use the client ID as the common name
-        self.generate_certificate(common_name)
 
-        self.server_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
-        server_address = (socket.AF_VSOCK, self.cid, self.port)
-        self.server_sock.bind(server_address)
-        self.server_sock.listen(1)
+def start(self):
+    common_name = str(self.cid)  # Use the client ID as the common name
+    self.generate_certificate(common_name)
 
-        print('Server started on CID:', self.cid, 'Port:', self.port)
-        print('Address:', server_address)
+    self.server_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
+    self.server_sock.bind((self.cid, 0))  # Bind to the CID, port 0
+    self.server_sock.listen(1)
 
-        while True:
-            client_sock, client_address = self.server_sock.accept()
-            print('Client connected:', client_address)
+    self.port = self.server_sock.getsockname()[1]  # Update the port to the dynamically assigned port
 
-            context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-            context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
-            ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
+    print('Server started on CID:', self.cid, 'Port:', self.port)
 
-            data = ssl_client_sock.recv(1024)
-            print('Received from client:', data.decode())
-            ssl_client_sock.send(b'Hello from the server!')
+    while True:
+        client_sock, client_address = self.server_sock.accept()
+        print('Client connected:', client_address)
 
-            ssl_client_sock.close()
-            client_sock.close()
+        context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
+        ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
+
+        data = ssl_client_sock.recv(1024)
+        print('Received from client:', data.decode())
+        ssl_client_sock.send(b'Hello from the server!')
+
+        ssl_client_sock.close()
+        client_sock.close()
 
 
 class TLSClient:
