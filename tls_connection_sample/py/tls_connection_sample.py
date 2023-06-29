@@ -6,7 +6,6 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import hashes
-from cryptography.x509.oid import NameOID
 
 class TLSServer:
     def __init__(self, certfile, keyfile, cid, port):
@@ -25,10 +24,10 @@ class TLSServer:
         public_key = private_key.public_key()
         builder = x509.CertificateBuilder()
         builder = builder.subject_name(x509.Name([
-            x509.NameAttribute(NameOID.COMMON_NAME, common_name)
+            x509.NameAttribute(x509.NameOID.COMMON_NAME, common_name)
         ]))
         builder = builder.issuer_name(x509.Name([
-            x509.NameAttribute(NameOID.COMMON_NAME, 'localhost')
+            x509.NameAttribute(x509.NameOID.COMMON_NAME, 'localhost')
         ]))
         builder = builder.serial_number(x509.random_serial_number())
         builder = builder.not_valid_before(datetime.datetime.utcnow())
@@ -57,27 +56,17 @@ class TLSServer:
                 encryption_algorithm=serialization.NoEncryption()
             ))
 
-    def read_ca_certificate(self):
-        with open(self.certfile, 'r') as ca_cert_file:
-            return ca_cert_file.read()
-
-    def handle_request(self, client_sock):
-        request = client_sock.recv(1024).decode().strip()
-        if request == "GET /ca_certificate":
-            ca_cert = self.read_ca_certificate()
-            client_sock.sendall(ca_cert.encode())
-        else:
-            client_sock.sendall(b"Invalid request")
-
     def start(self):
         common_name = str(self.cid)  # Use the client ID as the common name
         self.generate_certificate(common_name)
 
         self.server_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
-        self.server_sock.bind((self.cid, self.port))
+        server_address = (self.cid, self.port)
+        self.server_sock.bind(server_address)
         self.server_sock.listen(1)
 
         print('Server started on CID:', self.cid, 'Port:', self.port)
+        print('Address:', server_address)
 
         while True:
             client_sock, client_address = self.server_sock.accept()
@@ -87,13 +76,12 @@ class TLSServer:
             context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
             ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
 
-            self.handle_request(ssl_client_sock)
+            data = ssl_client_sock.recv(1024)
+            print('Received from client:', data.decode())
+            ssl_client_sock.send(b'Hello from the server!')
 
             ssl_client_sock.close()
             client_sock.close()
-
-
-
 
 
 class TLSClient:
@@ -104,20 +92,14 @@ class TLSClient:
         self.client_sock = None
 
     def retrieve_ca_certificate(self):
-        response = self.send_request("GET /ca_certificate")
-        if response.startswith("BEGIN CERTIFICATE") and response.endswith("END CERTIFICATE"):
-            ca_cert_file = open('ca.crt', 'wb')
-            ca_cert_file.write(response.encode())
-            ca_cert_file.close()
-            print("CA certificate retrieved and saved as ca.crt")
-        else:
-            print("Error retrieving CA certificate from the server")
+        with open(self.ca_certfile, 'wb') as ca_cert_file:
+            ca_cert_file.write(ssl.get_server_certificate((str(self.cid), str(self.port))).encode())
 
     def connect(self):
         self.retrieve_ca_certificate()
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
-        server_address = (socket.AF_VSOCK, self.cid, self.port)
+        server_address = (self.cid, self.port)
         self.client_sock.connect(server_address)
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
