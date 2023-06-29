@@ -68,6 +68,11 @@ class TLSServer:
         print('Server started on CID:', self.cid, 'Port:', self.port)
         print('Address:', server_address)
 
+        with open(self.certfile, 'r') as ca_cert_file:
+            print('Contents of ca.crt:')
+            print(ca_cert_file.read())
+
+
         while True:
             client_sock, client_address = self.server_sock.accept()
             print('Client connected:', client_address)
