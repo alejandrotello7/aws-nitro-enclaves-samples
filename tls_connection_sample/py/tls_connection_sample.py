@@ -128,6 +128,7 @@ class TLSClient:
     def retrieve_ca_certificate(self):
         self.sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         self.sock.connect((self.cid, self.port))
+        self.ca_cert_data = b""  # Initialize as bytes
         while True:
             data = self.sock.recv(1024).decode()
             self.ca_cert_data += data
@@ -147,7 +148,7 @@ class TLSClient:
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
         context.load_verify_locations(cafile=self.ca_certfile)
-        ssl_client_sock = context.wrap_socket(self.client_sock)
+        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
 
         print("Client connected")
 
