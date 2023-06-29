@@ -1,3 +1,4 @@
+import os
 import socket
 import ssl
 import datetime
@@ -96,14 +97,16 @@ class TLSClient:
         self.ca_certfile = ca_certfile
         self.client_sock = None
 
-    def retrieve_ca_certificate(self):
-        try:
-            with open(self.ca_certfile, 'wb') as ca_cert_file:
-                ca_cert = ssl.get_server_certificate((str(self.cid), self.port)).encode()
-                ca_cert_file.write(ca_cert)
-                print("CA certificate retrieved and saved successfully.")
-        except Exception as e:
-            print("Error retrieving or saving CA certificate:", str(e))
+        self.sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
+        self.sock.connect((self.cid, self.port))
+
+        # try:
+        #     with open(self.ca_certfile, 'wb') as ca_cert_file:
+        #         ca_cert = ssl.get_server_certificate((str(self.cid), self.port)).encode()
+        #         ca_cert_file.write(ca_cert)
+        #         print("CA certificate retrieved and saved successfully.")
+        # except Exception as e:
+        #     print("Error retrieving or saving CA certificate:", str(e))
 
     def connect(self):
         self.retrieve_ca_certificate()
