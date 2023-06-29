@@ -81,8 +81,6 @@ class TLSServer:
             print('Client connected:', client_address)
             client_sock.sendall(self.ca_cert_data.encode())
             client_sock.close()
-            return
-
             context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
             context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
             ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
@@ -123,17 +121,9 @@ class TLSClient:
         self.ca_cert_data += ''
         print()
 
-        # try:
-        #     with open(self.ca_certfile, 'wb') as ca_cert_file:
-        #         ca_cert = ssl.get_server_certificate((str(self.cid), self.port)).encode()
-        #         ca_cert_file.write(ca_cert)
-        #         print("CA certificate retrieved and saved successfully.")
-        # except Exception as e:
-        #     print("Error retrieving or saving CA certificate:", str(e))
-
     def connect(self):
         self.retrieve_ca_certificate()
-        file_path = 'ca_test.crt'
+        file_path = 'ca.crt'
         self.write_string_to_file(self.ca_cert_data, file_path)
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
