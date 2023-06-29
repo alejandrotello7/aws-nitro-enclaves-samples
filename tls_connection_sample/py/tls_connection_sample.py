@@ -117,11 +117,11 @@ class TLSClient:
         self.client_sock = None
         self.ca_cert_data = ""
 
-    def write_string_to_file(self, string, file_path):
+    def write_bytes_to_file(self, data, file_path):
         try:
-            with open(file_path, "w") as file:
-                file.write(string)
-            print("String successfully written to file.")
+            with open(file_path, "wb") as file:
+                file.write(data)
+            print("Data successfully written to file.")
         except IOError:
             print("An error occurred while writing to the file.")
 
@@ -141,7 +141,7 @@ class TLSClient:
     def connect(self):
         self.retrieve_ca_certificate()
         file_path = 'ca.crt'
-        self.write_string_to_file(self.ca_cert_data, file_path)
+        self.write_bytes_to_file(self.ca_cert_data, file_path)
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         server_address = (self.cid, self.port)
         self.client_sock.connect(server_address)
