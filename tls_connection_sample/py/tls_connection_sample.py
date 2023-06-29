@@ -97,7 +97,7 @@ class TLSClient:
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
-        server_address = (socket.AF_VSOCK, self.cid, self.port)
+        server_address = (self.cid, self.port)
 
         ssl_client_sock.connect(server_address)
 
