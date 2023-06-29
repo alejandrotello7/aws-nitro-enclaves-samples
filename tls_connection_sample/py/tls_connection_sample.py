@@ -80,7 +80,6 @@ class TLSServer:
             client_sock, client_address = self.server_sock.accept()
             print('Client connected:', client_address)
             client_sock.sendall(self.ca_cert_data.encode())
-            client_sock.close()
             context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
             context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
             ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
