@@ -130,7 +130,7 @@ class TLSClient:
         self.sock.connect((self.cid, self.port))
         self.ca_cert_data = b""  # Initialize as bytes
         while True:
-            data = self.sock.recv(1024).decode()
+            data = self.sock.recv(1024)
             self.ca_cert_data += data
             if not data:
                 break
