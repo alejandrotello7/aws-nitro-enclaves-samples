@@ -98,12 +98,15 @@ class TLSClient:
 
     def retrieve_ca_certificate(self):
         with open(self.ca_certfile, 'wb') as ca_cert_file:
+            print("Tester")
             with socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM) as temp_sock:
                 temp_sock.connect((self.cid, self.port))
                 context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+                print("Context")
                 with context.wrap_socket(temp_sock, server_hostname=str(self.cid)) as ssl_temp_sock:
                     peer_cert = ssl_temp_sock.getpeercert()
                     ca_cert_file.write(ssl.DER_cert_to_PEM_cert(peer_cert))
+                    print("Written")
 
     def connect(self):
         self.retrieve_ca_certificate()
