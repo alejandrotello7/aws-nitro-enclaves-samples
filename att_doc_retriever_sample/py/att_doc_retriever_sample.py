@@ -140,6 +140,7 @@ def server_handler_tls(args):
     port = args.port
     server = tls.TLSServer('server.crt', 'server.key',16, port)
     server.start()
+    server.start_tls()
 
 
 def client_handler_tls(args):

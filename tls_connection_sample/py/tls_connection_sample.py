@@ -76,21 +76,35 @@ class TLSServer:
             self.ca_cert_data = ca_cert_file.read()
             print(self.ca_cert_data)
 
+        ca_cert_sent = False
+
         while True:
             client_sock, client_address = self.server_sock.accept()
             print('Client connected:', client_address)
-            client_sock.sendall(self.ca_cert_data.encode())
-            context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-            context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
-            ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
 
-            data = ssl_client_sock.recv(1024)
-            print('Received from client:', data.decode())
-            ssl_client_sock.send(b'Hello from the server!')
+            if not ca_cert_sent:
+                client_sock.sendall(self.ca_cert_data.encode())
+                ca_cert_sent = True
 
-            ssl_client_sock.close()
             client_sock.close()
+            break
 
+    def start_tls(self):
+        self.server_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
+        server_address = (socket.VMADDR_CID_ANY, self.port)
+        self.server_sock.bind(server_address)
+        self.server_sock.listen(1)
+        client_sock, client_address = self.server_sock.accept()
+        context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
+        ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
+
+        data = ssl_client_sock.recv(1024)
+        print('Received from client:', data.decode())
+        ssl_client_sock.send(b'Hello from the server!')
+
+        ssl_client_sock.close()
+        client_sock.close()
 
 class TLSClient:
     def __init__(self, cid, port, ca_certfile):
@@ -119,6 +133,7 @@ class TLSClient:
             print(data, end='', flush=True)
         self.ca_cert_data += ''
         print()
+        self.sock.close()
 
     def connect(self):
         self.retrieve_ca_certificate()
