@@ -9,9 +9,10 @@ from cryptography.hazmat.primitives import hashes
 
 
 class TLSServer:
-    def __init__(self, certfile, keyfile, port):
+    def __init__(self, certfile, keyfile, cid, port):
         self.certfile = certfile
         self.keyfile = keyfile
+        self.cid = cid
         self.port = port
         self.server_sock = None
 
@@ -57,25 +58,16 @@ class TLSServer:
             ))
 
     def start(self):
-        common_name = '16'  # Default common name if not specified
-        if self.port == 5010:
-            common_name = '16'
-        elif self.port == 5011:
-            common_name = 'client1'
-        elif self.port == 5012:
-            common_name = 'client2'
-        # Add more conditions for different clients as needed
-
+        common_name = str(self.cid)  # Use the client ID as the common name
         self.generate_certificate(common_name)
 
-        self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_address = ('16', self.port)
+        self.server_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
+        server_address = (socket.AF_VSOCK, self.cid, self.port)
         self.server_sock.bind(server_address)
         self.server_sock.listen(1)
 
-        print('Server started on port', self.port)
-        print(f"Address: {server_address}")
-
+        print('Server started on CID:', self.cid, 'Port:', self.port)
+        print('Address:', server_address)
 
         while True:
             client_sock, client_address = self.server_sock.accept()
@@ -93,22 +85,20 @@ class TLSServer:
             client_sock.close()
 
 
+
 class TLSClient:
     def __init__(self, cid, port):
-        self.cid = str(cid)
+        self.cid = cid
         self.port = port
         self.client_sock = None
 
     def connect(self):
-        print("Connect func sstarted...")
-        self.client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-        print("Context created")
+        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
+        server_address = (socket.AF_VSOCK, self.cid, self.port)
 
-        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=self.cid)
-        server_address = (self.cid, self.port)
-        print(f"Address: {server_address}")
         ssl_client_sock.connect(server_address)
 
         print("Client connected")

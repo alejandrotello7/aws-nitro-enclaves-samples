@@ -138,7 +138,7 @@ def decoder_handler(args):
 
 def server_handler_tls(args):
     port = args.port
-    server = tls.TLSServer('server.crt', 'server.key', port)
+    server = tls.TLSServer('server.crt', 'server.key',16, port)
     server.start()
 
 
