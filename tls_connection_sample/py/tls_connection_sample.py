@@ -144,7 +144,7 @@ class TLSClient:
         server_address = (self.cid, self.port)
         self.client_sock.connect(server_address)
 
-        context = ssl.create_default_context(ssl.PROTOCOL_TLS_CLIENT)
+        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
         context.load_verify_locations(cafile=self.ca_certfile)
         hostname = 'localhost'
         # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
