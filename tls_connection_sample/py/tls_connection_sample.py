@@ -84,7 +84,7 @@ class TLSServer:
             print('Client connected:', client_address)
 
             if not ca_cert_sent:
-                client_sock.sendall(self.ca_cert_data)
+                client_sock.sendall(self.ca_cert_data.encode()) #encoded
                 ca_cert_sent = True
 
             client_sock.close()
