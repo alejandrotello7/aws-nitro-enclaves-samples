@@ -84,7 +84,7 @@ class TLSServer:
             print('Client connected:', client_address)
 
             if not ca_cert_sent:
-                client_sock.sendall(self.ca_cert_data.encode())
+                client_sock.sendall(self.ca_cert_data)
                 ca_cert_sent = True
 
             client_sock.close()
@@ -146,9 +146,8 @@ class TLSClient:
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
         context.load_verify_locations(cafile=self.ca_certfile)
-        hostname = 'localhost'
-        # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
-        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=hostname)
+        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
+        # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=hostname)
 
         print("Client connected")
 
