@@ -134,8 +134,6 @@ class TLSClient:
             self.ca_cert_data += data
             if not data:
                 break
-            print(data, end='', flush=True)
-        print()
         self.sock.close()
 
     def connect(self):
@@ -146,9 +144,11 @@ class TLSClient:
         server_address = (self.cid, self.port)
         self.client_sock.connect(server_address)
 
-        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        context = ssl.create_default_context(ssl.PROTOCOL_TLS_CLIENT)
         context.load_verify_locations(cafile=self.ca_certfile)
-        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
+        hostname = 'localhost'
+        # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
+        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=hostname)
 
         print("Client connected")
 
