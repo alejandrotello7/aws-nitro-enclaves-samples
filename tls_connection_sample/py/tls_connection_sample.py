@@ -8,6 +8,8 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import hashes
 import shutil
+import subprocess
+
 
 
 class TLSServer:
@@ -96,7 +98,9 @@ class TLSServer:
         self.server_sock.bind(server_address)
         self.server_sock.listen(1)
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-        context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
+        # context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile)
+        context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile, password=None)
+
         while True:
             client_sock, client_address = self.server_sock.accept()
             print('CLient connected')
@@ -116,6 +120,10 @@ class TLSClient:
         self.ca_certfile = ca_certfile
         self.client_sock = None
         self.ca_cert_data = ""
+
+    def add_ca_certificate_to_trust_store(self):
+        bash_script = "add_certificate.sh"  # Replace with the actual bash script file name
+        subprocess.run(["bash", bash_script], check=True)
 
     def write_bytes_to_file(self, data, file_path):
         try:
@@ -140,12 +148,15 @@ class TLSClient:
         self.retrieve_ca_certificate()
         file_path = 'ca.crt'
         self.write_bytes_to_file(self.ca_cert_data, file_path)
+        self.add_ca_certificate_to_trust_store()
+
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         server_address = (self.cid, self.port)
         self.client_sock.connect(server_address)
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
         context.load_verify_locations(cafile=self.ca_certfile)
+
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
         # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=hostname)
 
