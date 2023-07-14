@@ -77,6 +77,11 @@ class TLSServer:
         print('Address:', server_address)
         print('Hostname:', socket.gethostname())
 
+        with open(self.keyfile, 'r') as key_file:
+            print('Contents of key file:')
+            key_data = key_file.read()
+            print(key_data)
+
         with open(self.certfile, 'r') as ca_cert_file:
             print('Contents of ca.crt:')
             self.ca_cert_data = ca_cert_file.read()
