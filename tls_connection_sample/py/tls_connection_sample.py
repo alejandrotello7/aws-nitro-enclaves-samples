@@ -121,6 +121,8 @@ class TLSClient:
         self.ca_certfile = ca_certfile
         self.client_sock = None
         self.ca_cert_data = ""
+        # Set the hostname based on self.cid
+        socket.sethostname(str(self.cid))
 
     def add_ca_certificate_to_trust_store(self):
         bash_script = "add_certificate.sh"  # Replace with the actual bash script file name
@@ -160,7 +162,7 @@ class TLSClient:
         context.set_default_verify_paths()
         # context.load_verify_locations()
 
-        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=None)
+        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
         # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=hostname)
 
         print("TLS Client connected")
