@@ -148,7 +148,7 @@ class TLSClient:
         self.retrieve_ca_certificate()
         file_path = 'ca.crt'
         self.write_bytes_to_file(self.ca_cert_data, file_path)
-        self.add_ca_certificate_to_trust_store()
+        # self.add_ca_certificate_to_trust_store()
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         server_address = (self.cid, self.port)
