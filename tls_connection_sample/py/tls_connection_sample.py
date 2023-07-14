@@ -11,7 +11,6 @@ import shutil
 import subprocess
 
 
-
 class TLSServer:
     def __init__(self, certfile, keyfile, cid, port):
         self.certfile = certfile
@@ -94,7 +93,7 @@ class TLSServer:
             print('Client connected:', client_address)
 
             if not ca_cert_sent:
-                client_sock.sendall(self.ca_cert_data.encode()) #encoded
+                client_sock.sendall(self.ca_cert_data.encode())  # encoded
                 ca_cert_sent = True
 
             client_sock.close()
@@ -113,6 +112,15 @@ class TLSServer:
             print('Client connected:', client_address)
 
             ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
+            ssl_client_sock.do_handshake()  # Perform SSL handshake
+
+            # Verify SSL handshake success and check protocol version
+            if ssl_client_sock.version() != 'TLSv1.3':
+                print('Error: Expected TLSv1.3, but negotiated', ssl_client_sock.version())
+                ssl_client_sock.close()
+                client_sock.close()
+                continue
+
             print("TLS Connection established")
 
             data = ssl_client_sock.recv(1024)
@@ -123,6 +131,7 @@ class TLSServer:
 
             ssl_client_sock.close()
             client_sock.close()
+
 
 class TLSClient:
     def __init__(self, cid, port, ca_certfile):
@@ -159,24 +168,31 @@ class TLSClient:
         self.add_ca_certificate_to_trust_store()
 
     def connect(self):
-        # self.retrieve_ca_certificate()
-        # self.add_ca_certificate_to_trust_store()
         context = ssl.create_default_context()
         context.check_hostname = False
         context.verify_mode = ssl.CERT_NONE
-
-        self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
-        server_address = (self.cid, self.port)
-        self.client_sock.connect(server_address)
 
         # context.load_verify_locations()
         # context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         # context.load_verify_locations(cafile=self.ca_certfile)
         # context.load_verify_locations("/etc/ssl/certs/ca-bundle.crt")
 
+        self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
+        server_address = (self.cid, self.port)
+        self.client_sock.connect(server_address)
+
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
+        ssl_client_sock.do_handshake()  # Perform SSL handshake
+
+        # Verify SSL handshake success and check protocol version
+        if ssl_client_sock.version() != 'TLSv1.2':
+            print('Error: Expected TLSv1.2, but negotiated', ssl_client_sock.version())
+            ssl_client_sock.close()
+            self.client_sock.close()
+            return
 
         print("TLS Client connected")
+
         message = b"Hello from the client!"
         ssl_client_sock.send(message)
 
