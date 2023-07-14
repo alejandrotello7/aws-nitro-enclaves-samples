@@ -149,7 +149,6 @@ def client_handler_tls(args):
     ca_certfile = 'ca.crt'
     client = tls.TLSClient(cid, port, ca_certfile)
     client.retrieve_ca_certificate()
-
     client.connect()
 
 def main():
