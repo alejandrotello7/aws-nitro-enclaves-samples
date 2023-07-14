@@ -105,7 +105,7 @@ class TLSServer:
         server_address = (socket.VMADDR_CID_ANY, self.port)
         self.server_sock.bind(server_address)
         self.server_sock.listen(5)
-        context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+        context = ssl.create_default_context()
         context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile, password=None)
 
         while True:
@@ -163,7 +163,7 @@ class TLSClient:
         self.client_sock.connect(server_address)
 
         # context.load_verify_locations()
-        context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
+        context = ssl.create_default_context()
         context.load_verify_locations(cafile=self.ca_certfile)
         # context.load_verify_locations("/etc/ssl/certs/ca-bundle.crt")
 
