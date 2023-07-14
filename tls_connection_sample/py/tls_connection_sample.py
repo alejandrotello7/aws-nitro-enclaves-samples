@@ -106,7 +106,8 @@ class TLSServer:
         self.server_sock.bind(server_address)
         self.server_sock.listen(5)
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-        context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile, password=None)
+        # context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile, password=None)
+        context.load_cert_chain(certfile='test', keyfile=self.keyfile, password=None)
 
         while True:
             client_sock, client_address = self.server_sock.accept()
