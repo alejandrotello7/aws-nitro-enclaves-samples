@@ -27,8 +27,6 @@ tls_dir = path.join(path.dirname(path.dirname(current_dir)), 'tls_connection_sam
 sys.path.insert(0, tls_dir)
 tls = __import__('tls_connection_sample')
 
-
-
 # Binary executed
 # RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
 RS_BINARY = path.join(current_dir, 'att_doc_retriever_sample')
@@ -138,7 +136,7 @@ def decoder_handler(args):
 
 def server_handler_tls(args):
     port = args.port
-    server = tls.TLSServer('server.crt', 'server.key',16, port)
+    server = tls.TLSServer('server.crt', 'server.key', 16, port)
     server.start()
     server.start_tls()
 
@@ -149,6 +147,15 @@ def client_handler_tls(args):
     ca_certfile = 'ca.crt'
     client = tls.TLSClient(cid, port, ca_certfile)
     client.connect()
+
+
+def client_handler_tls_retriever(args):
+    port = args.port
+    cid = args.cid
+    ca_certfile = 'ca.crt'
+    client = tls.TLSClient(cid, port, ca_certfile)
+    client.retrieve_ca_certificate()
+
 
 def main():
     parser = argparse.ArgumentParser(prog='vsock-sample')
@@ -177,15 +184,21 @@ def main():
     decoder_parser.set_defaults(func=decoder_handler)
 
     tls_server = subparsers.add_parser("tls_server", description="TLS Server Handler",
-                                        help="Listen on a given port.")
+                                       help="Listen on a given port.")
     tls_server.add_argument("port", type=int, help="The local port to listen on.")
     tls_server.set_defaults(func=server_handler_tls)
 
     tls_client = subparsers.add_parser("tls_client", description="TLS Client",
-                                          help="Connect to a given cid and port.")
+                                       help="Connect to a given cid and port.")
     tls_client.add_argument("cid", type=int, help="The remote endpoint CID.")
     tls_client.add_argument("port", type=int, help="The remote endpoint port.")
     tls_client.set_defaults(func=client_handler_tls)
+
+    tls_client = subparsers.add_parser("tls_client_retriever", description="TLS Client",
+                                       help="Connect to a given cid and port.")
+    tls_client.add_argument("cid", type=int, help="The remote endpoint CID.")
+    tls_client.add_argument("port", type=int, help="The remote endpoint port.")
+    tls_client.set_defaults(func=client_handler_tls_retriever)
 
     if len(sys.argv) < 2:
         parser.print_usage()

@@ -9,6 +9,7 @@ nitro-cli build-enclave --docker-uri att-doc-retriever-sample --output-file att_
 # Run enclave
 sudo nitro-cli run-enclave --cpu-count 2 --memory 1936 --enclave-cid 16 --eif-path att_doc_retriever_sample.eif --debug-mode
 
+
 # Run Python script
 python3 py/att_doc_retriever_sample.py client 16 5010
 
