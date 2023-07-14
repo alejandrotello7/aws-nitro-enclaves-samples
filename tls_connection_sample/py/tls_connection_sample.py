@@ -156,7 +156,8 @@ class TLSClient:
         self.client_sock.connect(server_address)
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH, cafile=None, capath=None, cadata=None)
-        context.load_verify_locations()
+        context.set_default_verify_paths()
+        # context.load_verify_locations()
 
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
         # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=hostname)
