@@ -20,6 +20,8 @@ class TLSServer:
         self.port = port
         self.server_sock = None
         self.ca_cert_data = ""
+        # Set the hostname based on self.cid
+        socket.sethostname(str(self.cid))
 
     def generate_certificate(self, common_name):
         private_key = rsa.generate_private_key(
@@ -121,8 +123,6 @@ class TLSClient:
         self.ca_certfile = ca_certfile
         self.client_sock = None
         self.ca_cert_data = ""
-        # Set the hostname based on self.cid
-        socket.sethostname(str(self.cid))
 
     def add_ca_certificate_to_trust_store(self):
         bash_script = "add_certificate.sh"  # Replace with the actual bash script file name
