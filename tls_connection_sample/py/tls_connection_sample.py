@@ -156,12 +156,12 @@ class TLSClient:
         self.client_sock.connect(server_address)
 
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-        context.load_verify_locations(cafile=self.ca_certfile)
+        context.load_verify_locations()
 
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
         # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=hostname)
 
-        print("Client connected")
+        print("TLS Client connected")
 
         data = ssl_client_sock.recv(1024)
         print('Received from server:', data.decode())
