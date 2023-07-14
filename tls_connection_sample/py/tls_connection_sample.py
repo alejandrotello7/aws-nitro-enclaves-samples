@@ -166,7 +166,9 @@ class TLSClient:
         # context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
         # context.load_verify_locations(cafile=self.ca_certfile)
         # context.load_verify_locations()
-        context = ssl.create_default_context()
+        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        context.load_verify_locations("/etc/ssl/certs/ca-bundle.crt")
+
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
         # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=hostname)
 
