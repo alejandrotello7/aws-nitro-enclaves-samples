@@ -110,12 +110,16 @@ class TLSServer:
 
         while True:
             client_sock, client_address = self.server_sock.accept()
-            print('CLient connected')
+            print('Client connected:', client_address)
+
             ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
-            print('True')
+            print("TLS Connection established")
+
             data = ssl_client_sock.recv(1024)
             print('Received from client:', data.decode())
-            ssl_client_sock.send(b'Hello from the server!')
+
+            response = b"Hello from the server!"
+            ssl_client_sock.send(response)
 
             ssl_client_sock.close()
             client_sock.close()
@@ -173,10 +177,11 @@ class TLSClient:
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
 
         print("TLS Client connected")
+        message = b"Hello from the client!"
+        ssl_client_sock.send(message)
 
-        data = ssl_client_sock.recv(1024)
-        print('Received from server:', data.decode())
-        ssl_client_sock.send(b'Hello from the client!')
+        response = ssl_client_sock.recv(1024)
+        print('Received from server:', response.decode())
 
         ssl_client_sock.close()
         self.client_sock.close()
