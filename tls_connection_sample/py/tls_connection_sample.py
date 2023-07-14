@@ -185,8 +185,8 @@ class TLSClient:
         ssl_client_sock.do_handshake()  # Perform SSL handshake
 
         # Verify SSL handshake success and check protocol version
-        if ssl_client_sock.version() != 'TLSv1.2':
-            print('Error: Expected TLSv1.2, but negotiated', ssl_client_sock.version())
+        if ssl_client_sock.version() != 'TLSv1.3':
+            print('Error: Expected TLSv1.3, but negotiated', ssl_client_sock.version())
             ssl_client_sock.close()
             self.client_sock.close()
             return
