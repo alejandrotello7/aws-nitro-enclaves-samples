@@ -111,7 +111,7 @@ class TLSServer:
         while True:
             client_sock, client_address = self.server_sock.accept()
             print('CLient connected')
-            ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
+            ssl_client_sock = context.wrap_socket(client_sock, server_side=True, server_hostname=str(self.cid))
             print('True')
             data = ssl_client_sock.recv(1024)
             print('Received from client:', data.decode())
