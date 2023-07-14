@@ -105,13 +105,13 @@ class TLSServer:
         server_address = (socket.VMADDR_CID_ANY, self.port)
         self.server_sock.bind(server_address)
         self.server_sock.listen(5)
-        context = ssl.create_default_context()
+        context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
         context.load_cert_chain(certfile=self.certfile, keyfile=self.keyfile, password=None)
 
         while True:
             client_sock, client_address = self.server_sock.accept()
             print('CLient connected')
-            ssl_client_sock = context.wrap_socket(client_sock, server_side=True, server_hostname=str(self.cid))
+            ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
             print('True')
             data = ssl_client_sock.recv(1024)
             print('Received from client:', data.decode())
