@@ -160,7 +160,7 @@ class TLSClient:
         context.set_default_verify_paths()
         # context.load_verify_locations()
 
-        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
+        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=None)
         # ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=hostname)
 
         print("TLS Client connected")
