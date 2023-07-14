@@ -121,9 +121,9 @@ class TLSClient:
         self.client_sock = None
         self.ca_cert_data = ""
 
-    def add_ca_certificate_to_trust_store(self):
-        bash_script = "add_certificate.sh"  # Replace with the actual bash script file name
-        subprocess.run(["bash", bash_script], check=True)
+    # def add_ca_certificate_to_trust_store(self):
+    #     bash_script = "add_certificate.sh"  # Replace with the actual bash script file name
+    #     subprocess.run(["bash", bash_script], check=True)
 
     def write_bytes_to_file(self, data, file_path):
         try:
