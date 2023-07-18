@@ -169,13 +169,11 @@ class TLSClient:
 
     def connect(self):
         context = ssl.create_default_context()
-        context.check_hostname = False
-        context.verify_mode = ssl.CERT_NONE
+        # context.check_hostname = False
+        # context.verify_mode = ssl.CERT_NONE
 
-        # context.load_verify_locations()
-        # context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        # context.load_verify_locations(cafile=self.ca_certfile)
-        # context.load_verify_locations("/etc/ssl/certs/ca-bundle.crt")
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        context.load_verify_locations(cafile=self.ca_certfile)
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         server_address = (self.cid, self.port)
