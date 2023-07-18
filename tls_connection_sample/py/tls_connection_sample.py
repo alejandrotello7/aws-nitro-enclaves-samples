@@ -184,7 +184,7 @@ class TLSClient:
         server_address = (self.cid, self.port)
         self.client_sock.connect(server_address)
 
-        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
+        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=None)
         logging.debug("TLS Client connected to the server.")
 
         ssl_client_sock.do_handshake()  # Perform SSL handshake
