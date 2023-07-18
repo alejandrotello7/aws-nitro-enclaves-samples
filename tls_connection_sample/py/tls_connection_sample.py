@@ -171,6 +171,10 @@ class TLSClient:
         self.add_ca_certificate_to_trust_store()
 
     def connect(self):
+        default_paths = ssl.get_default_verify_paths()
+        print("Default Certificate Locations:")
+        print("  - CA Certificates: ", default_paths.cafile)
+        print("  - CA Certificate Directory: ", default_paths.capath)
         context = ssl.create_default_context()
         # context.check_hostname = False
         # context.verify_mode = ssl.CERT_NONE
