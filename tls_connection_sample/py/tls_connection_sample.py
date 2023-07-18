@@ -9,6 +9,9 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import hashes
 import shutil
 import subprocess
+import logging
+
+logging.basicConfig(level=logging.DEBUG)  # Enable debug logging
 
 
 class TLSServer:
@@ -168,19 +171,24 @@ class TLSClient:
         self.add_ca_certificate_to_trust_store()
 
     def connect(self):
-        context = ssl.create_default_context()
+        # context = ssl.create_default_context()
         # context.check_hostname = False
         # context.verify_mode = ssl.CERT_NONE
+        logging.debug("Retrieving CA certificate...")
 
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context.load_verify_locations('/etc/pki/tls/cert.pem')
+        context.load_verify_locations(cafile=self.ca_certfile)
+        logging.debug("TLS Lokking for the certificate.")
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         server_address = (self.cid, self.port)
         self.client_sock.connect(server_address)
 
         ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
+        logging.debug("TLS Client connected to the server.")
+
         ssl_client_sock.do_handshake()  # Perform SSL handshake
+        logging.debug("TLS Client Handshake.")
 
         # Verify SSL handshake success and check protocol version
         if ssl_client_sock.version() != 'TLSv1.3':
