@@ -171,18 +171,15 @@ class TLSClient:
         self.add_ca_certificate_to_trust_store()
 
     def connect(self):
-        # context = ssl.create_default_context()
+        context = ssl.create_default_context()
         # context.check_hostname = False
         # context.verify_mode = ssl.CERT_NONE
         server_address = (str(self.cid), self.port)
-        if ssl.get_server_certificate(server_address, ca_certs=self.ca_certfile):
-            print('Success')
-            return
 
         logging.debug("Retrieving CA certificate...")
 
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context.load_verify_locations(cafile=self.ca_certfile)
+        # context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        # context.load_verify_locations(cafile=self.ca_certfile)
         logging.debug("TLS Lokking for the certificate.")
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
