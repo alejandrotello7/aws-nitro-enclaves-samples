@@ -174,6 +174,11 @@ class TLSClient:
         # context = ssl.create_default_context()
         # context.check_hostname = False
         # context.verify_mode = ssl.CERT_NONE
+        server_address = (self.cid, self.port)
+        if ssl.get_server_certificate(server_address, ca_certs=self.ca_certfile):
+            print('Success')
+            return
+
         logging.debug("Retrieving CA certificate...")
 
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -181,10 +186,9 @@ class TLSClient:
         logging.debug("TLS Lokking for the certificate.")
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
-        server_address = (self.cid, self.port)
         self.client_sock.connect(server_address)
 
-        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=None)
+        ssl_client_sock = context.wrap_socket(self.client_sock, server_hostname=str(self.cid))
         logging.debug("TLS Client connected to the server.")
 
         ssl_client_sock.do_handshake()  # Perform SSL handshake
