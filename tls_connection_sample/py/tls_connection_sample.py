@@ -174,7 +174,7 @@ class TLSClient:
         # context = ssl.create_default_context()
         # context.check_hostname = False
         # context.verify_mode = ssl.CERT_NONE
-        server_address = (self.cid, self.port)
+        server_address = (str(self.cid), self.port)
         if ssl.get_server_certificate(server_address, ca_certs=self.ca_certfile):
             print('Success')
             return
