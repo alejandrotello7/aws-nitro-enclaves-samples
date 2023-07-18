@@ -173,7 +173,7 @@ class TLSClient:
         # context.verify_mode = ssl.CERT_NONE
 
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context.load_verify_locations(cafile=self.ca_certfile)
+        context.load_verify_locations('/etc/pki/tls/cert.pem')
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         server_address = (self.cid, self.port)
