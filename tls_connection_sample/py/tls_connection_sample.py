@@ -183,7 +183,7 @@ class TLSClient:
         logging.debug("Retrieving CA certificate...")
 
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context.load_verify_locations(cafile='/etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt')
+        context.load_verify_locations(cafile=self.ca_certfile)
         logging.debug("TLS Lokking for the certificate.")
 
         self.client_sock = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
