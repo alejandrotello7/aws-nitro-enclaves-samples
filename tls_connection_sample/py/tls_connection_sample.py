@@ -137,7 +137,7 @@ class TLSServer:
             print('Client connected:', client_address)
 
             ssl_client_sock = context.wrap_socket(client_sock, server_side=True)
-            ssl_client_sock.do_handshake()  # Perform SSL handshake
+            # ssl_client_sock.do_handshake()  # Perform SSL handshake
 
             # Verify SSL handshake success and check protocol version
             if ssl_client_sock.version() != 'TLSv1.3':
@@ -198,6 +198,8 @@ class TLSClient:
         print("  - CA Certificates: ", default_paths.cafile)
         print("  - CA Certificate Directory: ", default_paths.capath)
         context = ssl.create_default_context()
+        context.verify_mode = ssl.CERT_REQUIRED
+        context.check_hostname = True
         # context.check_hostname = False
         # context.verify_mode = ssl.CERT_NONE
         server_address = (self.cid, self.port)
