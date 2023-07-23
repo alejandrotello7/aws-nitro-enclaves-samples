@@ -23,8 +23,5 @@ EXPOSE 80
 # Set execution permission for the scripts
 RUN chmod +x run.sh
 
-# Route traffic from host port 5000 to Docker container port 80 using vsock
-ENTRYPOINT ["/run.sh"]
-
 # Run the Flask app using the built-in development server
 CMD ["python3", "app.py"]

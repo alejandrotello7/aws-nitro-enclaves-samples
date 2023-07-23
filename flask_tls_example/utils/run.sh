@@ -1,7 +1,12 @@
 #!/bin/sh
 
-echo "Starting socat script..."
+# Wait for the Flask app to start before proceeding
+until $(curl --output /dev/null --silent --head --fail http://localhost:80); do
+    echo "Waiting for the Flask app to start..."
+    sleep 1
+done
 
+echo "Flask app is ready! Starting socat..."
 
 ip addr add 127.0.0.1/32 dev lo
 ip link set dev lo up
