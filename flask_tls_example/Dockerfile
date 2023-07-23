@@ -19,17 +19,15 @@ COPY app.py .
 #
 ## Copy the run.sh scripts into the container
 COPY utils/run.sh .
-#
+
 ## Expose port 80 to allow communication with the Flask app
-#EXPOSE 80
-#
-## Set execution permission for the scripts
+EXPOSE 80
+
+# Set execution permission for the scripts
 RUN chmod +x run.sh
-#
-## Execute the run.sh script before starting the Flask app
+
+# Route traffic from host port 5000 to Docker container port 80 using vsock
 ENTRYPOINT ["/run.sh"]
 
 # Run the Flask app using Gunicorn
-#CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
-
-CMD ["gunicorn","app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]

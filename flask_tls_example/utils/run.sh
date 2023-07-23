@@ -1,8 +1,5 @@
 #!/bin/sh
 
-ip addr add 127.0.0.1/32 dev lo
-ip link set dev lo up
-
 # Replace these values with the desired port numbers you want to use
 HOST_PORT=5000
 DOCKER_PORT=80
