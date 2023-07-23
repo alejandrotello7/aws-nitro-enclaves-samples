@@ -27,5 +27,10 @@ WORKDIR /
 
 # Run the Flask app using Gunicorn
 #CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
-CMD ["bash"]
+# Set execution permission for the scripts
+COPY utils/wait.sh .
+RUN chmod +x run.sh wait.sh
+
+# Use wait.sh as the ENTRYPOINT to introduce a 120-second delay before starting the Flask app
+ENTRYPOINT ["/wait.sh"]
 
