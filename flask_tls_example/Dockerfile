@@ -32,4 +32,4 @@ COPY app.py .
 # Run the Flask app using Gunicorn
 #CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
 
-CMD ["gunicorn","app"]
+CMD ["python3","app"]
