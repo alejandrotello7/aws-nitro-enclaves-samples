@@ -10,9 +10,9 @@ nitro-cli build-enclave --docker-uri nginx-sample --output-file nginx-sample.eif
 sudo nitro-cli run-enclave --cpu-count 2 --memory 1940 --enclave-cid 16 --eif-path nginx-sample.eif --debug-mode
 
 #Make setup executable
-chmod +x setup.sh
+chmod +x utils/setup.sh
 
 #Run the setup.sh script
-./setup.sh
+./utils/setup.sh
 
 
