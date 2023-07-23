@@ -1,13 +1,21 @@
-FROM nginx:stable-alpine
+# Use the official Python image as the base image
+FROM python:3.9
 
-RUN apk --no-cache add socat
+# Install Flask and other required dependencies
+RUN pip install Flask
 
-COPY index.html /usr/share/nginx/html/index.html
+# Copy the app.py file into the container
+COPY app.py /app.py
 
-COPY utils/run.sh ./
-RUN ["chmod", "+x", "./run.sh"]
+# Copy the run.sh and app.sh scripts into the container
+COPY utils/run.sh /run.sh
+COPY utils/app.sh /app.sh
 
-COPY utils/app.sh ./
-RUN ["chmod", "+x", "./app.sh"]
+# Set the working directory to / to run the Flask app
+WORKDIR /
 
-CMD ["/bin/sh", "/run.sh"]
+# Expose port 80 to allow communication with the Flask app
+EXPOSE 80
+
+# Run the Flask app and socat when the container starts
+CMD /bin/sh /run.sh && /bin/sh /app.sh
