@@ -23,5 +23,9 @@ EXPOSE 80
 # Set execution permission for the scripts
 RUN chmod +x run.sh
 
+
+CMD ["./run.sh"]
+
+
 # Run the Flask app using the built-in development server
 CMD ["python3", "app.py"]
