@@ -2,7 +2,7 @@
 FROM python:3.9-slim
 
 # Install Flask and other required dependencies
-RUN pip install Flask
+RUN pip install Flask gunicorn
 
 # Copy the app.py file into the container
 COPY app.py /app.py
@@ -20,5 +20,5 @@ EXPOSE 80
 # Add script permissions
 RUN chmod +x /run.sh /app.sh
 
-# Run the Flask app and socat when the container starts
-CMD /bin/sh /run.sh && /bin/sh /app.sh
+# Run the Flask app and socat when the container startsQW
+CMD /utils/run.sh && gunicorn --bind 0.0.0.0:80 app:app
