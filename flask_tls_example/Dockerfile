@@ -2,15 +2,15 @@
 FROM python:3.9-slim
 
 # Install necessary packages (iproute2 for 'ip' command and socat)
-RUN apt-get update && apt-get install -y iproute2 socat
+#RUN apt-get update && apt-get install -y iproute2 socat
 
 # Install Flask and other required dependencies
 RUN pip install Flask gunicorn
 
 # Copy the app.py file into the container
 COPY app.py /app.py
-#
-## Copy the run.sh scripts into the container
+
+# Copy the run.sh scripts into the container
 #COPY utils/run.sh /run.sh
 
 # Set the working directory to / to run the Flask app
@@ -19,7 +19,7 @@ WORKDIR /
 # Expose port 80 to allow communication with the Flask app
 EXPOSE 80
 
-## Set execution permission for the scripts
+# Set execution permission for the scripts
 #RUN chmod +x /run.sh
 
 # Execute the run.sh script before starting the Flask app
