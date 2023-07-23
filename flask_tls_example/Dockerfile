@@ -1,6 +1,9 @@
 # Use the official Python slim image as the base image
 FROM python:3.9-slim
 
+# Install necessary packages (iproute2 for 'ip' command and socat)
+RUN apt-get update && apt-get install -y iproute2 socat
+
 # Install Flask and other required dependencies
 RUN pip install Flask gunicorn
 
