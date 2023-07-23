@@ -2,13 +2,13 @@
 FROM python:3.9-slim-buster
 
 # Install necessary packages (iproute2 for 'ip' command and socat)
-RUN apt-get update && apt-get install -y iproute2 socat
-
-# Install Flask and other required dependencies
-RUN pip install Flask gunicorn
-
-# Copy the app.py file into the container
-COPY app.py /app.py
+#RUN apt-get update && apt-get install -y iproute2 socat
+#
+## Install Flask and other required dependencies
+#RUN pip install Flask gunicorn
+#
+## Copy the app.py file into the container
+#COPY app.py /app.py
 
 # Copy the run.sh scripts into the container
 COPY utils/run.sh /run.sh
