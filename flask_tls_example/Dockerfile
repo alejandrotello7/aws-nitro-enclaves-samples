@@ -10,9 +10,8 @@ RUN pip install Flask gunicorn
 # Copy the app.py file into the container
 COPY app.py /app.py
 
-# Copy the run.sh and app.sh scripts into the container
+# Copy the run.sh scripts into the container
 COPY utils/run.sh /run.sh
-COPY utils/app.sh /app.sh
 
 # Set the working directory to / to run the Flask app
 WORKDIR /
@@ -21,7 +20,7 @@ WORKDIR /
 EXPOSE 80
 
 # Set execution permission for the scripts
-RUN chmod +x /run.sh /app.sh
+RUN chmod +x /run.sh
 
 # Run the Flask app using Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
