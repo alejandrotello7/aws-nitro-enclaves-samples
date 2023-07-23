@@ -55,7 +55,6 @@ RUN apt-get install -y python3
 RUN apt-get install python3-pip -y
 RUN pip install cryptography
 
-
 # Copy the Rust compiled binary from previous image
 #COPY --from=builder /root/att_doc_retriever_sample/rs/target/${ARCH}-unknown-linux-musl/release/att_doc_retriever_sample .
 # Copy the python client-server handler logic to the container
