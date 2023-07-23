@@ -9,6 +9,7 @@ HOST_PORT=5000
 DOCKER_PORT=80
 
 # Route traffic from host port 5000 to Docker container port 80 using vsock
-socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT
+socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT &
 
+# Run the Flask app using Gunicorn (you can replace 'app:app' with your app's entry point)
 python3 app.py
