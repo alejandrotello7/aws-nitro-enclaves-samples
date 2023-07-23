@@ -1,5 +1,5 @@
 # Use the official Python slim image with Debian Buster as the base image
-FROM python:3.9-slim-buster
+FROM ubuntu:latest
 
 # Set the working directory to / to run the Flask app
 WORKDIR /
