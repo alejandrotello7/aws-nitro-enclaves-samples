@@ -1,3 +1,3 @@
 #!/bin/sh
 
-nginx -g "daemon off;"
+python app.py
