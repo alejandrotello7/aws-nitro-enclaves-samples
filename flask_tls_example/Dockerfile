@@ -28,4 +28,4 @@ CMD ["./run.sh"]
 
 
 # Run the Flask app using the built-in development server
-CMD ["python3", "app.py"]
+#CMD ["python3", "app.py"]

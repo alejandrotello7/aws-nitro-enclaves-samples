@@ -1,5 +1,7 @@
 #!/bin/sh
 
+python3 app.py
+
 echo "Flask app is ready! Starting socat..."
 
 ip addr add 127.0.0.1/32 dev lo
