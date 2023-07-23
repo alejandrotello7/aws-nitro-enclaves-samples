@@ -17,5 +17,8 @@ WORKDIR /
 # Expose port 80 to allow communication with the Flask app
 EXPOSE 80
 
+# Add script permissions
+RUN chmod +x /run.sh /app.sh
+
 # Run the Flask app and socat when the container starts
 CMD /bin/sh /run.sh && /bin/sh /app.sh
