@@ -23,5 +23,5 @@ EXPOSE 80
 # Set execution permission for the scripts
 RUN chmod +x /run.sh /app.sh
 
-# Run the run.sh script first and then start the Flask app using Gunicorn
-CMD /run.sh && gunicorn --bind 0.0.0.0:80 app:app
+# Run the Flask app using Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]

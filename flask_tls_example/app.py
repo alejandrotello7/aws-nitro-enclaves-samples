@@ -15,4 +15,5 @@ def message2():
     return "This is message 2."
 
 if __name__ == '__main__':
+    print('Starting flask app...')
     app.run(host='0.0.0.0', port=80)
