@@ -5,7 +5,7 @@ FROM python:3.9-slim-buster
 WORKDIR /
 
 # Install necessary packages (iproute2 for 'ip' command and socat)
-RUN apt-get update && apt-get install -y iproute2 socat
+#RUN apt-get update && apt-get install -y iproute2 socat
 
 # Install Flask and other required dependencies
 RUN pip install Flask gunicorn
@@ -20,11 +20,11 @@ COPY utils/run.sh .
 # Expose port 80 to allow communication with the Flask app
 EXPOSE 80
 
-# Set execution permission for the scripts
-RUN chmod +x run.sh
-
-# Execute the run.sh script before starting the Flask app
-ENTRYPOINT ["/run.sh"]
+## Set execution permission for the scripts
+#RUN chmod +x run.sh
+#
+## Execute the run.sh script before starting the Flask app
+#ENTRYPOINT ["/run.sh"]
 
 # Run the Flask app using Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
