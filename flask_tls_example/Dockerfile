@@ -1,4 +1,4 @@
-# Use the official Python image as the base image
+# Use the official Python slim image as the base image
 FROM python:3.9-slim
 
 # Install Flask and other required dependencies
@@ -17,8 +17,8 @@ WORKDIR /
 # Expose port 80 to allow communication with the Flask app
 EXPOSE 80
 
-# Add script permissions
+# Set execution permission for the scripts
 RUN chmod +x /run.sh /app.sh
 
-# Run the Flask app and socat when the container startsQW
-CMD /utils/run.sh && gunicorn --bind 0.0.0.0:80 app:app
+# Run the run.sh script first and then start the Flask app using Gunicorn
+CMD /run.sh && gunicorn --bind 0.0.0.0:80 app:app
