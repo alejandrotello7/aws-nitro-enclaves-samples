@@ -32,4 +32,4 @@ ENTRYPOINT ["/run.sh"]
 # Run the Flask app using Gunicorn
 #CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
 
-CMD ["python3","app.py"]
+CMD ["gunicorn","app:app"]
