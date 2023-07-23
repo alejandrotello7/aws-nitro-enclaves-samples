@@ -24,7 +24,7 @@ EXPOSE 80
 RUN chmod +x run.sh
 
 # Execute the run.sh script before starting the Flask app
-ENTRYPOINT ["./run.sh"]
+ENTRYPOINT ["/run.sh"]
 
 # Run the Flask app using Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
