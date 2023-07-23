@@ -5,4 +5,4 @@ docker pull alpine/socat:latest
 PORT_NUMBER=5000
 
 # Run the Docker container with socat
-docker run -d -p $PORT_NUMBER:$PORT_NUMBER --name socat alpine/socat tcp-listen:$PORT_NUMBER,fork,keepalive,reuseaddr vsock-connect:16:5000,keepalive
+docker run -d -p $PORT_NUMBER:$PORT_NUMBER --name socat_container_$(date +%Y%m%d%H%M%S) alpine/socat tcp-listen:$PORT_NUMBER,fork,keepalive,reuseaddr vsock-connect:16:5000,keepalive
