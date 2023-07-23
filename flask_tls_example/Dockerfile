@@ -26,4 +26,4 @@ RUN chmod +x /run.sh
 ENTRYPOINT ["/run.sh"]
 
 # Run the Flask app using Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
+#CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
