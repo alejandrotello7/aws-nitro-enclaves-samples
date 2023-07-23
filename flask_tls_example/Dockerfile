@@ -1,5 +1,5 @@
 # Use the official Python slim image with Debian Buster as the base image
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 # Set the working directory to / to run the Flask app
 WORKDIR /
@@ -21,7 +21,7 @@ COPY app.py .
 #COPY utils/run.sh .
 #
 ## Expose port 80 to allow communication with the Flask app
-EXPOSE 80
+#EXPOSE 80
 #
 ## Set execution permission for the scripts
 #RUN chmod +x run.sh
