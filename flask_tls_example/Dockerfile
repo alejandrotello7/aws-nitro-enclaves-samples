@@ -6,9 +6,13 @@ WORKDIR /
 
 ## Install necessary packages (iproute2 for 'ip' command and socat)
 RUN apt-get update && apt-get install -y iproute2 socat
+RUN apt-get update && apt-get install -y python3 python3-pip
+
 #
 ## Install Flask and other required dependencies
-RUN pip install Flask gunicorn
+#RUN pip install Flask gunicorn
+RUN pip3 install Flask gunicorn
+
 #
 ## Copy the app.py file into the container
 COPY app.py .
