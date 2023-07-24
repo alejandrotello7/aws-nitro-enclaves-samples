@@ -3,6 +3,9 @@ import json
 from flask import Flask, request, jsonify
 import subprocess as sp
 import os
+from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+
 
 app = Flask(__name__)
 attested_document_server = None
@@ -69,6 +72,42 @@ def get_attested_arg(arg):
                 "error": f"Invalid argument '{arg}'. Valid options are: {', '.join(attested_document_valid_options)}"}), 400
     else:
         return jsonify({"error": "Attestation not performed yet."}), 400
+
+
+@app.route('/api/encode', methods=['POST'])
+def encode_message():
+    global attested_document_server
+    # Get the message from the request
+    message = request.form.get('message')
+    if not message:
+        return jsonify({"error": "Message not provided."}), 400
+
+    # Retrieve the private key path from attested_document_server
+    private_key_path = attested_document_server['private_key_path']
+
+    try:
+        # Load the private key from the file
+        with open(private_key_path, 'rb') as key_file:
+            private_key = serialization.load_pem_private_key(
+                key_file.read(),
+                password=None
+            )
+
+        # Sign the message using the private key
+        encoded_message = private_key.sign(
+            message.encode('utf-8'),
+            padding.PSS(
+                mgf=padding.MGF1(hashes.SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH
+            ),
+            hashes.SHA256()
+        )
+
+        # Return the encoded message as a response
+        return jsonify({"encoded_message": encoded_message.hex()}), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Error encoding message: {str(e)}"}), 500
 
 
 @app.route('/api/message2')
