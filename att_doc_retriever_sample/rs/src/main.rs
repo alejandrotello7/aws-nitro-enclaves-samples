@@ -8,10 +8,9 @@ use nsm_io::{Response};
 use serde_bytes::ByteBuf;
 use nitro_enclave_attestation_document::AttestationDocument;
 use serde::{Serialize, Deserialize};
-use std::fmt;
+use std::{fmt, fs};
 use std::io::{Write};
 use std::vec::Vec;
-
 use openssl::rsa::Rsa;
 use openssl::pkey::PKey;
 use std::str;
@@ -113,7 +112,12 @@ fn main() {
     // file.read_to_end(&mut content).unwrap();
 
 
-    let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
+    // let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
+    //     let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
+    let current_dir = std::env::current_dir().unwrap();
+    let file_path = current_dir.join("cert.der");
+    let binding = fs::read(file_path).unwrap();
+
     let cert = binding.as_slice();
 
     let request = Request::Attestation {
