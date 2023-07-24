@@ -14,6 +14,9 @@ RUN pip3 install Flask
 # Copy the app.py file into the container
 COPY app.py .
 
+# Copy Rust binary
+COPY utils/att_doc_retriever_sample .
+
 # Copy the run.sh script into the container
 COPY utils/run.sh .
 
