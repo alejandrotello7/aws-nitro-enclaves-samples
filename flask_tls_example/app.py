@@ -6,6 +6,13 @@ import os
 
 app = Flask(__name__)
 attested_document_server = None
+attested_document_valid_options = \
+    {'pcrs',
+     'nonce',
+     'module_id',
+     'public_key',
+     'private_key_path',
+     'public_key_path'}
 
 
 @app.route('/')
@@ -47,15 +54,21 @@ def upload_file():
         return jsonify({"error": "No file received."}), 400
 
 
-@app.route('/api/attestion/public_key')
-def get_public_key():
+@app.route('/api/attestation/<arg>', methods=['GET'])
+def get_attested_arg(arg):
     global attested_document_server  # Access the global variable
+    global attested_document_valid_options  # Access valid options globally
 
     # Check if attestation has been performed
-    if attested_document_server is not None and 'public_key' in attested_document_server:
-        return attested_document_server['public_key']
+    if attested_document_server is not None:
+        # Check if the provided argument is in the set of valid options
+        if arg in attested_document_valid_options:
+            return jsonify({arg: attested_document_server[arg]})
+        else:
+            return jsonify({
+                               "error": f"Invalid argument '{arg}'. Valid options are: {', '.join(attested_document_valid_options)}"}), 400
     else:
-        return jsonify({"error": "Attestation not performed or public key not found."}), 400
+        return jsonify({"error": "Attestation not performed yet."}), 400
 
 
 @app.route('/api/message2')
