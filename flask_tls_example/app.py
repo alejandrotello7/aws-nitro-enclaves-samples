@@ -74,13 +74,13 @@ def get_attested_arg(arg):
         return jsonify({"error": "Attestation not performed yet."}), 400
 
 
-@app.route('/api/encode', methods=['POST'])
-def encode_message():
+@app.route('/api/decode', methods=['POST'])
+def decode_message():
     global attested_document_server
-    # Get the message from the request
-    message = request.form.get('message')
-    if not message:
-        return jsonify({"error": "Message not provided."}), 400
+    # Get the encoded message from the request
+    encoded_message = request.form.get('encoded_message')
+    if not encoded_message:
+        return jsonify({"error": "Encoded message not provided."}), 400
 
     # Retrieve the private key path from attested_document_server
     private_key_path = attested_document_server['private_key_path']
@@ -93,22 +93,24 @@ def encode_message():
                 password=None
             )
 
-        # Sign the message using the private key
-        encoded_message = private_key.sign(
-            message.encode('utf-8'),
-            padding.PSS(
-                mgf=padding.MGF1(hashes.SHA256()),
-                salt_length=padding.PSS.MAX_LENGTH
-            ),
-            hashes.SHA256()
+        # Convert the encoded message from hexadecimal to bytes
+        encoded_message_bytes = bytes.fromhex(encoded_message)
+
+        # Decrypt the message using the private key
+        decrypted_message = private_key.decrypt(
+            encoded_message_bytes,
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            )
         )
 
-        # Return the encoded message as a response
-        return jsonify({"encoded_message": encoded_message.hex()}), 200
+        # Return the decrypted message as a response
+        return jsonify({"decrypted_message": decrypted_message.decode('utf-8')}), 200
 
     except Exception as e:
-        return jsonify({"error": f"Error encoding message: {str(e)}"}), 500
-
+        return jsonify({"error": f"Error decoding message: {str(e)}"}), 500
 
 @app.route('/api/message2')
 def message2():
