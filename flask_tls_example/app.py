@@ -1,26 +1,23 @@
 import json
 
 from flask import Flask, request, jsonify
-import subprocess
+import subprocess as sp
 import os
 
 app = Flask(__name__)
-
 
 @app.route('/')
 def index():
     return "Hello Nitrogen! This is the default message."
 
-
 @app.route('/api/attestation')
 def attestation():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     rs_binary = os.path.join(current_dir, 'att_doc_retriever_sample')
-    proc = subprocess.Popen([rs_binary], stdout=sp.PIPE)
+    proc = sp.Popen([rs_binary], stdout=sp.PIPE)
     out, err = proc.communicate()
     attested_document_server = json.loads(out)
     return attested_document_server
-
 
 @app.route('/api/execute', methods=['POST'])
 def upload_file():
@@ -35,7 +32,7 @@ def upload_file():
 
         try:
             # Execute the uploaded binary file
-            proc = subprocess.Popen([file_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            proc = sp.Popen([file_path], stdout=sp.PIPE, stderr=sp.PIPE)
             out, err = proc.communicate()
             return jsonify({"stdout": out.decode('utf-8'), "stderr": err.decode('utf-8')}), 200
         except Exception as e:
@@ -48,7 +45,6 @@ def upload_file():
 @app.route('/api/message2')
 def message2():
     return "This is message 2."
-
 
 if __name__ == '__main__':
     print('Starting flask app...')
