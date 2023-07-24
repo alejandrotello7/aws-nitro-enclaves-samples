@@ -17,7 +17,7 @@ RUN pip install Flask
 COPY app.py .
 
 # Copy Rust binary and Amazon certificate
-COPY utils/att_doc_retriever_sample utils/cert.der .
+COPY utils/att_doc_retriever_sample utils/cert.der ./
 
 # Copy the run.sh script into the container
 COPY utils/run.sh .
