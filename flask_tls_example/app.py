@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__)
 attested_document_server = None
-ATTESTED_DOCUMENT_VALID_OPTIONS = \
+attested_document_valid_options = \
     {'pcrs',
      'nonce',
      'module_id',
@@ -57,16 +57,16 @@ def upload_file():
 @app.route('/api/attestation/<arg>', methods=['GET'])
 def get_attested_arg(arg):
     global attested_document_server  # Access the global variable
-    global ATTESTED_DOCUMENT_VALID_OPTIONS  # Access valid options globally
+    global attested_document_valid_options  # Access valid options globally
 
     # Check if attestation has been performed
     if attested_document_server is not None:
         # Check if the provided argument is in the set of valid options
-        if arg in ATTESTED_DOCUMENT_VALID_OPTIONS:
+        if arg in attested_document_valid_options:
             return jsonify({arg: attested_document_server[arg]})
         else:
             return jsonify({
-                "error": f"Invalid argument '{arg}'. Valid options are: {', '.join(ATTESTED_DOCUMENT_VALID_OPTIONS)}"}), 400
+                "error": f"Invalid argument '{arg}'. Valid options are: {', '.join(attested_document_valid_options)}"}), 400
     else:
         return jsonify({"error": "Attestation not performed yet."}), 400
 
