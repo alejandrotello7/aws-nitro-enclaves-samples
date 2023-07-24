@@ -48,7 +48,8 @@ def upload_file():
 
 
 @app.route('/api/attestion/public_key')
-def get_public_ket():
+def get_public_key():
+    global attested_document_server
     return attested_document_server['public_key']
 
 
