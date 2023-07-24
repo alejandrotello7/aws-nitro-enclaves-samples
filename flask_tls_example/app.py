@@ -3,8 +3,6 @@ import json
 from flask import Flask, request, jsonify
 import subprocess as sp
 import os
-from cryptography.hazmat.primitives import serialization, hashes
-from cryptography.hazmat.primitives.asymmetric import padding
 
 app = Flask(__name__)
 attested_document_server = None
@@ -71,8 +69,6 @@ def get_attested_arg(arg):
                                "error": f"Invalid argument '{arg}'. Valid options are: {', '.join(ATTESTED_DOCUMENT_VALID_OPTIONS)}"}), 400
     else:
         return jsonify({"error": "Attestation not performed yet."}), 400
-
-
 
 
 @app.route('/api/message2')
