@@ -75,6 +75,7 @@ def get_attested_arg(arg):
 
 @app.route('/api/encode', methods=['POST'])
 def encode_message():
+    global attested_document_server
     # Get the message from the request
     message = request.form.get('message')
     if not message:
