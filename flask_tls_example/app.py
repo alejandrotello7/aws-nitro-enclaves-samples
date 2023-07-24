@@ -66,7 +66,7 @@ def get_attested_arg(arg):
             return jsonify({arg: attested_document_server[arg]})
         else:
             return jsonify({
-                               "error": f"Invalid argument '{arg}'. Valid options are: {', '.join(ATTESTED_DOCUMENT_VALID_OPTIONS)}"}), 400
+                "error": f"Invalid argument '{arg}'. Valid options are: {', '.join(ATTESTED_DOCUMENT_VALID_OPTIONS)}"}), 400
     else:
         return jsonify({"error": "Attestation not performed yet."}), 400
 

@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y iproute2 socat
 
 # Install Flask and other required dependencies
-RUN pip install Flask cryptography
+RUN pip install Flask
 
 # Copy the app.py file into the container
 COPY app.py .
