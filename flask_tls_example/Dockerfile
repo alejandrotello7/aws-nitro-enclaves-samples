@@ -14,8 +14,9 @@ RUN pip3 install Flask
 # Copy the app.py file into the container
 COPY app.py .
 
-# Copy Rust binary
+# Copy Rust binary and Amazon certificate
 COPY utils/att_doc_retriever_sample .
+COPY utils/cert.der .
 
 # Copy the run.sh script into the container
 COPY utils/run.sh .
