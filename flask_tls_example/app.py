@@ -49,8 +49,13 @@ def upload_file():
 
 @app.route('/api/attestion/public_key')
 def get_public_key():
-    global attested_document_server
-    return attested_document_server['public_key']
+    global attested_document_server  # Access the global variable
+
+    # Check if attestation has been performed
+    if attested_document_server is not None and 'public_key' in attested_document_server:
+        return attested_document_server['public_key']
+    else:
+        return jsonify({"error": "Attestation not performed or public key not found."}), 400
 
 
 @app.route('/api/message2')
