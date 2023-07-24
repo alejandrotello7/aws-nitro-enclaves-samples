@@ -1,23 +1,22 @@
-# Use a Python slim image as the base image
-FROM python:3.9-slim-buster
+# Use the official Python slim image with Debian Buster as the base image
+FROM ubuntu:latest
 
-# Set the working directory to /app
-WORKDIR /app
+# Set the working directory to / to run the Flask app
+WORKDIR /
 
 # Install necessary packages (iproute2 for 'ip' command and socat)
-RUN apt-get update \
-    && apt-get install -y iproute2 socat \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y iproute2
+RUN apt-get update && apt-get install -y python3 python3-pip socat
 
 # Install Flask and other required dependencies
-RUN pip install Flask
+RUN pip3 install Flask
 
 # Copy the app.py file into the container
 COPY app.py .
 
 # Copy Rust binary and Amazon certificate
-COPY utils/att_doc_retriever_sample utils/cert.der ./
+COPY utils/att_doc_retriever_sample .
+COPY utils/cert.der .
 
 # Copy the run.sh script into the container
 COPY utils/run.sh .
@@ -28,5 +27,9 @@ EXPOSE 80
 # Set execution permission for the scripts
 RUN chmod +x run.sh
 
-# Run the Flask app using the run.sh script
+
 CMD ["./run.sh"]
+
+
+# Run the Flask app using the built-in development server
+#CMD ["python3", "app.py"]
