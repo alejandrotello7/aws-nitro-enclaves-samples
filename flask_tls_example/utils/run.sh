@@ -16,6 +16,6 @@ gunicorn app:app --bind 0.0.0.0:443 --workers 4 &
 
 # Wait for a short period to allow Gunicorn to start fully (adjust the sleep duration as needed)
 sleep 10
-
+netstat -tuln | grep 443
 # Start Nginx in the foreground
 nginx -g "daemon off;"
