@@ -5,7 +5,7 @@ FROM ubuntu:latest
 WORKDIR /
 
 # Install necessary packages (iproute2 for 'ip' command and socat)
-RUN apt-get update && apt-get install -y iproute2 nginx net-tools
+RUN apt-get update && apt-get install -y iproute2 nginx
 RUN apt-get update && apt-get install -y python3 python3-pip socat
 
 # Install Flask and other required dependencies
