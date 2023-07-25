@@ -9,12 +9,12 @@ HOST_PORT=5000
 DOCKER_PORT=443
 
 
-# Route traffic from host port 5000 to Docker container port 8000 using vsock
+# Route traffic from host port 5000 to Docker container port 443 using vsock
 socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT &
 
 sleep 20
 
-gunicorn app:app --bind 0.0.0.0:8000 --workers 4
+gunicorn app:app --bind 0.0.0.0:443 --workers 4
 
 # Run the Flask app using Gunicorn (you can replace 'app:app' with your app's entry point)
 #python3 app.py
