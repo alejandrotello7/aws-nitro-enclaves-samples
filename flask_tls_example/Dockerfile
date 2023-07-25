@@ -32,6 +32,7 @@ COPY utils/enclaves.pem /etc/ssl/certs/enclaves.pem
 
 # Expose port 80 to allow communication with the Flask app
 EXPOSE 80
+EXPOSE 443
 
 # Set execution permission for the scripts
 RUN chmod +x run.sh
