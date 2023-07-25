@@ -7,7 +7,7 @@ docker build -t nginx-sample -f Dockerfile .
 nitro-cli build-enclave --docker-uri nginx-sample --output-file nginx-sample.eif
 
 # Run enclave
-sudo nitro-cli run-enclave --cpu-count 2 --memory 1964 --enclave-cid 16 --eif-path nginx-sample.eif --debug-mode
+sudo nitro-cli run-enclave --cpu-count 2 --memory 1968 --enclave-cid 16 --eif-path nginx-sample.eif --debug-mode
 
 #Make setup executable
 chmod +x utils/setup.sh
