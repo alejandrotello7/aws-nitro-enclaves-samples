@@ -12,7 +12,7 @@ DOCKER_PORT=443
 # Route traffic from host port 5000 to Docker container port 8000 using vsock
 socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT &
 
-sleep 20
+sleep 5
 
 #gunicorn app:app --bind 0.0.0.0:8000 --workers 4
 
