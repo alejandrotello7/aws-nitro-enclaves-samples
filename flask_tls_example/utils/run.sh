@@ -8,14 +8,14 @@ ip link set dev lo up
 HOST_PORT=5000
 DOCKER_PORT=443
 
-service nginx start  # Start Nginx
-
 # Route traffic from host port 5000 to Docker container port 443 using vsock
 socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT &
 
-sleep 20
+# Start Gunicorn in the background
+gunicorn app:app --bind 0.0.0.0:443 --workers 4 &
 
-gunicorn app:app --bind 0.0.0.0:443 --workers 4
+# Wait for a short period to allow Gunicorn to start fully (adjust the sleep duration as needed)
+sleep 10
 
-# Run the Flask app using Gunicorn (you can replace 'app:app' with your app's entry point)
-#python3 app.py
+# Start Nginx in the foreground
+nginx -g "daemon off;"
