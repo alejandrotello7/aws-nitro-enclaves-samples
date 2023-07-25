@@ -5,7 +5,7 @@ FROM ubuntu:latest
 WORKDIR /
 
 # Install necessary packages (iproute2 for 'ip' command and socat)
-RUN apt-get update && apt-get install -y iproute2
+RUN apt-get update && apt-get install -y iproute2 nginx
 RUN apt-get update && apt-get install -y python3 python3-pip socat
 
 # Install Flask and other required dependencies
@@ -15,12 +15,20 @@ RUN pip3 install cryptography
 # Copy the app.py file into the container
 COPY app.py .
 
+# Copy Nginx configuration
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+
 # Copy Rust binary and Amazon certificate
 COPY utils/att_doc_retriever_sample .
 COPY utils/cert.der .
 
 # Copy the run.sh script into the container
 COPY utils/run.sh .
+
+# Copy certificate and key
+COPY utils/enclaves.key /etc/ssl/private/enclaves.key
+COPY utils/enclaves.pem /etc/ssl/certs/enclaves.pem
+
 
 # Expose port 80 to allow communication with the Flask app
 EXPOSE 80
