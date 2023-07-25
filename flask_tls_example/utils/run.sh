@@ -6,7 +6,7 @@ ip link set dev lo up
 
 # Replace these values with the desired port numbers you want to use
 HOST_PORT=5000
-DOCKER_PORT=8000
+DOCKER_PORT=443
 
 
 # Route traffic from host port 5000 to Docker container port 8000 using vsock
