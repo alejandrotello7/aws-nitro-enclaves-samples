@@ -8,6 +8,7 @@ ip link set dev lo up
 HOST_PORT=5000
 DOCKER_PORT=443
 
+sudo service nginx reload
 
 # Route traffic from host port 5000 to Docker container port 443 using vsock
 socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT &
