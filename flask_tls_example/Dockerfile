@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y iproute2
 RUN apt-get update && apt-get install -y python3 python3-pip socat
 
 # Install Flask and other required dependencies
-RUN pip3 install Flask
+RUN pip3 install Flask gunicorn
 RUN pip3 install cryptography
 
 # Copy the app.py file into the container
