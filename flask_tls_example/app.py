@@ -47,21 +47,6 @@ def run_grpc_server():
     server.start()
     server.wait_for_termination()
 
-def execute_function(serialized_function, serialized_arguments):
-    # Decode Base64 strings back to bytes
-    function_bytes = base64.b64decode(serialized_function.encode())
-    arguments_bytes = base64.b64decode(serialized_arguments.encode())
-
-    # Deserialize the function using pickle
-    function_to_execute = pickle.loads(function_bytes)
-
-    # Deserialize the arguments using pickle
-    arguments = pickle.loads(arguments_bytes)
-
-    # Execute the function with provided arguments
-    result = function_to_execute(*arguments)
-    return result
-
 
 @app.route('/')
 def index():
@@ -163,25 +148,6 @@ def message2():
     return "This is message 2."
 
 
-@app.route('/api/remote_function', methods=['POST'])
-def handle_remote_function():
-    # Get the Base64-encoded function and arguments from the request data
-    function_base64 = request.form['function']
-    arguments_base64 = request.form['arguments']
-
-    # Execute the function and get the result using gRPC
-    with grpc.insecure_channel('localhost:50051') as channel:
-        stub = myservice_pb2_grpc.MyServiceStub(channel)
-        request = myservice_pb2.ExecuteRequest(
-            function=base64.b64decode(function_base64),
-            arguments=base64.b64decode(arguments_base64)
-        )
-        response = stub.Execute(request)
-
-    # Deserialize the result using pickle
-    result = pickle.loads(response.result)
-
-    return jsonify(result)
 
 
 if __name__ == '__main__':
