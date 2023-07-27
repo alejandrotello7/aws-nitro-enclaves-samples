@@ -131,8 +131,8 @@ def message2():
 @app.route('/api/remote_function', methods=['POST'])
 def handle_remote_function():
     # Get the serialized function and arguments from the request JSON data
-    serialized_function = request.json['function'].encode()  # Convert string to bytes
-    serialized_arguments = request.json['arguments'].encode()  # Convert string to bytes
+    serialized_function = request.json['function'] # Convert string to bytes
+    serialized_arguments = request.json['arguments'] # Convert string to bytes
 
     # Execute the function and get the result
     result = execute_function(serialized_function, serialized_arguments)
