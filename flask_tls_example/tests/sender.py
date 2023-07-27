@@ -1,5 +1,6 @@
 import requests
 import pickle
+import base64
 
 def add(a, b):
     return a + b
@@ -11,14 +12,18 @@ arguments = (10, 20)
 serialized_function = pickle.dumps(add)
 serialized_arguments = pickle.dumps(arguments)
 
-# Send the serialized function and arguments to the remote computer
+# Convert the pickled binary data to Base64-encoded strings
+function_base64 = base64.b64encode(serialized_function).decode()
+arguments_base64 = base64.b64encode(serialized_arguments).decode()
+
+# Send the Base64-encoded function and arguments to the remote computer as JSON
 url = "https://ec2-3-68-29-103.eu-central-1.compute.amazonaws.com:5000/api/remote_function"
 payload = {
-    'function': serialized_function,
-    'arguments': serialized_arguments
+    'function': function_base64,
+    'arguments': arguments_base64
 }
-response = requests.post(url, json=payload)
+response = requests.post(url, json=payload)  # Use json parameter for JSON data
 print(response)
 # Get the result from the remote computer
-result = pickle.loads(response.content)
+result = pickle.loads(base64.b64decode(response.content))
 print("Result from remote computer:", result)

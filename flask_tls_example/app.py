@@ -1,3 +1,4 @@
+import base64
 import json
 
 from flask import Flask, request, jsonify
@@ -130,9 +131,13 @@ def message2():
 
 @app.route('/api/remote_function', methods=['POST'])
 def handle_remote_function():
-    # Get the serialized function and arguments from the request JSON data
-    serialized_function = request.json['function'] # Convert string to bytes
-    serialized_arguments = request.json['arguments'] # Convert string to bytes
+    # Get the Base64-encoded function and arguments from the request JSON data
+    function_base64 = request.json['function']
+    arguments_base64 = request.json['arguments']
+
+    # Decode Base64 strings back to bytes
+    serialized_function = base64.b64decode(function_base64.encode())
+    serialized_arguments = base64.b64decode(arguments_base64.encode())
 
     # Execute the function and get the result
     result = execute_function(serialized_function, serialized_arguments)
