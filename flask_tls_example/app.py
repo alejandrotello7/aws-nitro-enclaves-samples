@@ -135,22 +135,18 @@ def message2():
 
 @app.route('/api/remote_function', methods=['POST'])
 def handle_remote_function():
-    # Get the Base64-encoded function and arguments from the request JSON data
-    function_base64 = request.json['function']
-    arguments_base64 = request.json['arguments']
-
-    # Decode Base64 strings back to bytes
-    serialized_function = base64.b64decode(function_base64.encode())
-    serialized_arguments = base64.b64decode(arguments_base64.encode())
+    # Get the Base64-encoded function and arguments from the request data
+    function_base64 = request.form['function']
+    arguments_base64 = request.form['arguments']
 
     # Execute the function and get the result
-    result = execute_function(serialized_function, serialized_arguments)
+    result = execute_function(function_base64, arguments_base64)
     print(result)
+
     # Serialize the result using pickle
     serialized_result = pickle.dumps(result)
 
     return serialized_result
-
 
 if __name__ == '__main__':
     print('Starting flask app...')
