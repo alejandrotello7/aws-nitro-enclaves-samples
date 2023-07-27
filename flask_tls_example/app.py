@@ -41,9 +41,19 @@ class GreetService(myservice_pb2_grpc.MyServiceServicer):
 
 
 def run_grpc_server():
+    # Load your certificate and key files (replace 'certificate.pem' and 'key.pem' with the actual file paths)
+    with open('/etc/ssl/certs/enclaves.pem', 'rb') as f:
+        certificate = f.read()
+    with open('/etc/ssl/private/enclaves.key', 'rb') as f:
+        private_key = f.read()
+
+    # Create TLS credentials from the certificate and key
+    server_credentials = grpc.ssl_server_credentials(((private_key, certificate,),))
+
+    # Create the gRPC server with the TLS credentials
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     myservice_pb2_grpc.add_MyServiceServicer_to_server(GreetService(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_secure_port('[::]:50051', server_credentials)
     server.start()
     server.wait_for_termination()
 
