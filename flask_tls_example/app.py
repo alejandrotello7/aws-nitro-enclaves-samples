@@ -30,7 +30,7 @@ def execute_function(function_name, module_name, serialized_arguments):
     module_name = pickle.loads(module_name_bytes)
 
     # Import the module dynamically
-    module = __import__(module_name, fromlist=[function_name])
+    module = __import__(module_name)
     function_to_execute = getattr(module, function_name)
 
     # Deserialize the arguments using pickle
@@ -39,7 +39,6 @@ def execute_function(function_name, module_name, serialized_arguments):
     # Execute the function with provided arguments
     result = function_to_execute(*arguments)
     return result
-
 
 @app.route('/')
 def index():
