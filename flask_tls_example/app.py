@@ -19,19 +19,13 @@ attested_document_valid_options = \
      'public_key_path'}
 
 
-def execute_function(function_name, module_name, serialized_arguments):
+def execute_function(serialized_function, serialized_arguments):
     # Decode Base64 strings back to bytes
-    function_name_bytes = base64.b64decode(function_name.encode())
-    module_name_bytes = base64.b64decode(module_name.encode())
+    function_bytes = base64.b64decode(serialized_function.encode())
     arguments_bytes = base64.b64decode(serialized_arguments.encode())
 
-    # Deserialize the function name and module using pickle
-    function_name = pickle.loads(function_name_bytes)
-    module_name = pickle.loads(module_name_bytes)
-
-    # Import the module dynamically
-    module = __import__(module_name)
-    function_to_execute = getattr(module, function_name)
+    # Deserialize the function using pickle
+    function_to_execute = pickle.loads(function_bytes)
 
     # Deserialize the arguments using pickle
     arguments = pickle.loads(arguments_bytes)
@@ -142,13 +136,12 @@ def message2():
 
 @app.route('/api/remote_function', methods=['POST'])
 def handle_remote_function():
-    # Get the Base64-encoded function name, module, and arguments from the request data
-    function_name_base64 = request.form['function_name']
-    module_name_base64 = request.form['module_name']
+    # Get the Base64-encoded function and arguments from the request data
+    function_base64 = request.form['function']
     arguments_base64 = request.form['arguments']
 
     # Execute the function and get the result
-    result = execute_function(function_name_base64, module_name_base64, arguments_base64)
+    result = execute_function(function_base64, arguments_base64)
     print(result)
 
     # Serialize the result using pickle
