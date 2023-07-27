@@ -21,7 +21,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 # Copy Rust binary and Amazon certificate
 COPY utils/att_doc_retriever_sample .
 COPY utils/cert.der .
-COPY utils/grpc_service.proto .
+COPY utils/myservice.proto .
 
 # Copy the run.sh script into the container
 COPY utils/run.sh .

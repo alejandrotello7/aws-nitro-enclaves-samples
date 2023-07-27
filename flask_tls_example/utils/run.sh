@@ -4,7 +4,7 @@ echo "Flask app is ready! Starting socat..."
 ip addr add 127.0.0.1/32 dev lo
 ip link set dev lo up
 
-python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. grpc_service.proto
+python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. myservice.proto
 
 
 # Replace these values with the desired port numbers you want to use
