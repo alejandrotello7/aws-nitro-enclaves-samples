@@ -57,7 +57,6 @@ def run_grpc_server():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     myservice_pb2_grpc.add_MyServiceServicer_to_server(GreetService(), server)
     server.add_secure_port('[::]:50051', server_credentials)
-    server.start()
     # Log a message indicating that the server is running
     logger = logging.getLogger('grpc_server')
     logger.setLevel(logging.INFO)
@@ -68,8 +67,8 @@ def run_grpc_server():
     logger.addHandler(ch)
     logger.info("gRPC server is running on port 50051...")
 
+    server.start()
 
-    print('Started gRPC server')
     server.wait_for_termination()
 
 
