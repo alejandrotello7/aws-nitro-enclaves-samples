@@ -21,8 +21,8 @@ attested_document_valid_options = \
 
 def execute_function(serialized_function, serialized_arguments):
     # Decode Base64 strings back to bytes
-    function_bytes = base64.b64decode(serialized_function.encode())
-    arguments_bytes = base64.b64decode(serialized_arguments.encode())
+    function_bytes = base64.b64decode(serialized_function)
+    arguments_bytes = base64.b64decode(serialized_arguments)
 
     # Deserialize the function and arguments using pickle
     function_to_execute = pickle.loads(function_bytes)
