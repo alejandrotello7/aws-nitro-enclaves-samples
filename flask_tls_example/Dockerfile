@@ -35,6 +35,8 @@ COPY utils/enclaves.pem /etc/ssl/certs/enclaves.pem
 EXPOSE 8000
 EXPOSE 443
 EXPOSE 80
+EXPOSE 50051
+EXPOSE 50052
 
 # Set execution permission for the scripts
 RUN chmod +x run.sh
