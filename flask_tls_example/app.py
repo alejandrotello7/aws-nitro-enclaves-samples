@@ -7,7 +7,6 @@ from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 import pickle
 
-
 app = Flask(__name__)
 attested_document_server = None
 attested_document_valid_options = \
@@ -17,6 +16,7 @@ attested_document_valid_options = \
      'public_key',
      'private_key_path',
      'public_key_path'}
+
 
 def execute_function(serialized_function, serialized_arguments):
     # Deserialize the function and arguments using pickle
@@ -122,9 +122,11 @@ def decode_message():
     except Exception as e:
         return jsonify({"error": f"Error decoding message: {str(e)}"}), 500
 
+
 @app.route('/api/message2')
 def message2():
     return "This is message 2."
+
 
 @app.route('/api/remote_function')
 def handle_remote_funciton():
@@ -134,7 +136,7 @@ def handle_remote_funciton():
 
     # Execute the function and get the result
     result = execute_function(serialized_function, serialized_arguments)
-
+    print(result)
     # Serialize the result using pickle
     serialized_result = pickle.dumps(result)
 
