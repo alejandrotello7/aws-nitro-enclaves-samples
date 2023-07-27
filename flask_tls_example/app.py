@@ -5,6 +5,7 @@ import subprocess as sp
 import os
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
+import pickle
 
 
 app = Flask(__name__)
@@ -16,6 +17,15 @@ attested_document_valid_options = \
      'public_key',
      'private_key_path',
      'public_key_path'}
+
+def execute_function(serialized_function, serialized_arguments):
+    # Deserialize the function and arguments using pickle
+    function_to_execute = pickle.loads(serialized_function)
+    arguments = pickle.loads(serialized_arguments)
+
+    # Execute the function with provided arguments
+    result = function_to_execute(*arguments)
+    return result
 
 
 @app.route('/')
@@ -115,6 +125,20 @@ def decode_message():
 @app.route('/api/message2')
 def message2():
     return "This is message 2."
+
+@app.route('/api/remote_function')
+def handle_remote_funciton():
+    # Get the serialized function and arguments from the request payload
+    serialized_function = request.form['function']
+    serialized_arguments = request.form['arguments']
+
+    # Execute the function and get the result
+    result = execute_function(serialized_function, serialized_arguments)
+
+    # Serialize the result using pickle
+    serialized_result = pickle.dumps(result)
+
+    return serialized_result
 
 
 if __name__ == '__main__':
