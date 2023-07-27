@@ -1,5 +1,6 @@
 import base64
 import json
+import threading
 
 from flask import Flask, request, jsonify
 import subprocess as sp
@@ -7,6 +8,10 @@ import os
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 import pickle
+import grpc
+import myservice_pb2
+import myservice_pb2_grpc
+from concurrent import futures
 
 app = Flask(__name__)
 attested_document_server = None
@@ -18,6 +23,29 @@ attested_document_valid_options = \
      'private_key_path',
      'public_key_path'}
 
+
+class GreetService(myservice_pb2_grpc.MyServiceServicer):
+    def Execute(self, request, context):
+        # Deserialize the function and arguments using pickle
+        function_to_execute = pickle.loads(request.function)
+        arguments = pickle.loads(request.arguments)
+
+        # Execute the function with provided arguments
+        result = function_to_execute(*arguments)
+
+        # Serialize the result using pickle
+        serialized_result = pickle.dumps(result)
+
+        # Create the response and return it
+        return myservice_pb2.ExecuteResponse(result=serialized_result)
+
+
+def run_grpc_server():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    myservice_pb2_grpc.add_MyServiceServicer_to_server(GreetService(), server)
+    server.add_insecure_port('[::]:50051')
+    server.start()
+    server.wait_for_termination()
 
 def execute_function(serialized_function, serialized_arguments):
     # Decode Base64 strings back to bytes
@@ -33,6 +61,7 @@ def execute_function(serialized_function, serialized_arguments):
     # Execute the function with provided arguments
     result = function_to_execute(*arguments)
     return result
+
 
 @app.route('/')
 def index():
@@ -140,16 +169,25 @@ def handle_remote_function():
     function_base64 = request.form['function']
     arguments_base64 = request.form['arguments']
 
-    # Execute the function and get the result
-    result = execute_function(function_base64, arguments_base64)
-    print(result)
+    # Execute the function and get the result using gRPC
+    with grpc.insecure_channel('localhost:50051') as channel:
+        stub = myservice_pb2_grpc.MyServiceStub(channel)
+        request = myservice_pb2.ExecuteRequest(
+            function=base64.b64decode(function_base64),
+            arguments=base64.b64decode(arguments_base64)
+        )
+        response = stub.Execute(request)
 
-    # Serialize the result using pickle
-    serialized_result = pickle.dumps(result)
+    # Deserialize the result using pickle
+    result = pickle.loads(response.result)
 
-    return serialized_result
+    return jsonify(result)
+
 
 if __name__ == '__main__':
     print('Starting flask app...')
     attestation()
+    # Start the gRPC server in a separate thread
+    server_thread = threading.Thread(target=run_grpc_server)
+    server_thread.start()
     app.run(host='0.0.0.0', port=8000)

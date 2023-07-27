@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package myservice;
+
+service MyService {
+  rpc Execute(ExecuteRequest) returns (ExecuteResponse) {}
+}
+
+message ExecuteRequest {
+  bytes function = 1;
+  bytes arguments = 2;
+}
+
+message ExecuteResponse {
+  bytes result = 1;
+}

@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y python3 python3-pip socat
 
 # Install Flask and other required dependencies
 RUN pip3 install Flask gunicorn
-RUN pip3 install cryptography
+RUN pip3 install cryptography grpcio grpcio-tools
 
 # Copy the app.py file into the container
 COPY app.py .
@@ -21,6 +21,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 # Copy Rust binary and Amazon certificate
 COPY utils/att_doc_retriever_sample .
 COPY utils/cert.der .
+COPY utils/grpc_service.proto .
 
 # Copy the run.sh script into the container
 COPY utils/run.sh .
