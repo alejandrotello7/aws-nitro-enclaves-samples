@@ -12,6 +12,9 @@ import grpc
 import myservice_pb2
 import myservice_pb2_grpc
 from concurrent import futures
+import sys
+import logging
+
 
 app = Flask(__name__)
 attested_document_server = None
@@ -55,6 +58,17 @@ def run_grpc_server():
     myservice_pb2_grpc.add_MyServiceServicer_to_server(GreetService(), server)
     server.add_secure_port('[::]:50051', server_credentials)
     server.start()
+    # Log a message indicating that the server is running
+    logger = logging.getLogger('grpc_server')
+    logger.setLevel(logging.INFO)
+
+    # Log to console
+    ch = logging.StreamHandler(sys.stdout)
+    ch.setLevel(logging.INFO)
+    logger.addHandler(ch)
+    logger.info("gRPC server is running on port 50051...")
+
+
     print('Started gRPC server')
     server.wait_for_termination()
 
