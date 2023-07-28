@@ -178,6 +178,6 @@ if __name__ == '__main__':
     print('Starting flask app...')
     attestation()
     # Start the gRPC server in a separate thread
-    server_thread = threading.Thread(target=run_grpc_server)
-    server_thread.start()
+    # server_thread = threading.Thread(target=run_grpc_server)
+    # server_thread.start()
     app.run(host='0.0.0.0', port=8000)

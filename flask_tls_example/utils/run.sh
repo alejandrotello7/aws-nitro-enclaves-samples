@@ -11,6 +11,9 @@ DOCKER_PORT=443
 # Route traffic from host port 5000 to Docker container port 443 using vsock
 socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT &
 
+python3 grpc_server.py
+sleep 10
+
 # Start Gunicorn in the background
 gunicorn app:app --bind 0.0.0.0:8000 --workers 4 &
 #python3 app.py
