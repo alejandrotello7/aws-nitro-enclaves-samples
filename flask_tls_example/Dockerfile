@@ -15,6 +15,7 @@ RUN pip3 install cryptography grpcio grpcio-tools
 # Copy the app.py file into the container
 COPY app.py .
 COPY grpc_server.py .
+COPY utils/index.html /etc/nginx/html/index.html
 
 # Copy Nginx configuration
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
