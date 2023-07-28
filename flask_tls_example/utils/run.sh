@@ -17,6 +17,7 @@ gunicorn app:app --bind 0.0.0.0:8000 --workers 4 &
 # Wait for a short period to allow Gunicorn to start fully (adjust the sleep duration as needed)
 sleep 10
 
+curl -k https://127.0.0.1:$DOCKER_PORT/grpc
 
 # Start Nginx in the foreground
 nginx -g "daemon off;"
