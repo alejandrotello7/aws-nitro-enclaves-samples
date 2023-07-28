@@ -39,7 +39,7 @@ EXPOSE 50051
 EXPOSE 50052
 
 # Generate Python files from the proto definition
-RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. myservice.proto
+RUN python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. myservice.proto
 
 # Set execution permission for the scripts
 RUN chmod +x run.sh
