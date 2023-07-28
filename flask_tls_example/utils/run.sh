@@ -18,7 +18,7 @@ python3 app.py
 # Wait for a short period to allow Gunicorn to start fully (adjust the sleep duration as needed)
 sleep 10
 
-curl -k https://127.0.0.1:50051/grpc
+curl -k -m 10 -s https://127.0.0.1:50051/grpc
 
 # Start Nginx in the foreground
 nginx -g "daemon off;"
