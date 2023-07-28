@@ -23,7 +23,7 @@ sleep 10
 python3 grpc_server.py
 sleep 10
 
-python3 grpc_server.py &
+python3 grpc_server.py > grpc_server.log 2>&1 &
 sleep 10
 
 # Start Nginx in the foreground
