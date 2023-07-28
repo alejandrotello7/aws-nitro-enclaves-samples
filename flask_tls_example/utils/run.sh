@@ -20,7 +20,7 @@ gunicorn app:app --bind 0.0.0.0:8000 --workers 4 &
 # Wait for a short period to allow Gunicorn to start fully (adjust the sleep duration as needed)
 sleep 10
 
-python3 grpc_server.py > grpc_server.log 2>&1 &
+python3 grpc_server.py &
 sleep 10
 
 # Start Nginx in the foreground
