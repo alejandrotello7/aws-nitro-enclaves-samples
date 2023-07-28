@@ -12,13 +12,11 @@ DOCKER_PORT=443
 socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT &
 
 # Start Gunicorn in the background
-gunicorn app:app --bind 0.0.0.0:8000 --workers 4 &
-#python3 app.py
+#gunicorn app:app --bind 0.0.0.0:8000 --workers 4 &
+python3 app.py
 
 # Wait for a short period to allow Gunicorn to start fully (adjust the sleep duration as needed)
 sleep 10
-
-curl -k -m 10 -s https://127.0.0.1:50051/grpc
 
 # Start Nginx in the foreground
 nginx -g "daemon off;"
