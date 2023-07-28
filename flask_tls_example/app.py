@@ -65,9 +65,9 @@ def run_grpc_server():
     ch = logging.StreamHandler(sys.stdout)
     ch.setLevel(logging.INFO)
     logger.addHandler(ch)
-    logger.info("gRPC server is running on port 50051...")
 
     server.start()
+    logger.info("gRPC server is running on port 50051...")
 
     server.wait_for_termination()
 
