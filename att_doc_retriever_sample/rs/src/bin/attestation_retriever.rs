@@ -38,9 +38,6 @@ fn main() {
         nonce: Some(nonce),
     };
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
-    if let Response::Attestation { ref document } = response {
-        let document_str = str::from_utf8(&document).unwrap();
-        println!("{}", document_str);
-    }
+    println!("{:?}", response);
     nsm_driver::nsm_exit(nsm_fd);
 }
