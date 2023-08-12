@@ -98,7 +98,12 @@ def attestation_retriever():
         file.write(out)
 
     # Send the attestation_response.txt file as the response
-    return send_file('attestation_response.txt')
+    return send_file(
+        'attestation_response.txt',
+        as_attachment=True,
+        download_name='attestation_response.txt',
+        mimetype='application/octet-stream'
+    )
 
 
 
