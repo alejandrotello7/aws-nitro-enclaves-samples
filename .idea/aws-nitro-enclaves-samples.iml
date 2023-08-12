@@ -3,7 +3,9 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/att_doc_retriever_sample/rs/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/attestation_local_verifier/attestation_verifier/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/att_doc_retriever_sample/rs/target" />
+      <excludeFolder url="file://$MODULE_DIR$/attestation_local_verifier/attestation_verifier/target" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (aws-nitro-enclaves-samples) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

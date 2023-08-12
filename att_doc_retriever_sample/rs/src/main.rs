@@ -1,25 +1,23 @@
 use std::collections::HashMap;
 //use nitro_enclave_attestation_document::AttestationDocument;
 //use std::fs::File;
-use std::fs::{File, read};
+use std::fs::{read, File};
 //use std::io::Read;
-use nsm_io::{Request};
-use nsm_io::{Response};
-use serde_bytes::ByteBuf;
 use nitro_enclave_attestation_document::AttestationDocument;
-use serde::{Serialize, Deserialize};
-use std::{fmt, fs};
-use std::io::{Write};
-use std::vec::Vec;
-use openssl::rsa::Rsa;
+use nsm_io::Request;
+use nsm_io::Response;
 use openssl::pkey::PKey;
+use openssl::rsa::Rsa;
+use serde::{Deserialize, Serialize};
+use serde_bytes::ByteBuf;
+use std::io::Write;
 use std::str;
-
-
+use std::vec::Vec;
+use std::{fmt, fs};
 
 #[derive(Serialize, Deserialize)]
 struct AttestationDocumentDecoded {
-    pcrs: HashMap<String,String>,
+    pcrs: HashMap<String, String>,
     nonce: String,
     module_id: String,
     public_key: String,
@@ -53,7 +51,10 @@ fn convert_decimals_to_ascii(input: Option<Vec<u8>>) -> String {
     String::new()
 }
 fn decimal_to_hex(vector: &[u8]) -> Vec<String> {
-    vector.iter().map(|&decimal| format!("{:02X}", decimal)).collect()
+    vector
+        .iter()
+        .map(|&decimal| format!("{:02X}", decimal))
+        .collect()
 }
 fn remove_brackets_commas_and_spaces<T: std::fmt::Display>(vector: &[T]) -> String {
     let mut result = String::new();
@@ -84,7 +85,7 @@ fn generate_rsa_key() -> (ByteBuf, Vec<u8>) {
     let private_key: Vec<u8> = pkey.private_key_to_pem_pkcs8().unwrap();
     let public_key = ByteBuf::from(pub_key);
 
-    return (public_key,private_key);
+    return (public_key, private_key);
 }
 
 fn main() {
@@ -111,7 +112,6 @@ fn main() {
     // let mut content = Vec::new();
     // file.read_to_end(&mut content).unwrap();
 
-
     // let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
     //     let binding = read("/root/att_doc_retriever_sample/py/cert.der").unwrap();
     let current_dir = std::env::current_dir().unwrap();
@@ -126,14 +126,11 @@ fn main() {
         nonce: Some(nonce),
     };
 
-
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
 
-    if let Response::Attestation{ref document} = response {
-        let document_attested = match AttestationDocument::authenticate(document.as_slice(),cert) {
-            Ok(doc) => {
-                doc
-            },
+    if let Response::Attestation { ref document } = response {
+        let document_attested = match AttestationDocument::authenticate(document.as_slice(), cert) {
+            Ok(doc) => doc,
             Err(err) => {
                 println!("{:?}", err);
                 panic!("error unvalid atte doc");
@@ -146,58 +143,30 @@ fn main() {
             public_key: String::new(),
             private_key_path: String::new(),
             public_key_path: String::new(),
-
         };
         // println!("-----");
-        for (index, pcr) in document_attested.pcrs.iter().enumerate(){
+        for (index, pcr) in document_attested.pcrs.iter().enumerate() {
             let hex_vector = decimal_to_hex(&pcr);
             let result = remove_brackets_commas_and_spaces(&hex_vector);
             // println!("PCR{} value is: {:?}",index, result);
             // println!("-----");
-            let pcr_index = format!("PCR{}",index);
-            document_attested_decoded.pcrs.insert(pcr_index,result);
+            let pcr_index = format!("PCR{}", index);
+            document_attested_decoded.pcrs.insert(pcr_index, result);
         }
         // println!("Module Id: {:?}",document_attested.module_id);
 
         document_attested_decoded.nonce = convert_decimals_to_ascii(document_attested.nonce);
         document_attested_decoded.module_id = document_attested.module_id;
-        document_attested_decoded.public_key = option_vec_u8_to_string(document_attested.public_key);
+        document_attested_decoded.public_key =
+            option_vec_u8_to_string(document_attested.public_key);
         document_attested_decoded.private_key_path = private_key_path.parse().unwrap();
         document_attested_decoded.public_key_path = public_key_path.parse().unwrap();
-
 
         // println!("{}",document_attested_decoded);
 
         let json = serde_json::to_string(&document_attested_decoded).unwrap();
-        println!("{}",json);
-
-
+        println!("{}", json);
     }
-
-    //let cose_struct = CoseSign1::new(&document, &Default::default(), &()).expect("TODO: panic message");
-
-
-    /*let mut data_file = File::open("cert.der").unwrap();
-    let mut trusted_root_certificate = String::new();
-    data_file.read_to_string(&mut trusted_root_certificate).unwrap();
-    println!(trusted_root_certificate);
-
-    let document = match AttestationDocument::authenticate(&response, &trusted_root_certificate as &[u8]) {
-  Ok(doc) => {
-    // signature of document authenticated and the data parsed correctly
-    doc
-    },
-  Err(err) => {
-    // signature of document did not authenticate, or the data was poorly formed
-    // Do something with the error here
-    panic!("error");
-  }
-};*/
-    // println!("After REsponse");
-
-    // println!("{:?}", response);
 
     nsm_driver::nsm_exit(nsm_fd);
 }
-
-

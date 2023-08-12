@@ -22,6 +22,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Copy Rust binary and Amazon certificate
 COPY utils/att_doc_retriever_sample .
+COPY utils/attestation_retriever .
 COPY utils/cert.der .
 COPY utils/myservice.proto .
 

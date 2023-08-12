@@ -15,7 +15,6 @@ from concurrent import futures
 import sys
 import logging
 
-
 app = Flask(__name__)
 attested_document_server = None
 attested_document_valid_options = \
@@ -86,6 +85,15 @@ def attestation():
     out, err = proc.communicate()
     attested_document_server = json.loads(out)
     return attested_document_server
+
+
+@app.route('/api/attestation_retriever')
+def attestation_retriever():
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    rs_binary = os.path.join(current_dir, 'attestation_retriever')
+    proc = sp.Popen([rs_binary], stdout=sp.PIPE)
+    out, err = proc.communicate()
+    return out
 
 
 @app.route('/api/execute', methods=['POST'])
@@ -170,8 +178,6 @@ def decode_message():
 @app.route('/api/message2')
 def message2():
     return "This is message 2."
-
-
 
 
 if __name__ == '__main__':

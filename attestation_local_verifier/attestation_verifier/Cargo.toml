@@ -1,0 +1,25 @@
+[package]
+name = "att_doc_retriever_sample"
+version = "0.1.0"
+authors = ["The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde_bytes = "0.11"
+nitro-enclave-attestation-document = { git ="https://github.com/veracruz-project/nitro-enclave-attestation-document.git" }
+openssl = { version = "0.10", features = ["vendored"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rsa = "0.3.0"
+
+
+
+[dependencies.nsm-driver]
+git = "https://github.com/aws/aws-nitro-enclaves-nsm-api.git"
+rev = "4f468c4"
+
+[dependencies.nsm-io]
+git = "https://github.com/aws/aws-nitro-enclaves-nsm-api.git"
+rev = "4f468c4"
