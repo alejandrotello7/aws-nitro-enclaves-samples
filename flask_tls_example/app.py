@@ -2,7 +2,7 @@ import base64
 import json
 import threading
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 import subprocess as sp
 import os
 from cryptography.hazmat.primitives import serialization, hashes
@@ -93,7 +93,13 @@ def attestation_retriever():
     rs_binary = os.path.join(current_dir, 'attestation_retriever')
     proc = sp.Popen([rs_binary], stdout=sp.PIPE)
     out, err = proc.communicate()
-    return out
+    # Write the output to the attestation_response.txt file
+    with open('attestation_response.txt', 'wb') as file:
+        file.write(out)
+
+    # Send the attestation_response.txt file as the response
+    return send_file('attestation_response.txt')
+
 
 
 @app.route('/api/execute', methods=['POST'])
