@@ -32,7 +32,6 @@ COPY utils/run.sh .
 COPY utils/enclaves.key /etc/ssl/private/enclaves.key
 COPY utils/enclaves.pem /etc/ssl/certs/enclaves.pem
 
-
 # Expose port 8000 to allow communication with the Flask app
 EXPOSE 8000
 EXPOSE 443
