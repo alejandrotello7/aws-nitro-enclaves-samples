@@ -1,1 +1,0 @@
-/home/atello/Downloads/aws-nitro-enclaves-samples/attestation_local_verifier/attestation_verifier/target/debug/att_doc_retriever_sample: /home/atello/Downloads/aws-nitro-enclaves-samples/attestation_local_verifier/attestation_verifier/src/main.rs
