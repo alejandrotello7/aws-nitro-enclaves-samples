@@ -77,32 +77,15 @@ fn option_vec_u8_to_string(data: Option<Vec<u8>>) -> String {
         None => String::new(),
     }
 }
-fn generate_rsa_key() -> (ByteBuf, Vec<u8>) {
-    let rsa = Rsa::generate(2048).unwrap();
-    let pkey = PKey::from_rsa(rsa).unwrap();
-
-    let pub_key: Vec<u8> = pkey.public_key_to_pem().unwrap();
-    let private_key: Vec<u8> = pkey.private_key_to_pem_pkcs8().unwrap();
-    let public_key = ByteBuf::from(pub_key);
-
-    return (public_key, private_key);
-}
 
 fn main() {
-
     let current_dir = std::env::current_dir().unwrap();
     let file_path = current_dir.join("cert.der");
     let binding = fs::read(file_path).unwrap();
 
     let cert = binding.as_slice();
 
-    let request = Request::Attestation {
-        public_key: Some(public_key),
-        user_data: Some(hello),
-        nonce: Some(nonce),
-    };
-
-    let response = nsm_driver::nsm_process_request(nsm_fd, request);
+    let response = "test";
 
     if let Response::Attestation { ref document } = response {
         let document_attested = match AttestationDocument::authenticate(document.as_slice(), cert) {
@@ -144,5 +127,4 @@ fn main() {
         println!("{}", json);
     }
 
-    nsm_driver::nsm_exit(nsm_fd);
 }

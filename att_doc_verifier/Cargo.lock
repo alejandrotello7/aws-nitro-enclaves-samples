@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "att_doc_retriever_sample"
+name = "att_doc_verifer"
 version = "0.1.0"
 dependencies = [
  "nitro-enclave-attestation-document",
