@@ -93,6 +93,10 @@ def attestation_retriever():
     rs_binary = os.path.join(current_dir, 'attestation_retriever')
     proc = sp.Popen([rs_binary], stdout=sp.PIPE)
     out, err = proc.communicate()
+
+    # Remove trailing whitespace and newlines
+    out = out.rstrip()
+
     # Write the output to the attestation_response.txt file
     with open('attestation_response.txt', 'wb') as file:
         file.write(out)

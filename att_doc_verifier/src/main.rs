@@ -1,19 +1,14 @@
 use std::collections::HashMap;
-//use nitro_enclave_attestation_document::AttestationDocument;
-//use std::fs::File;
-use std::fs::{read, File};
-//use std::io::Read;
+use std::fs::{read};
 use nitro_enclave_attestation_document::AttestationDocument;
-use nsm_io::Request;
 use nsm_io::Response;
-use openssl::pkey::PKey;
-use openssl::rsa::Rsa;
 use serde::{Deserialize, Serialize};
-use serde_bytes::ByteBuf;
-use std::io::Write;
 use std::str;
 use std::vec::Vec;
-use std::{fmt, fs};
+use std::{fmt};
+use std::process::Command;
+use serde_json::from_str;
+
 
 #[derive(Serialize, Deserialize)]
 struct AttestationDocumentDecoded {
@@ -21,8 +16,6 @@ struct AttestationDocumentDecoded {
     nonce: String,
     module_id: String,
     public_key: String,
-    private_key_path: String,
-    public_key_path: String,
 }
 impl fmt::Display for AttestationDocumentDecoded {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -81,27 +74,55 @@ fn option_vec_u8_to_string(data: Option<Vec<u8>>) -> String {
 fn main() {
     let current_dir = std::env::current_dir().unwrap();
     let file_path = current_dir.join("cert.der");
-    let binding = fs::read(file_path).unwrap();
-
+    let binding = read(file_path).unwrap();
     let cert = binding.as_slice();
 
-    let response = "test";
+    let output = Command::new("curl")
+        .arg("-X")
+        .arg("GET")
+        .arg("https://ec2-18-159-253-51.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever")  // Replace with your API endpoint
+        .arg("--header")
+        .arg("Content-Type: application/octet-stream")
+        .arg("--data")
+        .arg("@-")  //
+        .arg("--silent")  // Suppress progress meter
+        .arg("-o")
+        .arg("/dev/stdout")  // Output to stdout
+        .stdin(std::process::Stdio::piped())
+        .output()
+        .expect("Failed to execute curl");
 
-    if let Response::Attestation { ref document } = response {
+    let response = String::from_utf8_lossy(&output.stdout).trim().to_string();
+    let response_bytes = response.as_bytes();
+    let trailing_data_index = response_bytes.iter().position(|&byte| byte == 0).unwrap_or(response_bytes.len());
+    let response_without_trailing_data = &response_bytes[..trailing_data_index];
+
+    let attestation_response: Result<Response,_> = from_str(&response);
+    println!("{}", response);
+
+    let document = match AttestationDocument::authenticate(&response_without_trailing_data, cert){
+        Ok(doc) => {
+            println!("Correct");
+        },
+        Err(err) => {
+            println!("Error{}", err);
+        }
+    };
+
+    if let Ok(Response::Attestation { ref document }) = attestation_response {
         let document_attested = match AttestationDocument::authenticate(document.as_slice(), cert) {
             Ok(doc) => doc,
             Err(err) => {
                 println!("{:?}", err);
-                panic!("error unvalid atte doc");
+                panic!("error invalid attestation document");
             }
         };
+        println!("Correct!");
         let mut document_attested_decoded = AttestationDocumentDecoded {
             pcrs: HashMap::new(),
             nonce: String::new(),
             module_id: String::new(),
             public_key: String::new(),
-            private_key_path: String::new(),
-            public_key_path: String::new(),
         };
         // println!("-----");
         for (index, pcr) in document_attested.pcrs.iter().enumerate() {
@@ -118,13 +139,20 @@ fn main() {
         document_attested_decoded.module_id = document_attested.module_id;
         document_attested_decoded.public_key =
             option_vec_u8_to_string(document_attested.public_key);
-        document_attested_decoded.private_key_path = private_key_path.parse().unwrap();
-        document_attested_decoded.public_key_path = public_key_path.parse().unwrap();
 
         // println!("{}",document_attested_decoded);
 
         let json = serde_json::to_string(&document_attested_decoded).unwrap();
         println!("{}", json);
     }
+    else if let Err(err) = attestation_response {
+        println!("Error parsing response: {:?}", err);
+        println!("Failed");
+    }
+
+
+
+
+
 
 }

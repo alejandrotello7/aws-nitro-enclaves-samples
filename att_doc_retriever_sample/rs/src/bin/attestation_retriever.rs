@@ -38,7 +38,7 @@ fn main() {
         nonce: Some(nonce),
     };
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
-    println!("{:?}", response);
+    println!("{:?}", response.trim());
 
     nsm_driver::nsm_exit(nsm_fd);
 }
