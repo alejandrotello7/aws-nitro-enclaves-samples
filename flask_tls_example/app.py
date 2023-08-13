@@ -96,18 +96,7 @@ def attestation_retriever():
 
     # Remove trailing whitespace and newlines
     out = out.rstrip()
-
-    # Write the output to the attestation_response.txt file
-    with open('attestation_response.txt', 'wb') as file:
-        file.write(out)
-
-    # Send the attestation_response.txt file as the response
-    return send_file(
-        'attestation_response.txt',
-        as_attachment=True,
-        download_name='attestation_response.txt',
-        mimetype='application/octet-stream'
-    )
+    return out
 
 
 
