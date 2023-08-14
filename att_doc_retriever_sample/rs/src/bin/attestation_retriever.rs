@@ -42,10 +42,11 @@ fn main() {
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
     // Convert the Response to a string representation
     let response_str = format!("{:?}", response);
+    let response_bytes: &[u8] = response_str.as_bytes();
 
     // Save response to a file
     if let Ok(mut file) = File::create("response.txt") {
-        if let Err(err) = writeln!(file, "{}", response_str) {
+        if let Err(err) = file.write_all(&response_bytes) {
             eprintln!("Error writing to file: {}", err);
             process::exit(1);
         }
