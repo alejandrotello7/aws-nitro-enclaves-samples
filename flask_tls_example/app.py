@@ -95,7 +95,9 @@ def attestation_retriever():
     out, err = proc.communicate()
     response_file = os.path.join(current_dir, 'response.txt')
     if os.path.exists(response_file):
-        return send_file(response_file, as_attachment=True, download_name='response.txt')
+        response = send_file(response_file)
+        response.headers['Content-Disposition'] = 'attachment; filename=response.txt'
+        return response
     else:
         return "Response file not found"
     #

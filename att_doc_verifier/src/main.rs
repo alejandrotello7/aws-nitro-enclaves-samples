@@ -24,7 +24,7 @@ fn main() {
     let output = Command::new("curl")
         .arg("-X")
         .arg("GET")
-        .arg("https://ec2-18-159-253-51.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever")
+        .arg("https://ec2-3-122-100-225.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever")
         .arg("--header")
         .arg("Content-Type: text/html")
         .arg("--data")
