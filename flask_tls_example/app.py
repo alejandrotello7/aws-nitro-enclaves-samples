@@ -93,10 +93,15 @@ def attestation_retriever():
     rs_binary = os.path.join(current_dir, 'attestation_retriever')
     proc = sp.Popen([rs_binary], stdout=sp.PIPE)
     out, err = proc.communicate()
-
-    # Remove trailing whitespace and newlines
-    out = out.rstrip()
-    return out
+    response_file = os.path.join(current_dir, 'response.txt')
+    if os.path.exists(response_file):
+        return send_file(response_file, as_attachment=True, download_name='response.txt')
+    else:
+        return "Response file not found"
+    #
+    # # Remove trailing whitespace and newlines
+    # out = out.rstrip()
+    # return out
 
 
 

@@ -14,6 +14,8 @@ use std::io::Write;
 use std::str;
 use std::vec::Vec;
 use std::{fmt, fs};
+use std::process;
+
 
 
 fn generate_rsa_key() -> (ByteBuf, Vec<u8>) {
@@ -38,7 +40,21 @@ fn main() {
         nonce: Some(nonce),
     };
     let response = nsm_driver::nsm_process_request(nsm_fd, request);
-    println!("{:?}", response.trim());
+    // Convert the Response to a string representation
+    let response_str = format!("{:?}", response);
+
+    // Save response to a file
+    if let Ok(mut file) = File::create("response.txt") {
+        if let Err(err) = writeln!(file, "{}", response_str) {
+            eprintln!("Error writing to file: {}", err);
+            process::exit(1);
+        }
+    } else {
+        eprintln!("Error creating file");
+        process::exit(1);
+    }
+
+    // println!("{:?}", response.trim());
 
     nsm_driver::nsm_exit(nsm_fd);
 }

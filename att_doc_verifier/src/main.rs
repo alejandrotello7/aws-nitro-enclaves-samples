@@ -4,8 +4,6 @@ use nitro_enclave_attestation_document::AttestationDocument;
 use nsm_io::Response;
 use serde::{Deserialize, Serialize};
 use std::str;
-use std::vec::Vec;
-use std::{fmt};
 use std::process::Command;
 use serde_json::from_str;
 
@@ -17,60 +15,6 @@ struct AttestationDocumentDecoded {
     module_id: String,
     public_key: String,
 }
-impl fmt::Display for AttestationDocumentDecoded {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        writeln!(f, "PCRData:")?;
-        writeln!(f, "PCR Values:")?;
-        for (key, value) in &self.pcrs {
-            writeln!(f, "PCR {}: {}", key, value)?;
-        }
-        writeln!(f, "Nonce: {}", self.nonce)?;
-        writeln!(f, "Module ID: {}", self.module_id)?;
-
-        Ok(())
-    }
-}
-fn convert_decimals_to_ascii(input: Option<Vec<u8>>) -> String {
-    if let Some(decimals) = input {
-        let mut result = String::new();
-
-        for decimal in decimals {
-            result.push(decimal as char);
-        }
-
-        return result;
-    }
-
-    String::new()
-}
-fn decimal_to_hex(vector: &[u8]) -> Vec<String> {
-    vector
-        .iter()
-        .map(|&decimal| format!("{:02X}", decimal))
-        .collect()
-}
-fn remove_brackets_commas_and_spaces<T: std::fmt::Display>(vector: &[T]) -> String {
-    let mut result = String::new();
-
-    for (index, element) in vector.iter().enumerate() {
-        result.push_str(&element.to_string());
-
-        if index < vector.len() - 1 {
-            result.push(' ');
-        }
-    }
-
-    result = result.replace(&['[', ']', ',', ' '][..], "");
-
-    result
-}
-fn option_vec_u8_to_string(data: Option<Vec<u8>>) -> String {
-    match data {
-        Some(bytes) => String::from_utf8_lossy(&bytes).to_string(),
-        None => String::new(),
-    }
-}
-
 fn main() {
     let current_dir = std::env::current_dir().unwrap();
     let file_path = current_dir.join("cert.der");
@@ -80,9 +24,9 @@ fn main() {
     let output = Command::new("curl")
         .arg("-X")
         .arg("GET")
-        .arg("https://ec2-18-159-253-51.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever")  // Replace with your API endpoint
+        .arg("https://ec2-18-159-253-51.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever")
         .arg("--header")
-        .arg("Content-Type: application/octet-stream")
+        .arg("Content-Type: text/html")
         .arg("--data")
         .arg("@-")  //
         .arg("--silent")  // Suppress progress meter
@@ -93,16 +37,15 @@ fn main() {
         .expect("Failed to execute curl");
 
     let response = String::from_utf8_lossy(&output.stdout).to_string();
-    let response_bytes: &[u8] = response.as_bytes();
-    println!("{}", response);
+    let response_bytes: &[u8] = response.trim().as_bytes();
     let attestation_response: Result<Response,_> = from_str(&response);
 
-    let _document = match AttestationDocument::authenticate(response_bytes, cert){
+    let _document = match AttestationDocument::authenticate(&response_bytes, cert){
         Ok(_doc) => {
             println!("Correct");
         },
         Err(err) => {
-            println!("Error here {}", err);
+            println!("Error: {}", err);
         }
     };
 
