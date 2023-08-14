@@ -93,7 +93,7 @@ def attestation_retriever():
     rs_binary = os.path.join(current_dir, 'attestation_retriever')
     proc = sp.Popen([rs_binary], stdout=sp.PIPE)
     out, err = proc.communicate()
-    return out
+    return out.rstrip()
     # response_file = os.path.join(current_dir, 'response.txt')
     # if os.path.exists(response_file):
     #     response = send_file(response_file)
