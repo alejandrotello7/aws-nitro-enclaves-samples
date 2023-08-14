@@ -41,16 +41,9 @@ fn main() {
     };
     let response: Response = nsm_driver::nsm_process_request(nsm_fd, request);
     if let Response::Attestation { ref document } = response {
-        let response_bytes: &[u8] = &document.as_slice();
-        if let Ok(mut file) = File::create("response.txt") {
-            if let Err(err) = file.write_all(response_bytes) {
-                eprintln!("Error writing to file: {}", err);
-                process::exit(1);
-            }
-        } else {
-            eprintln!("Error creating file");
-            process::exit(1);
-        }
+        // let response_bytes: &[u8] = &document.as_slice();
+        let response_str = format!("{:?}", document);
+        println!("{}",response_str);
     }
 
 
