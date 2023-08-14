@@ -1,5 +1,6 @@
 use std::collections::HashMap;
-use std::fs::{read};
+use std::fs::{File, read};
+use std::io::Write;
 use nitro_enclave_attestation_document::AttestationDocument;
 use nsm_io::Response;
 use serde::{Deserialize, Serialize};
@@ -26,7 +27,7 @@ fn main() {
         .arg("GET")
         .arg("https://ec2-3-122-100-225.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever")
         .arg("--header")
-        .arg("Content-Type: text/html")
+        .arg("Content-Type: text/plain")
         .arg("--data")
         .arg("@-")  //
         .arg("--silent")  // Suppress progress meter
@@ -36,11 +37,18 @@ fn main() {
         .output()
         .expect("Failed to execute curl");
 
+
+
     let response = String::from_utf8_lossy(&output.stdout).to_string();
     let response_bytes: &[u8] = response.trim().as_bytes();
-    let attestation_response: Result<Response,_> = from_str(&response);
+    let _attestation_response: Result<Response,_> = from_str(&response);
 
-    let _document = match AttestationDocument::authenticate(&response_bytes, cert){
+    let mut file = File::create("response.txt");
+    file.expect("REASON").write_all(response_bytes);
+
+
+
+    let _document = match AttestationDocument::authenticate(response_bytes, cert){
         Ok(_doc) => {
             println!("Correct");
         },
