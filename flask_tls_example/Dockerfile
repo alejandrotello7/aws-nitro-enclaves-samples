@@ -49,6 +49,7 @@ RUN curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64" && \
 # Generate Python files from the proto definition
 #RUN python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. myservice.proto
 
+RUN mkcert -install
 RUN mkcert -cert-file enclaves_tls.pem -key-file enclaves_tls.key ec2-3-79-42-225.eu-central-1.compute.amazonaws.com
 
 
