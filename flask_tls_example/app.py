@@ -192,6 +192,17 @@ def message2():
     return "This is message 2."
 
 
+@app.route('/api/public_certificate')
+def retrieve_public_certificate():
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, 'enclaves_tls.pem')
+    try:
+        with open(file_path, 'r') as file:
+            certificate_content = file.read()
+            return certificate_content
+    except Exception as e:
+        return f"Error reading certificate: {str(e)}", 500
+
 if __name__ == '__main__':
     print('Starting flask app...')
     attestation()
