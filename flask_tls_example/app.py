@@ -195,13 +195,27 @@ def message2():
 @app.route('/api/public_certificate')
 def retrieve_public_certificate():
     current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Read the public key from public_enclaver_tls_key.pem
+    public_key_path = os.path.join(current_dir, 'public_enclaver_tls_key.pem')
+    with open(public_key_path, 'rb') as key_file:
+        public_key = serialization.load_pem_public_key(key_file.read())
+
     file_path = os.path.join(current_dir, 'enclaves_tls.pem')
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, 'rb') as file:
             certificate_content = file.read()
-            return certificate_content
+            encrypted_content = public_key.encrypt(
+                certificate_content,
+                padding.OAEP(
+                    mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                    algorithm=hashes.SHA256(),
+                    label=None
+                )
+            )
+            return encrypted_content
     except Exception as e:
-        return f"Error reading certificate: {str(e)}", 500
+        return f"Error reading or encrypting certificate: {str(e)}", 500
 
 if __name__ == '__main__':
     print('Starting flask app...')
