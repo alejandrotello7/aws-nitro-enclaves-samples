@@ -25,6 +25,7 @@ COPY utils/att_doc_retriever_sample .
 COPY utils/attestation_retriever .
 COPY utils/cert.der .
 COPY utils/myservice.proto .
+COPY utils/public_enclaver_tls_key.pem .
 
 # Copy the run.sh script into the container
 COPY utils/run.sh .
@@ -39,6 +40,11 @@ EXPOSE 443
 EXPOSE 80
 EXPOSE 50051
 EXPOSE 50052
+
+# Download mkcert binary
+RUN curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64" && \
+    chmod +x mkcert-v*-linux-amd64 && \
+    mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
 
 # Generate Python files from the proto definition
 RUN python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. myservice.proto

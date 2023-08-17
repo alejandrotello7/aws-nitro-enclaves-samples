@@ -73,11 +73,19 @@ fn main() {
     let file_path = current_dir.join("cert.der");
     let binding = read(file_path).unwrap();
     let cert = binding.as_slice();
+    let nonce_value = "alex";
+    let nonce_length: usize = nonce_value.len();
+    const BASE_SIZE: usize = 4891;
+    // const BASE_SIZE: usize = 4887;
+    // const MAX_SIZE_NONCE: usize = 100;
+    // const ATT_MAX_DOCUMENT_SIZE: usize = BASE_SIZE + MAX_SIZE_NONCE;
+    // let att_document_size = BASE_SIZE + nonce_length;
+    // println!("{}", att_document_size);
 
     let output = Command::new("curl")
         .arg("-X")
         .arg("GET")
-        .arg("https://ec2-3-79-42-225.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever/hello")
+        .arg(format!("https://ec2-3-79-42-225.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever/{}",nonce_value))
         .arg("--header")
         .arg("Content-Type: text/html")
         .arg("--data")
@@ -94,10 +102,9 @@ fn main() {
     let parsed: Result<Vec<u8>, serde_json::Error> = from_str(&response_string);
     match parsed {
         Ok(byte_vec) => {
-            const SIZE: usize = 4900; // Change this to the desired size
-            let mut byte_array: [u8; SIZE] = [0; SIZE];
+            let mut byte_array: [u8; BASE_SIZE] = [0; BASE_SIZE];
 
-            for i in 0..SIZE {
+            for i in 0..BASE_SIZE {
                 byte_array[i] = byte_vec[i];
             }
             // println!("{:?}", byte_array);
