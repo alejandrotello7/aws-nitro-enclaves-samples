@@ -10,11 +10,12 @@ use openssl::pkey::PKey;
 use openssl::rsa::Rsa;
 use serde::{Deserialize, Serialize};
 use serde_bytes::ByteBuf;
-use std::io::Write;
-use std::str;
+use std::io::{Write};
+use std::{env, str};
 use std::vec::Vec;
 use std::{fmt, fs};
 use std::process;
+use bytes::{Bytes, BytesMut};
 
 
 
@@ -31,14 +32,31 @@ fn generate_rsa_key() -> (ByteBuf, Vec<u8>) {
 
 fn main() {
     let nsm_fd = nsm_driver::nsm_init();
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() < 2 {
+        println!("No argument provided.");
+        return;
+    }
+
+    let argument = &args[1];
+    println!("Received argument: {}", argument);
+    let argument_bytes = argument.as_bytes();
+    let nonce_from_request = ByteBuf::from(argument_bytes);
+
+
+
+
     let hello = ByteBuf::from("hello, world!");
     let nonce = ByteBuf::from("Nonce is here");
     let (public_key, private_key) = generate_rsa_key();
     let request = Request::Attestation {
         public_key: Some(public_key),
         user_data: Some(hello),
-        nonce: Some(nonce),
+        nonce: Some(nonce_from_request),
     };
+
+
     let response: Response = nsm_driver::nsm_process_request(nsm_fd, request);
     if let Response::Attestation { ref document } = response {
         // let response_bytes: &[u8] = &document.as_slice();
