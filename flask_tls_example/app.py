@@ -201,6 +201,7 @@ def retrieve_public_certificate():
     public_key_path = os.path.join(current_dir, 'public_enclaver_tls_key.pem')
     with open(public_key_path, 'rb') as key_file:
         public_key = serialization.load_pem_public_key(key_file.read(), backend=default_backend())
+        print(public_key)
 
     file_path = os.path.join(current_dir, 'enclaves_tls.pem')
     try:
