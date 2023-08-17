@@ -40,7 +40,7 @@ fn main() {
     }
 
     let argument = &args[1];
-    println!("Received argument: {}", argument);
+    //println!("Received argument: {}", argument);
     let argument_bytes = argument.as_bytes();
     let nonce_from_request = ByteBuf::from(argument_bytes);
 
