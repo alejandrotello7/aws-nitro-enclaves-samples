@@ -7,6 +7,7 @@ import subprocess as sp
 import os
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.backends import default_backend
 import pickle
 import grpc
 import myservice_pb2
@@ -199,7 +200,7 @@ def retrieve_public_certificate():
     # Read the public key from public_enclaver_tls_key.pem
     public_key_path = os.path.join(current_dir, 'public_enclaver_tls_key.pem')
     with open(public_key_path, 'rb') as key_file:
-        public_key = serialization.load_pem_public_key(key_file.read())
+        public_key = serialization.load_pem_public_key(key_file.read(), backend=default_backend())
 
     file_path = os.path.join(current_dir, 'enclaves_tls.pem')
     try:
