@@ -205,6 +205,7 @@ def retrieve_public_certificate():
     try:
         with open(file_path, 'rb') as file:
             certificate_content = file.read()
+            print("Certificate content:", certificate_content)  # Debug: Print the certificate content
             encrypted_content = public_key.encrypt(
                 certificate_content,
                 padding.OAEP(
