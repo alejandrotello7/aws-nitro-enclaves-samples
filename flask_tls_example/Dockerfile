@@ -15,7 +15,7 @@ WORKDIR /
 #    nginx
 # Install necessary packages (iproute2 for 'ip' command and socat)
 RUN apt-get update && apt-get install -y iproute2 nginx curl
-RUN apt-get update && apt-get install -y python3 python3-pip socat git
+RUN apt-get update && apt-get install -y python3 python3-pip socat git cmake
 
 
 # Clone the repository and build BCC
