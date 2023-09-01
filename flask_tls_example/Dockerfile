@@ -4,39 +4,19 @@ FROM ubuntu:latest
 # Set the working directory to / to run the Flask app
 WORKDIR /
 
-# Install necessary packages (iproute2 for 'ip' command and socat)
-RUN apt-get update && apt-get install -y iproute2 nginx curl
-RUN apt-get update && apt-get install -y python3 python3-pip socat
-
+# Install necessary packages
 RUN apt-get update && apt-get install -y \
-    zip \
-    bison \
-    build-essential \
-    cmake \
-    flex \
-    git \
-    libedit-dev \
-    libllvm14 \
-    llvm-14-dev \
-    libclang-14-dev \
-    python3-setuptools \
-    zlib1g-dev \
-    libelf-dev \
-    libfl-dev \
-    liblzma-dev \
-    libdebuginfod-dev \
-    arping \
-    netperf \
-    iperf
+    iproute2 nginx curl \
+    python3 python3-pip socat \
+    zip bison build-essential cmake flex git libedit-dev \
+    libllvm14 llvm-14-dev libclang-14-dev python3-setuptools \
+    zlib1g-dev libelf-dev libfl-dev liblzma-dev libdebuginfod-dev \
+    arping netperf iperf \
+    nginx
 
-#RUN apt-get install -y zip bison build-essential cmake flex git libedit-dev \
-#  libllvm14 llvm-14-dev libclang-14-dev python3 zlib1g-dev libelf-dev libfl-dev python3-setuptools \
-#  liblzma-dev libdebuginfod-dev arping netperf iperf \
 # Clone the repository and build BCC
 RUN git clone https://github.com/iovisor/bcc.git \
-    && cd bcc \
-    && mkdir build \
-    && cd build \
+    && cd bcc/build \
     && cmake .. \
     && make \
     && sudo make install
@@ -48,32 +28,13 @@ RUN cd /bcc/build/src/python \
     && sudo make install
 
 # Install Flask and other required dependencies
-RUN pip3 install Flask gunicorn
-RUN pip3 install cryptography grpcio grpcio-tools
+RUN pip3 install Flask gunicorn cryptography grpcio grpcio-tools
 
-# Copy the app.py file into the container
-COPY app.py .
-COPY grpc_server.py .
-COPY utils/index.html /etc/nginx/html/index.html
-
-# Copy Nginx configuration
+# Copy files into the container
+COPY app.py grpc_server.py utils/ /app/
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
-# Copy Rust binary and Amazon certificate
-COPY utils/att_doc_retriever_sample .
-COPY utils/attestation_retriever .
-COPY utils/cert.der .
-COPY utils/myservice.proto .
-COPY utils/public_enclaver_tls_key.pem .
-
-# Copy the run.sh script into the container
-COPY utils/run.sh .
-
-# Copy certificate and key
-COPY utils/enclaves.key /etc/ssl/private/enclaves.key
-COPY utils/enclaves.pem /etc/ssl/certs/enclaves.pem
-
-# Expose port 8000 to allow communication with the Flask app
+# Expose ports
 EXPOSE 8000
 EXPOSE 443
 EXPOSE 80
@@ -86,18 +47,14 @@ RUN curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64" && \
     mv mkcert-v*-linux-amd64 /usr/local/bin/mkcert
 
 # Generate Python files from the proto definition
-RUN python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. myservice.proto
+RUN python3 -m grpc_tools.protoc -I/app/ --python_out=/app/ --grpc_python_out=/app/ /app/myservice.proto
 
-RUN mkcert -install
-RUN mkcert -cert-file enclaves_tls.pem -key-file enclaves_tls.key ec2-3-79-42-225.eu-central-1.compute.amazonaws.com
-
+# Install and configure mkcert
+RUN mkcert -install && \
+    mkcert -cert-file /app/enclaves_tls.pem -key-file /app/enclaves_tls.key ec2-3-79-42-225.eu-central-1.compute.amazonaws.com
 
 # Set execution permission for the scripts
-RUN chmod +x run.sh
+RUN chmod +x /app/run.sh
 
-
-CMD ["./run.sh"]
-
-
-# Run the Flask app using the built-in development server
-#CMD ["python3", "app.py"]
+# Set the entry point
+CMD ["/app/run.sh"]
