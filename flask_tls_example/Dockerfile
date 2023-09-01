@@ -8,9 +8,32 @@ WORKDIR /
 RUN apt-get update && apt-get install -y iproute2 nginx curl
 RUN apt-get update && apt-get install -y python3 python3-pip socat
 
-RUN apt-get install -y zip bison build-essential cmake flex git libedit-dev \
-  libllvm14 llvm-14-dev libclang-14-dev zlib1g-dev libelf-dev libfl-dev python3-setuptools \
-  liblzma-dev libdebuginfod-dev arping netperf iperf \
+RUN apt-get update && apt-get install -y \
+    iproute2 \
+    nginx \
+    curl \
+    python3 \
+    python3-pip \
+    socat \
+    zip \
+    bison \
+    build-essential \
+    cmake \
+    flex \
+    git \
+    libedit-dev \
+    libllvm14 \
+    llvm-14-dev \
+    libclang-14-dev \
+    python3-setuptools \
+    zlib1g-dev \
+    libelf-dev \
+    libfl-dev \
+    liblzma-dev \
+    libdebuginfod-dev \
+    arping \
+    netperf \
+    iperf
 
 #RUN apt-get install -y zip bison build-essential cmake flex git libedit-dev \
 #  libllvm14 llvm-14-dev libclang-14-dev python3 zlib1g-dev libelf-dev libfl-dev python3-setuptools \
