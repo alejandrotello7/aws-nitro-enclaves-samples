@@ -1,18 +1,18 @@
 # Use the official Python slim image with Debian Buster as the base image
-FROM python:3.9-slim-buster
+FROM ubuntu:latest
 
 # Set the working directory to / to run the Flask app
 WORKDIR /
 
-# Install necessary packages
-RUN apt-get update && apt-get install -y \
-    iproute2 nginx curl \
-    python3 python3-pip socat \
-    zip bison build-essential cmake flex git libedit-dev \
-    libllvm14 llvm-14-dev libclang-14-dev python3-setuptools \
-    zlib1g-dev libelf-dev libfl-dev liblzma-dev libdebuginfod-dev \
-    arping netperf iperf \
-    nginx
+## Install necessary packages
+#RUN apt-get update && apt-get install -y \
+#    iproute2 nginx curl \
+#    python3 python3-pip socat \
+#    zip bison build-essential cmake flex git libedit-dev \
+#    libllvm14 llvm-14-dev libclang-14-dev python3-setuptools \
+#    zlib1g-dev libelf-dev libfl-dev liblzma-dev libdebuginfod-dev \
+#    arping netperf iperf \
+#    nginx
 
 # Clone the repository and build BCC
 RUN git clone https://github.com/iovisor/bcc.git \
@@ -25,8 +25,7 @@ RUN git clone https://github.com/iovisor/bcc.git \
     && make \
     && make install
 
-RUN apt-get install bpfcc-tools
-RUN yum install -y bpfcc-tools
+RUN yum install -y bpfcc-tools kernel-headers-$(uname -r)
 
 
 
