@@ -9,12 +9,6 @@ RUN apt-get update && apt-get install -y iproute2 nginx curl
 RUN apt-get update && apt-get install -y python3 python3-pip socat
 
 RUN apt-get update && apt-get install -y \
-    iproute2 \
-    nginx \
-    curl \
-    python3 \
-    python3-pip \
-    socat \
     zip \
     bison \
     build-essential \
