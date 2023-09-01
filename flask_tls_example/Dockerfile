@@ -13,6 +13,10 @@ WORKDIR /
 #    zlib1g-dev libelf-dev libfl-dev liblzma-dev libdebuginfod-dev \
 #    arping netperf iperf \
 #    nginx
+# Install necessary packages (iproute2 for 'ip' command and socat)
+RUN apt-get update && apt-get install -y iproute2 nginx curl
+RUN apt-get update && apt-get install -y python3 python3-pip socat
+
 
 # Clone the repository and build BCC
 RUN git clone https://github.com/iovisor/bcc.git \
