@@ -40,15 +40,8 @@ fn main() {
     }
 
     let argument = &args[1];
-    //println!("Received argument: {}", argument);
     let argument_bytes = argument.as_bytes();
     let nonce_from_request = ByteBuf::from(argument_bytes);
-
-
-
-
-    let hello = ByteBuf::from("hello, world!");
-    let nonce = ByteBuf::from("Nonce is here");
     let (public_key, private_key) = generate_rsa_key();
     let request = Request::Attestation {
         public_key: Some(public_key),

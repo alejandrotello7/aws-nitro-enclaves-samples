@@ -73,15 +73,16 @@ fn main() {
     let file_path = current_dir.join("cert.der");
     let binding = read(file_path).unwrap();
     let cert = binding.as_slice();
-    let nonce_value = "alex";
+    let nonce_value = "Nonce";
     let nonce_length: usize = nonce_value.len();
-    const BASE_SIZE: usize = 4891;
+    const BASE_SIZE: usize = 4892;
     // const BASE_SIZE: usize = 4887;
     // const MAX_SIZE_NONCE: usize = 100;
     // const ATT_MAX_DOCUMENT_SIZE: usize = BASE_SIZE + MAX_SIZE_NONCE;
     // let att_document_size = BASE_SIZE + nonce_length;
     // println!("{}", att_document_size);
 
+    let nonce_value = "Nonce";
     let output = Command::new("curl")
         .arg("-X")
         .arg("GET")
