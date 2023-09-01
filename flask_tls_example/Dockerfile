@@ -7,6 +7,9 @@ WORKDIR /
 # Install necessary packages (iproute2 for 'ip' command and socat)
 RUN apt-get update && apt-get install -y iproute2 nginx curl
 RUN apt-get update && apt-get install -y python3 python3-pip socat
+RUN apt-get -y zip bison build-essential cmake flex git libedit-dev \
+  libllvm14 llvm-14-dev libclang-14-dev python3 zlib1g-dev libelf-dev libfl-dev python3-setuptools \
+  liblzma-dev libdebuginfod-dev arping netperf iperf \
 
 # Install Flask and other required dependencies
 RUN pip3 install Flask gunicorn

@@ -73,20 +73,19 @@ fn main() {
     let file_path = current_dir.join("cert.der");
     let binding = read(file_path).unwrap();
     let cert = binding.as_slice();
-    let nonce_value = "Nonce";
+    let nonce_value = "nonce";
     let nonce_length: usize = nonce_value.len();
-    const BASE_SIZE: usize = 4892;
+    const BASE_SIZE: usize = 4894;
     // const BASE_SIZE: usize = 4887;
     // const MAX_SIZE_NONCE: usize = 100;
     // const ATT_MAX_DOCUMENT_SIZE: usize = BASE_SIZE + MAX_SIZE_NONCE;
     // let att_document_size = BASE_SIZE + nonce_length;
     // println!("{}", att_document_size);
 
-    let nonce_value = "Nonce";
     let output = Command::new("curl")
         .arg("-X")
         .arg("GET")
-        .arg(format!("https://ec2-3-79-42-225.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever/{}",nonce_value))
+        .arg(format!("https://ec2-3-70-192-109.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever/{}",nonce_value))
         .arg("--header")
         .arg("Content-Type: text/html")
         .arg("--data")
