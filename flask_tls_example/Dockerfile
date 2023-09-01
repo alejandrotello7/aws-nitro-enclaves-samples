@@ -1,29 +1,39 @@
 # Use the official Python slim image with Debian Buster as the base image
-FROM ubuntu:latest
+FROM python:3.9-slim-buster
 
 # Set the working directory to / to run the Flask app
 WORKDIR /
 
 # Install necessary packages
-RUN apt-get update && apt-get install -y \
-    iproute2 nginx curl \
-    python3 python3-pip socat \
-    zip bison build-essential cmake flex git libedit-dev \
-    libllvm14 llvm-14-dev libclang-14-dev python3-setuptools \
-    zlib1g-dev libelf-dev libfl-dev liblzma-dev libdebuginfod-dev \
-    arping netperf iperf \
-    nginx
+#RUN apt-get update && apt-get install -y \
+#    iproute2 nginx curl \
+#    python3 python3-pip socat \
+#    zip bison build-essential cmake flex git libedit-dev \
+#    libllvm14 llvm-14-dev libclang-14-dev python3-setuptools \
+#    zlib1g-dev libelf-dev libfl-dev liblzma-dev libdebuginfod-dev \
+#    arping netperf iperf \
+#    nginx
+#
+## Clone the repository and build BCC
+#RUN git clone https://github.com/iovisor/bcc.git \
+#    && mkdir bcc/build \
+#    && cd bcc/build \
+#    && cmake .. \
+#    && make \
+#    && make install \
+#    && cmake -DPYTHON_CMD=python3 .. \
+#    && make \
+#    && make install
 
-# Clone the repository and build BCC
-RUN git clone https://github.com/iovisor/bcc.git \
-    && mkdir bcc/build \
-    && cd bcc/build \
-    && cmake .. \
-    && make \
-    && make install \
-    && cmake -DPYTHON_CMD=python3 .. \
-    && make \
-    && make install
+
+# Install necessary packages (iproute2 for 'ip' command and socat)
+RUN apt-get update && apt-get install -y iproute2 nginx curl
+RUN apt-get update && apt-get install -y python3 python3-pip socat
+
+# Install Flask and other required dependencies
+RUN pip3 install Flask gunicorn
+RUN pip3 install cryptography grpcio grpcio-tools
+RUN apt-get install -y bpfcc-tools linux-headers-$(uname -r)
 
 # Install Flask and other required dependencies
 RUN pip3 install Flask gunicorn cryptography grpcio grpcio-tools

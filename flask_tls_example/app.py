@@ -187,11 +187,6 @@ def decode_message():
         return jsonify({"error": f"Error decoding message: {str(e)}"}), 500
 
 
-@app.route('/api/message2')
-def message2():
-    return "This is message 2."
-
-
 @app.route('/api/public_certificate')
 def retrieve_public_certificate():
     current_dir = os.path.dirname(os.path.abspath(__file__))
