@@ -8,6 +8,10 @@ HOST_PORT=5000
 DOCKER_PORT=443
 REGULAR_PORT=80
 
+git clone https://github.com/pmem/syscall_intercept.git
+cmake /syscall_intercept -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang
+make
+make install
 
 # Route traffic from host port 5000/80 to Docker container port 443/80 using vsock
 socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT &
