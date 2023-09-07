@@ -14,7 +14,7 @@ WORKDIR /
 #    arping netperf iperf \
 #    nginx
 # Install necessary packages (iproute2 for 'ip' command and socat)
-RUN apt-get update && apt-get install -y iproute2 nginx curl python3 python3-pip socat git cmake clang cmake-curses-gui
+RUN apt-get update && apt-get install -y iproute2 nginx curl python3 python3-pip socat git cmake clang
 
 # Clone the repository and build BCC
 #RUN git clone https://github.com/iovisor/bcc.git \
