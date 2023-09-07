@@ -19,17 +19,17 @@ RUN apt-get update && apt-get install -y python3 python3-pip socat git cmake
 
 
 # Clone the repository and build BCC
-RUN git clone https://github.com/iovisor/bcc.git \
-    && mkdir bcc/build \
-    && cd bcc/build \
-    && cmake .. \
-    && make \
-    && make install \
-    && cmake -DPYTHON_CMD=python3 .. \
-    && make \
-    && make install
-
-RUN yum install -y bpfcc-tools kernel-headers-$(uname -r)
+#RUN git clone https://github.com/iovisor/bcc.git \
+#    && mkdir bcc/build \
+#    && cd bcc/build \
+#    && cmake .. \
+#    && make \
+#    && make install \
+#    && cmake -DPYTHON_CMD=python3 .. \
+#    && make \
+#    && make install
+#
+#RUN yum install -y bpfcc-tools kernel-headers-$(uname -r)
 
 
 
