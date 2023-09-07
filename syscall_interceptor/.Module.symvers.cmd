@@ -1,1 +1,0 @@
-cmd_/home/atello/Downloads/aws-nitro-enclaves-samples/syscall_interceptor/Module.symvers := sed 's/ko$$/o/' /home/atello/Downloads/aws-nitro-enclaves-samples/syscall_interceptor/modules.order | scripts/mod/modpost -m -a  -o /home/atello/Downloads/aws-nitro-enclaves-samples/syscall_interceptor/Module.symvers -e -i Module.symvers   -T -
