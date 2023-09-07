@@ -14,7 +14,7 @@ WORKDIR /
 #    arping netperf iperf \
 #    nginx
 # Install necessary packages (iproute2 for 'ip' command and socat)
-RUN apt-get update && apt-get install -y iproute2 nginx curl python3 python3-pip socat git cmake clang
+RUN apt-get update && apt-get install -y iproute2 nginx curl python3 python3-pip socat git cmake
 
 # Clone the repository and build BCC
 #RUN git clone https://github.com/iovisor/bcc.git \
@@ -38,7 +38,7 @@ RUN pip3 install Flask gunicorn cryptography grpcio grpcio-tools
 COPY app.py grpc_server.py ./
 COPY utils/index.html /etc/nginx/html/index.html
 
-COPY utils/att_doc_retriever_sample utils/attestation_retriever utils/cert.der utils/myservice.proto utils/public_enclaver_tls_key.pem utils/run.sh utils/myservice_pb2.py  ./
+COPY utils/att_doc_retriever_sample utils/attestation_retriever utils/cert.der utils/myservice.proto utils/public_enclaver_tls_key.pem utils/run.sh ./
 COPY utils/enclaves.key /etc/ssl/private/enclaves.key
 COPY utils/enclaves.pem /etc/ssl/certs/enclaves.pem
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
