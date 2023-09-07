@@ -7,7 +7,7 @@ ip link set dev lo up
 HOST_PORT=5000
 DOCKER_PORT=443
 REGULAR_PORT=80
-
+sudo apt install clang-tools
 git clone https://github.com/pmem/syscall_intercept.git
 cmake /syscall_intercept -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang
 make
