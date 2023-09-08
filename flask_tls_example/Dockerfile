@@ -42,7 +42,7 @@ COPY utils/att_doc_retriever_sample utils/attestation_retriever utils/cert.der u
 COPY utils/enclaves.key /etc/ssl/private/enclaves.key
 COPY utils/enclaves.pem /etc/ssl/certs/enclaves.pem
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY utils/syscall_intercept .
+COPY utils/syscall_intercept ./
 
 # Expose ports
 EXPOSE 8000
