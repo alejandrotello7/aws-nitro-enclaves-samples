@@ -130,6 +130,36 @@ def upload_file():
     else:
         return jsonify({"error": "No file received."}), 400
 
+@app.route('/api/execute_interceptor', methods=['POST'])
+def upload_file():
+    file = request.files['file']
+    if file:
+        # Save the uploaded file
+        file_path = os.path.join(os.getcwd(), 'uploaded_file.bin')
+        file.save(file_path)
+
+        # Set environment variables
+        os.environ['LD_LIBRARY_PATH'] = 'syscall_intercept/'
+        os.environ['LD_PRELOAD'] = 'syscall_intercept/examples/example_open.so'
+
+        # Make the file executable (optional, depending on your use case)
+        os.chmod(file_path, 0o755)
+
+        try:
+            # Execute the uploaded binary file
+            proc = sp.Popen([file_path], stdout=sp.PIPE, stderr=sp.PIPE)
+            out, err = proc.communicate()
+            return jsonify({"stdout": out.decode('utf-8'), "stderr": err.decode('utf-8')}), 200
+        except Exception as e:
+            return jsonify({"error": f"Error executing binary: {str(e)}"}), 500
+        finally:
+            # Clean up environment variables
+            del os.environ['LD_LIBRARY_PATH']
+            del os.environ['LD_PRELOAD']
+
+    else:
+        return jsonify({"error": "No file received."}), 400
+
 
 @app.route('/api/attestation/<arg>', methods=['GET'])
 def get_attested_arg(arg):
