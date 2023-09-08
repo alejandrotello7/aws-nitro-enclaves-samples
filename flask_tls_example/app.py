@@ -131,7 +131,7 @@ def upload_file():
         return jsonify({"error": "No file received."}), 400
 
 @app.route('/api/execute_interceptor', methods=['POST'])
-def upload_file():
+def upload_file_execution():
     file = request.files['file']
     if file:
         # Save the uploaded file
