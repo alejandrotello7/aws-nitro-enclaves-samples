@@ -75,7 +75,7 @@ fn main() {
     let cert = binding.as_slice();
     let nonce_value = "nonce";
     let nonce_length: usize = nonce_value.len();
-    const BASE_SIZE: usize = 4894;
+    const BASE_SIZE: usize = 4893;
     // const BASE_SIZE: usize = 4887;
     // const MAX_SIZE_NONCE: usize = 100;
     // const ATT_MAX_DOCUMENT_SIZE: usize = BASE_SIZE + MAX_SIZE_NONCE;
@@ -85,7 +85,7 @@ fn main() {
     let output = Command::new("curl")
         .arg("-X")
         .arg("GET")
-        .arg(format!("https://ec2-3-68-102-103.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever/{}",nonce_value))
+        .arg(format!("https://ec2-3-71-30-100.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever/{}",nonce_value))
         .arg("--header")
         .arg("Content-Type: text/html")
         .arg("--data")
