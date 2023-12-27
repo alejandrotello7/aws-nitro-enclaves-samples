@@ -61,7 +61,7 @@ RUN curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64" && \
 
 # Install and configure mkcert
 RUN mkcert -install && \
-    mkcert -cert-file enclaves_tls.pem -key-file enclaves_tls.key ec2-3-79-42-225.eu-central-1.compute.amazonaws.com
+    mkcert -cert-file enclaves_tls.pem -key-file enclaves_tls.key ec2-3-71-30-100.eu-central-1.compute.amazonaws.com
 
 
 # Set execution permission for the scripts
