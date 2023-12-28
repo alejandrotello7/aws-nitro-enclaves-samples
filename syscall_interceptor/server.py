@@ -2,7 +2,7 @@ import socket
 
 def socket_server():
     host = '0.0.0.0'
-    port = 5000
+    port = 6000
 
     server_socket = socket.socket()
     server_socket.bind((host, port))
