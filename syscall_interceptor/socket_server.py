@@ -12,6 +12,7 @@ file_object = None
 
 def handle_client(client_socket):
     while True:  # Keep the connection open to handle multiple requests
+        print("connected")
         buffer = b""  # Reset buffer for each request
         while True:
             part = client_socket.recv(1024)
