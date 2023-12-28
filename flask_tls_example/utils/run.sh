@@ -14,6 +14,7 @@ LD_LIBRARY_PATH=syscall_intercept/ LD_PRELOAD=syscall_intercept/examples/example
 # Route traffic from host port 5000/80 to Docker container port 443/80 using vsock
 socat vsock-listen:$HOST_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$DOCKER_PORT &
 socat vsock-listen:$REGULAR_PORT,reuseaddr,fork tcp-connect:127.0.0.1:$REGULAR_PORT &
+socat vsock-listen:6000,reuseaddr,fork tcp-connect:127.0.0.1:6000 &
 
 
 #python3 grpc_server.py
