@@ -12,3 +12,4 @@ docker run -d -p $PORT_NUMBER:$PORT_NUMBER --name socat_$PORT_NUMBER alpine/soca
 
 docker run -d -p $REGULAR_PORT:$REGULAR_PORT --name socat_$REGULAR_PORT alpine/socat tcp-listen:$REGULAR_PORT,fork,keepalive,reuseaddr vsock-connect:16:80,keepalive
 
+socat vsock-listen:6000,reuseaddr,fork tcp-connect:127.0.0.1:6000 &
