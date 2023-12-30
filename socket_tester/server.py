@@ -10,9 +10,11 @@ def run_server(port=6000):
             print(f"Connected by {addr}")
             while True:
                 data = conn.recv(1024)
+                sent_message = "Hello from Server"
+                print(f"Received:{data}")
                 if not data:
                     break
-                conn.sendall(data)  # Echoes back received data
+                conn.sendall(sent_message)  # Echoes back received data
 
 if __name__ == "__main__":
     run_server()

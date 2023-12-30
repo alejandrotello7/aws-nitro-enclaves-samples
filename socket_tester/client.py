@@ -6,7 +6,7 @@ def enclave_client(host='127.0.0.1', port=7000, interval=5):
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.connect((host, port))
-                s.sendall(b'Hello, server')
+                s.sendall(b'Hello from client')
                 data = s.recv(1024)
                 print('Received:', repr(data))
         except Exception as e:
