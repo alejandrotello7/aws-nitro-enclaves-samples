@@ -10,7 +10,7 @@ def run_server(port=6000):
             print(f"Connected by {addr}")
             while True:
                 data = conn.recv(1024)
-                sent_message = "Hello from Server"
+                sent_message = b"Hello from Server"
                 print(f"Received:{data}")
                 if not data:
                     break
