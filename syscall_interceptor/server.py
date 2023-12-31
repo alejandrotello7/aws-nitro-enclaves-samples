@@ -5,16 +5,18 @@ def run_server(port=6000):
         s.bind(('0.0.0.0', port))
         s.listen()
         print(f"Server listening on port {port}...")
-        conn, addr = s.accept()
-        with conn:
-            print(f"Connected by {addr}")
-            while True:
-                data = conn.recv(1024)
-                sent_message = b"Hello from Server"
-                print(f"Received:{data}")
-                if not data:
-                    break;
-                conn.sendall(sent_message)  # Echoes back received data
+        while True:  # Loop to accept connections continuously
+            conn, addr = s.accept()
+            with conn:
+                print(f"Connected by {addr}")
+                while True:
+                    data = conn.recv(1024)
+                    if not data:
+                        break
+                    sent_message = b"Hello from Server"
+                    print(f"Received: {data}")
+                    conn.sendall(sent_message)
+            print(f"Connection with {addr} closed")
 
 if __name__ == "__main__":
     run_server()
