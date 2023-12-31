@@ -13,7 +13,7 @@ def run_server(port=6000):
                 sent_message = b"Hello from Server"
                 print(f"Received:{data}")
                 if not data:
-                    break
+                    print("not yet")
                 conn.sendall(sent_message)  # Echoes back received data
 
 if __name__ == "__main__":
