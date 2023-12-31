@@ -33,7 +33,5 @@ sleep 10
 #python3 grpc_server.py &
 #sleep 10
 
-./tester_socket3
-
 # Start Nginx in the foreground
 nginx -g "daemon off;"
