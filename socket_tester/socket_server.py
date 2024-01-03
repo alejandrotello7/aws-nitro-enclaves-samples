@@ -10,6 +10,7 @@ PORT = 50051
 
 def handle_client(ssl_sock):
     while True:
+        print("connected")
         buffer = b""
         while True:
             part = ssl_sock.recv(1024)
