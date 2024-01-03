@@ -69,7 +69,7 @@ def process_json_data(event_data):
     return response_int
 
 def start_server():
-    context = ssl.create_default_context(ssl.PROTOCOL_TLS_SERVER)
+    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     context.load_cert_chain(certfile='/home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/utils/enclaves_runner.pem', keyfile='/home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/utils/enclaves_runner.key')
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
