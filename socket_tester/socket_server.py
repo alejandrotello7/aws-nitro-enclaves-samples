@@ -22,14 +22,18 @@ def handle_client(ssl_sock):
             break
 
         try:
-            data, _ = buffer.split(b'\n', 1)
-            event_data = json.loads(data.decode('utf-8'))
-            response_int = process_json_data(event_data)
-            response_int_network_order = socket.htonl(response_int)
-            response_data = struct.pack('I', response_int_network_order)
-            ssl_sock.sendall(response_data)
+            messages = buffer.split(b'\n')
+            for message in messages:
+                if not message:  # Skip empty messages
+                    continue
+                event_data = json.loads(message.decode('utf-8'))
+                response_int = process_json_data(event_data)
+                response_int_network_order = socket.htonl(response_int)
+                response_data = struct.pack('I', response_int_network_order)
+                ssl_sock.sendall(response_data)
         except json.JSONDecodeError as e:
             print(f"JSON decode error: {e}")
+
 
 def process_json_data(event_data):
     global file_object
