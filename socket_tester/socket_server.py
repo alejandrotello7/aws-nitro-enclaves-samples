@@ -7,26 +7,20 @@ import struct
 
 HOST = '0.0.0.0'  # Use the appropriate host
 PORT = 50051
-file_descriptor = None
-file_object = None
 
 def handle_client(ssl_sock):
     while True:
-        print("connected")
         buffer = b""
         while True:
-            print("buffer")
             part = ssl_sock.recv(1024)
             print(part)
             buffer += part
             if not part or b'\n' in part:
                 break
         if not buffer:
-            print("not buffer")
             break
 
         try:
-            print("preproccesing")
             data, _ = buffer.split(b'\n', 1)
             event_data = json.loads(data.decode('utf-8'))
             response_int = process_json_data(event_data)
@@ -39,7 +33,6 @@ def handle_client(ssl_sock):
 def process_json_data(event_data):
     global file_object
     response_int = 0
-    print("Processing Json")
 
     if event_data["operation"] == 1:
         filename = event_data["filename"]
