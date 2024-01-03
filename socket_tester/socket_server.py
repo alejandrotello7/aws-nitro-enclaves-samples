@@ -13,11 +13,14 @@ def handle_client(ssl_sock):
         print("connected")
         buffer = b""
         while True:
+            print("buffer")
             part = ssl_sock.recv(1024)
             buffer += part
             if not part or b'\n' in part:
                 break
         if not buffer:
+            print("not buffer")
+
             break
 
         try:
