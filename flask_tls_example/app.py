@@ -140,7 +140,7 @@ def upload_file_execution():
 
         # Set environment variables
         os.environ['LD_LIBRARY_PATH'] = 'syscall_intercept/'
-        os.environ['LD_PRELOAD'] = 'syscall_intercept/examples/example_enclaves_tls.so'
+        os.environ['LD_PRELOAD'] = 'syscall_intercept/examples/example_enclaves.so'
 
         # Make the file executable (optional, depending on your use case)
         os.chmod(file_path, 0o755)
