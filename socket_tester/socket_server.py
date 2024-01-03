@@ -24,6 +24,7 @@ def handle_client(ssl_sock):
             break
 
         try:
+            print("preproccesing")
             data, _ = buffer.split(b'\n', 1)
             event_data = json.loads(data.decode('utf-8'))
             response_int = process_json_data(event_data)
