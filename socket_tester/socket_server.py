@@ -22,9 +22,7 @@ def handle_client(ssl_sock):
         try:
             data, _ = buffer.split(b'\n', 1)
             event_data = json.loads(data.decode('utf-8'))
-
             response_int = process_json_data(event_data)
-
             response_int_network_order = socket.htonl(response_int)
             response_data = struct.pack('I', response_int_network_order)
             ssl_sock.sendall(response_data)
@@ -70,7 +68,7 @@ def process_json_data(event_data):
 
 def start_server():
     context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-    context.load_verify_locations('/home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/utils/enclaves.pem')  # Path to CA certificate
+    context.load_cert_chain(certfile='/home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/utils/enclaves.pem', keyfile='/home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/utils/enclaves.key')
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((HOST, PORT))
@@ -83,5 +81,8 @@ def start_server():
         client_handler = threading.Thread(target=handle_client, args=(ssl_sock,))
         client_handler.start()
 
+
 if __name__ == "__main__":
     start_server()
+
+    context.load_verify_locations('/home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/utils/enclaves.pem')  # Path to CA certificate
