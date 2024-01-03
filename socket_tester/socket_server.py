@@ -7,6 +7,8 @@ import struct
 
 HOST = '0.0.0.0'  # Use the appropriate host
 PORT = 50051
+file_descriptor = None
+file_object = None
 
 def handle_client(ssl_sock):
     while True:
