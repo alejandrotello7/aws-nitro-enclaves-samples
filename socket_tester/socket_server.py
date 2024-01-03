@@ -22,7 +22,7 @@ def handle_client(ssl_sock):
             print("not buffer")
             break
 
-        try:
+    try:
             data, _ = buffer.split(b'\n', 1)
             event_data = json.loads(data.decode('utf-8'))
             print(event_data)
@@ -30,7 +30,7 @@ def handle_client(ssl_sock):
             response_int_network_order = socket.htonl(response_int)
             response_data = struct.pack('I', response_int_network_order)
             ssl_sock.sendall(response_data)
-        except json.JSONDecodeError as e:
+    except json.JSONDecodeError as e:
             print(f"JSON decode error: {e}")
 
 def process_json_data(event_data):
