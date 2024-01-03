@@ -6,7 +6,7 @@ import struct
 
 # Server configuration
 HOST = '0.0.0.0'
-PORT = 6000
+PORT = 50051
 file_descriptor = None
 file_object = None
 
