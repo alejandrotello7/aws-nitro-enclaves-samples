@@ -15,6 +15,7 @@ def handle_client(ssl_sock):
         while True:
             print("buffer")
             part = ssl_sock.recv(1024)
+            print(part)
             buffer += part
             if not part or b'\n' in part:
                 break
@@ -24,7 +25,6 @@ def handle_client(ssl_sock):
 
         try:
             data, _ = buffer.split(b'\n', 1)
-            print(data)
             event_data = json.loads(data.decode('utf-8'))
             response_int = process_json_data(event_data)
             response_int_network_order = socket.htonl(response_int)
