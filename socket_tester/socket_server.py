@@ -20,7 +20,7 @@ def handle_client(ssl_sock):
                 break
         if not buffer:
             print("not buffer")
-
+            print(event_data)
             break
 
         try:
