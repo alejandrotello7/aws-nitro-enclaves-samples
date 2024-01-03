@@ -11,30 +11,30 @@ file_descriptor = None
 file_object = None
 
 def handle_client(ssl_sock):
+    buffer = b""
     while True:
-        buffer = b""
-        while True:
-            part = ssl_sock.recv(1024)
-            buffer += part
-            if not part or b'\n' in part:
-                break
-        if not buffer:
-            break
+        part = ssl_sock.recv(1024)
+        if not part:
+            break  # Connection closed by the client
 
-        try:
-            data, _ = buffer.split(b'\n', 1)
-            event_data = json.loads(data.decode('utf-8'))
-            response_int = process_json_data(event_data)
-            response_int_network_order = socket.htonl(response_int)
-            response_data = struct.pack('I', response_int_network_order)
-            ssl_sock.sendall(response_data)
-        except json.JSONDecodeError as e:
-            print(f"JSON decode error: {e}")
+        buffer += part
+        while b'\n' in buffer:
+            message, buffer = buffer.split(b'\n', 1)
+            try:
+                event_data = json.loads(message.decode('utf-8'))
+                response_int = process_json_data(event_data)
+                response_int_network_order = socket.htonl(response_int)
+                response_data = struct.pack('I', response_int_network_order)
+                ssl_sock.sendall(response_data)
+            except json.JSONDecodeError as e:
+                print(f"JSON decode error: {e}")
+                break  # Break on JSON error
 
+    ssl_sock.close()
 def process_json_data(event_data):
     global file_object
     response_int = 0
-    print(event_data)
+
     if event_data["operation"] == 1:
         filename = event_data["filename"]
         print(f"Received message from BPF program: {filename}")
