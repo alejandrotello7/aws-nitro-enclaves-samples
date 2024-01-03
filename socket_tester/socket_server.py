@@ -20,12 +20,12 @@ def handle_client(ssl_sock):
                 break
         if not buffer:
             print("not buffer")
-            print(event_data)
             break
 
         try:
             data, _ = buffer.split(b'\n', 1)
             event_data = json.loads(data.decode('utf-8'))
+            print(event_data)
             response_int = process_json_data(event_data)
             response_int_network_order = socket.htonl(response_int)
             response_data = struct.pack('I', response_int_network_order)
