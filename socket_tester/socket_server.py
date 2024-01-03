@@ -85,4 +85,3 @@ def start_server():
 if __name__ == "__main__":
     start_server()
 
-    context.load_verify_locations('/home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/utils/enclaves.pem')  # Path to CA certificate
