@@ -36,6 +36,7 @@ def handle_client(ssl_sock):
 def process_json_data(event_data):
     global file_object
     response_int = 0
+    print("Processing Json")
 
     if event_data["operation"] == 1:
         filename = event_data["filename"]
