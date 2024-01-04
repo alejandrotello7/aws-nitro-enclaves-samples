@@ -30,8 +30,9 @@ rust_pcr1_lower=$(echo "$rust_pcr1" | tr '[:upper:]' '[:lower:]')
 # Print the extracted values
 echo "Extracted PCR0: $rust_pcr0_lower"
 echo "Extracted PCR1: $rust_pcr1_lower"
-
 echo "Extracted Module ID: $rust_module_id"
+
+echo "Extracted PCR1 from Image Creation: $pcr1"
 
 
 if [[ "$pcr0" == "$rust_pcr0_lower" && "$pcr1" == "$rust_pcr1_lower" ]]; then
