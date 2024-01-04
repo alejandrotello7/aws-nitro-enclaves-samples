@@ -70,7 +70,7 @@ fn main() {
     let output = Command::new("curl")
         .arg("-X")
         .arg("GET")
-        .arg(format!("https://ec2-3-70-6-196.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever/{}", nonce_value))
+        .arg(format!("https:// ec2-18-194-163-72.eu-central-1.compute.amazonaws.com:5000/api/attestation_retriever/{}", nonce_value))
         .arg("--header")
         .arg("Content-Type: text/html")
         .arg("--data")
