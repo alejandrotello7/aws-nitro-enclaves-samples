@@ -9,7 +9,7 @@ app = Flask(__name__)
 def start_enclave():
     try:
         # Running the script and capturing its output
-        script_output = subprocess.check_output(['./your_script.sh'], shell=True).decode()
+        script_output = subprocess.check_output(['./home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/nginx_script.sh'], shell=True).decode()
 
         # Parse the output to extract EnclaveID and PCR0
         output_lines = script_output.split('\n')
