@@ -9,10 +9,11 @@ echo "$python3_output"
 pcr0=$(echo "$python3_output" | grep "PCR0" | cut -d' ' -f2)
 enclave_id=$(echo "$python3_output" | grep "EnclaveID" | cut -d' ' -f2)
 
-# Navigate to Rust program directory and run it
-cd /home/ec2-user/dev/aws-nitro-enclaves-samples/att_doc_verifier && cargo run
-#cargo_output=$(cargo run)
-#echo "$cargo_output"
+# Navigate to Rust program directory and run it (A delayed of 10s is used to ensure enclave is up)
+sleep 10
+cd /home/ec2-user/dev/aws-nitro-enclaves-samples/att_doc_verifier
+cargo_output=$(cargo run)
+echo "$cargo_output"
 
 ## Extract pcr0 and module_id from Rust program output
 #rust_pcr0=$(echo "$cargo_output" | grep "\"PCR0\"" | cut -d':' -f2 | tr -d ' ",')
