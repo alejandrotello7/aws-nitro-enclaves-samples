@@ -15,9 +15,9 @@ cd /home/ec2-user/dev/aws-nitro-enclaves-samples/att_doc_verifier
 cargo_output=$(cargo run)
 echo "$cargo_output"
 
-# Extract pcr0 and module_id from the Rust program output
-rust_pcr0=$(echo "$cargo_output" | awk -F'[:,]' '/"PCR0"/ {gsub(/[^0-9a-fA-F]/, "", $2); print $2}')
-rust_module_id=$(echo "$cargo_output" | awk -F'[:,]' '/"module_id"/ {gsub(/[^0-9a-zA-Z-]/, "", $2); print $2}')
+# Use jq to parse the JSON output and extract PCR0 and Module ID
+rust_pcr0=$(echo "$cargo_output" | jq -r '.pcrs.PCR0')
+rust_module_id=$(echo "$cargo_output" | jq -r '.module_id')
 
 # Print the extracted values
 echo "Extracted PCR0: $rust_pcr0"
@@ -27,7 +27,7 @@ echo "Extracted Module ID: $rust_module_id"
 stored_pcr0="your_stored_pcr0_value"
 stored_module_id="your_stored_module_id_value"
 
-if [[ "$rust_module_id" == "$stored_module_id" ]]; then
+if [[ "$rust_pcr0" == "$stored_pcr0" && "$rust_module_id" == "$stored_module_id" ]]; then
     echo "Success: Verification passed."
 else
     echo "Failed: Verification failed."
