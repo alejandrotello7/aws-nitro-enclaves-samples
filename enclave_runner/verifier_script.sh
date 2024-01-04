@@ -19,12 +19,13 @@ echo "$cargo_output"
 rust_pcr0=$(echo "$cargo_output" | jq -r '.pcrs.PCR0')
 rust_module_id=$(echo "$cargo_output" | jq -r '.module_id')
 
-# Print the extracted values
-echo "Extracted PCR0: $rust_pcr0"
-echo "Extracted Module ID: $rust_module_id"
 
 # Add your logic for comparing with stored pcr0 and module_id
 rust_pcr0_lower=$(echo "$rust_pcr0" | tr '[:upper:]' '[:lower:]')
+# Print the extracted values
+echo "Extracted PCR0: $rust_pcr0_lower"
+echo "Extracted Module ID: $rust_module_id"
+
 
 if [[ "$pcr0" == "$rust_pcr0_lower" && "$enclave_id" == "$rust_module_id" ]]; then
     echo "Success: Verification passed."
