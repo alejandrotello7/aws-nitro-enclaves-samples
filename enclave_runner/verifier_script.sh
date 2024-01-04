@@ -24,10 +24,9 @@ echo "Extracted PCR0: $rust_pcr0"
 echo "Extracted Module ID: $rust_module_id"
 
 # Add your logic for comparing with stored pcr0 and module_id
-stored_pcr0="your_stored_pcr0_value"
-stored_module_id="your_stored_module_id_value"
+rust_pcr0_lower=$(echo "$rust_pcr0" | tr '[:upper:]' '[:lower:]')
 
-if [[ "$rust_pcr0" == "$stored_pcr0" && "$rust_module_id" == "$stored_module_id" ]]; then
+if [[ "$pcr0" == "$rust_pcr0_lower" && "$enclave_id" == "$rust_module_id" ]]; then
     echo "Success: Verification passed."
 else
     echo "Failed: Verification failed."
