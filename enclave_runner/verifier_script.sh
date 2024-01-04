@@ -25,6 +25,6 @@ if [[ "$enclave_id" == "$rust_module_id" ]]; then
 else
     echo "Failed: Verification failed due to mismatch"
     echo $enclave_id
-    echo $rust_module_id
+    echo rust_pcr0
 
 fi
