@@ -75,7 +75,7 @@ fn main() {
     let cert = binding.as_slice();
     let nonce_value = "nonce";
     let _nonce_length: usize = nonce_value.len();
-    const BASE_SIZE: usize = 4889;
+    const BASE_SIZE: usize = 4888;
     // const BASE_SIZE: usize = 4887;
     // const MAX_SIZE_NONCE: usize = 100;
     // const ATT_MAX_DOCUMENT_SIZE: usize = BASE_SIZE + MAX_SIZE_NONCE;
