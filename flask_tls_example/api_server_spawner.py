@@ -12,6 +12,7 @@ def start_enclave():
         script_output = subprocess.check_output(['/home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/nginx_script.sh'], shell=True).decode()
 
         # Parse the output to extract EnclaveID and PCR0
+        print("PRE Returning value:")
         output_lines = script_output.split('\n')
         enclave_id = next(line.split(': ')[1] for line in output_lines if "EnclaveID" in line)
         pcr0 = next(line.split(': ')[1] for line in output_lines if "PCR0" in line)
