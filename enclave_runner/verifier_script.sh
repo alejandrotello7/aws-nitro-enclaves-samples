@@ -15,13 +15,13 @@ cd /home/ec2-user/dev/aws-nitro-enclaves-samples/att_doc_verifier
 cargo_output=$(cargo run)
 echo "$cargo_output"
 
-## Extract pcr0 and module_id from Rust program output
-#rust_pcr0=$(echo "$cargo_output" | grep "\"PCR0\"" | cut -d':' -f2 | tr -d ' ",')
-#rust_module_id=$(echo "$cargo_output" | grep "module_id" | cut -d':' -f2 | tr -d ' ",')
-#
-## Compare and output results
-#if [[ "$pcr0" == "$rust_pcr0" && "$enclave_id" == "$rust_module_id" ]]; then
-#    echo "Success: Verification passed"
-#else
-#    echo "Failed: Verification failed due to mismatch"
-#fi
+# Extract pcr0 and module_id from Rust program output
+rust_pcr0=$(echo "$cargo_output" | grep "\"PCR0\"" | cut -d':' -f2 | tr -d ' ",')
+rust_module_id=$(echo "$cargo_output" | grep "module_id" | cut -d':' -f2 | tr -d ' ",')
+
+# Compare and output results
+if [[ "$enclave_id" == "$rust_module_id" ]]; then
+    echo "Success: Verification passed"
+else
+    echo "Failed: Verification failed due to mismatch"
+fi
