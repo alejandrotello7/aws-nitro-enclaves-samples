@@ -12,10 +12,10 @@ INSTANCE_2_ADDRESS=$1
 mkcert -cert-file enclaves.pem -key-file enclaves.key "$INSTANCE_2_ADDRESS"
 
 # Step 2: Copy Certificates
-cp enclaves.pem enclaves.key /path/to/aws-nitro-enclaves-samples/flask_tls_example/utils/
+cp enclaves.pem enclaves.key /home/ec2-user/dev/aws-nitro-enclaves-samples/flask_tls_example/utils/
 
 # Step 3: Git Operations
-cd /path/to/aws-nitro-enclaves-samples
+cd /home/ec2-user/dev/aws-nitro-enclaves-samples/
 git add flask_tls_example/utils/enclaves.pem flask_tls_example/utils/enclaves.key
 git commit -m "Add SSL certificates"
 git push origin main
