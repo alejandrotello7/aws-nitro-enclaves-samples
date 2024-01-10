@@ -32,6 +32,10 @@ echo "Extracted Module ID: $rust_module_id"
 
 if [[ "$pcr0" == "$rust_pcr0_lower"  ]]; then
     echo "Success: Verification passed."
+    cd /home/ec2-user/dev/aws-nitro-enclaves-samples/enclave_runner/
+    chmod +x send_code_to_enclave
+    ./send_code_to_enclave.sh
+
 else
     echo "Failed: Verification failed."
 fi
