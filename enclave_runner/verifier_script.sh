@@ -7,7 +7,6 @@ echo "$python3_output"
 
 # Extract and save pcr0 and enclave_id
 pcr0=$(echo "$python3_output" | grep "PCR0" | cut -d' ' -f2)
-pcr1=$(echo "$python3_output" | grep "PCR1" | cut -d' ' -f2)
 enclave_id=$(echo "$python3_output" | grep "EnclaveID" | cut -d' ' -f2)
 
 # Navigate to Rust program directory and run it (A delayed of 10s is used to ensure enclave is up)
@@ -29,8 +28,6 @@ rust_pcr1_lower=$(echo "$rust_pcr1" | tr '[:upper:]' '[:lower:]')
 echo "Extracted PCR0: $rust_pcr0_lower"
 echo "Extracted PCR1: $rust_pcr1_lower"
 echo "Extracted Module ID: $rust_module_id"
-
-echo "Extracted PCR1 from Image Creation: $pcr1"
 
 
 if [[ "$pcr0" == "$rust_pcr0_lower"  ]]; then
