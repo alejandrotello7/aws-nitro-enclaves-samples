@@ -13,7 +13,6 @@ WORKDIR /usr/src/app
 
 # Copy the current directory contents into the container at /usr/src/app
 COPY . .
-COPY ~/home/ec2-user/dev/aws-nitro-enclaves-samples/att_doc_verifier /usr/src/app/att_doc_verifier/
 
 # Copy the certificate
 COPY enclaves.pem /etc/ssl/certs/enclavees.pem
