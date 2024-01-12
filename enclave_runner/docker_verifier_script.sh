@@ -5,7 +5,7 @@ cd /usr/src/app/enclave_runner/
 python3_output=$(python3 spawner_client.py)
 echo "$python3_output"
 
-# Extract and save pcr0 and enclave_id
+# Extract and save pcr0 and enclave_idCargo.lock
 pcr0=$(echo "$python3_output" | grep "PCR0" | cut -d' ' -f2)
 enclave_id=$(echo "$python3_output" | grep "EnclaveID" | cut -d' ' -f2)
 
