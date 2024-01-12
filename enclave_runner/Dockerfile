@@ -9,7 +9,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 RUN apt-get update && apt-get install -y jq
 
 # Set the working directory in the container
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/enclave_runner
 
 # Copy the current directory contents into the container at /usr/src/app
 COPY . .
