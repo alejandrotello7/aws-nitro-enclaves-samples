@@ -13,6 +13,8 @@ WORKDIR /usr/src/app
 
 # Copy the current directory contents into the container at /usr/src/app
 COPY . .
+COPY ./att_doc_verifier /usr/src/app/att_doc_verifier/
+
 # Copy the certificate
 COPY enclaves.pem /etc/ssl/certs/enclavees.pem
 
@@ -26,7 +28,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 80 available to the world outside this container
-EXPOSE 80
+EXPOSE 50051
 
 # Define environment variable
 ENV NAME World
