@@ -11,7 +11,7 @@ enclave_id=$(echo "$python3_output" | grep "EnclaveID" | cut -d' ' -f2)
 
 # Navigate to Rust program directory and run it (A delay of 10s is used to ensure enclave is up)
 sleep 10
-cd /usr/src/app/att_doc_verifier
+cd /usr/src/app/enclave_runner/att_doc_verifier
 cargo_output=$(cargo run)
 echo "$cargo_output"
 
