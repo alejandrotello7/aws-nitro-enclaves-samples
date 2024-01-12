@@ -6,7 +6,7 @@ import struct
 
 # Server configuration
 HOST = '0.0.0.0'
-PORT = 50051
+PORT = 12345
 file_descriptor = None
 file_object = None
 
@@ -28,11 +28,16 @@ def handle_client(client_socket):
 
             # Process the JSON data
             response_int = process_json_data(event_data)
-
-            # Send the response back to the client
-            response_int_network_order = socket.htonl(response_int)
-            response_data = struct.pack('I', response_int_network_order)
-            client_socket.sendall(response_data)
+            if event_data["operation"] == 4:
+                if response_int:
+                    client_socket.sendall(response_int.encode('utf-8'))  # Send the read data
+                else:
+                    client_socket.sendall(b'')  # Send an empty response on error or no data
+            else:
+                # Send the response back to the client
+                response_int_network_order = socket.htonl(response_int)
+                response_data = struct.pack('I', response_int_network_order)
+                client_socket.sendall(response_data)
 
 
         except json.JSONDecodeError as e:
@@ -54,7 +59,7 @@ def process_json_data(event_data):
             file_object.close()
 
         # Open the new file
-        file_object = open(filename, 'w')
+        file_object = open(filename, 'r+')
         response_int = file_object.fileno()
         print(f'File descriptor returned: {response_int}')
 
@@ -76,6 +81,15 @@ def process_json_data(event_data):
 
     elif event_data["operation"] == 4:
         file_descriptor = event_data["file_descriptor"]
+        count = event_data.get("count", 1024)  # Default count value
+        if file_descriptor and file_object:
+            try:
+                data = file_object.read(count)
+                print(f"Data Read: {data}")
+                return data  # Return the read data directly
+            except OSError as e:
+                print(f"Error reading file: {e}")
+                return ""  # Return empty string on error
 
 
     return response_int
