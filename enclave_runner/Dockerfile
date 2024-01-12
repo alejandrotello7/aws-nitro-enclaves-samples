@@ -33,4 +33,5 @@ EXPOSE 50051
 ENV NAME World
 
 # Run script.sh when the container launches
-CMD ["./docker_verifier_script.sh"]
+#CMD ["./docker_verifier_script.sh"]
+CMD ["/bin/bash"]
