@@ -16,5 +16,13 @@ spec:
       - name: enclave-runner-container
         image: enclave-app-image
         imagePullPolicy: Never
+        volumeMounts:
+          - name: enclave-volume
+            mountPath: /usr/src/app/enclave_runner/enclave_native
         ports:
         - containerPort: 30000
+      volumes:
+        - name: enclave-volume
+          hostPath:
+            path: /home/ec2-user/enclave_native
+            type: Directory
