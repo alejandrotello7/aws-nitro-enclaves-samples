@@ -20,7 +20,7 @@ spec:
           - name: enclave-volume
             mountPath: /usr/src/app/enclave_runner/enclave_native
         ports:
-        - containerPort: 30000
+        - containerPort: 50051
       volumes:
         - name: enclave-volume
           hostPath:
