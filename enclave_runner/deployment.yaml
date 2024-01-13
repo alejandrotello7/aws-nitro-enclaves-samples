@@ -16,4 +16,4 @@ spec:
       - name: enclave-runner-container
         image: enclave-app-image
         ports:
-        - containerPort: 50051
+        - containerPort: 30000
