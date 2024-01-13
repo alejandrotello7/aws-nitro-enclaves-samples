@@ -2,7 +2,7 @@
 
 logfile="enclave_run_times.log"
 total_time=0
-runs=5
+runs=10
 
 echo "Enclave Run Time Measurements" > "$logfile"
 echo "--------------------------------" >> "$logfile"
