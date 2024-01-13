@@ -19,6 +19,7 @@ COPY enclaves.pem /etc/ssl/certs/enclaves.pem
 
 # Copy the private key
 COPY enclaves.key /etc/ssl/private/enclaves.key
+COPY rootCA.pem /usr/local/share/ca-certificates/
 
 # Set appropriate permissions for the private key
 RUN chmod 600 /etc/ssl/private/enclaves.key
