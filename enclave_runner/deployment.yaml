@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enclave-runner-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: enclave_runner_container
+  template:
+    metadata:
+      labels:
+        app: enclave_runner_container
+    spec:
+      containers:
+      - name: enclave_runner_container
+        image: enclave_runner
+        ports:
+        - containerPort: 50051
