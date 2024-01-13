@@ -19,13 +19,15 @@ COPY enclaves.pem /etc/ssl/certs/enclaves.pem
 
 # Copy the private key
 COPY enclaves.key /etc/ssl/private/enclaves.key
-COPY rootCA.pem /usr/local/share/ca-certificates/
+COPY rootCA.crt /usr/local/share/ca-certificates/
+RUN update-ca-certificates
 
 # Set appropriate permissions for the private key
 RUN chmod 600 /etc/ssl/private/enclaves.key
 # Install any needed packages specified in requirements.txt
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
 
 # Make port 80 available to the world outside this container
 EXPOSE 50051
