@@ -6,14 +6,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: enclave_runner_container
+      app: enclave-runner-container
   template:
     metadata:
       labels:
-        app: enclave_runner_container
+        app: enclave-runner-container
     spec:
       containers:
-      - name: enclave_runner_container
-        image: enclave_runner
+      - name: enclave-runner-container
+        image: enclave-app-image
         ports:
         - containerPort: 50051
