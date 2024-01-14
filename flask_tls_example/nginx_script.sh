@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build Docker image
-docker build --no-cache -t nginx-sample -f Dockerfile .
+docker build -t nginx-sample -f Dockerfile .
 
 # Build enclave
 ENCLAVE_OUTPUT=$(nitro-cli build-enclave --docker-uri nginx-sample --output-file nginx-sample.eif)
