@@ -36,6 +36,6 @@ EXPOSE 30000
 ENV NAME World
 
 # Run script.sh when the container launches
-CMD ["./docker_verifier_script.sh"]
+#CMD ["./docker_verifier_script.sh"]
 #CMD ["/bin/bash"]
-#CMD tail -f /dev/null
+CMD tail -f /dev/null
