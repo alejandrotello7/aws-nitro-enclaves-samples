@@ -1,7 +1,7 @@
 import requests
 
 def call_flask_api():
-    url = "http://ec2-3-70-8-55.eu-central-1.compute.amazonaws.com:50052/start_enclave"  # Replace with the actual IP and port of your Flask API
+    url = "http://ec2-3-77-41-49.eu-central-1.compute.amazonaws.com:50052/start_enclave"  # Replace with the actual IP and port of your Flask API
     try:
         response = requests.get(url)
         if response.status_code == 200:
