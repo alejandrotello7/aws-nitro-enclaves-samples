@@ -93,6 +93,7 @@ def attestation_retriever(arg):
     rs_binary = os.path.join(current_dir, 'attestation_retriever')
     proc = sp.Popen([rs_binary, arg], stdout=sp.PIPE)
     out, err = proc.communicate()
+    return out.rstrip()
     # response_file = os.path.join(current_dir, 'response.txt')
     # if os.path.exists(response_file):
     #     response = send_file(response_file)
@@ -203,7 +204,7 @@ def decode_message():
         return jsonify({"error": "Encoded message not provided."}), 400
 
     # Retrieve the private key path from attested_document_server
-    private_key_path = 'private_key.pem'
+    private_key_path = attested_document_server['private_key_path']
 
     try:
         # Load the private key from the file
