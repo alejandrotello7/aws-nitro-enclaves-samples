@@ -90,7 +90,7 @@ def attestation():
 @app.route('/api/attestation_retriever/<arg>')
 def attestation_retriever(arg):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    rs_binary = os.path.join(current_dir, 'attestation_retriever')
+    rs_binary = os.path.join(current_dir, 'attestation_retriever2')
     proc = sp.Popen([rs_binary, arg], stdout=sp.PIPE)
     out, err = proc.communicate()
     return out.rstrip() #return value
