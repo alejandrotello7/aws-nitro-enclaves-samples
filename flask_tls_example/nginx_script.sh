@@ -11,7 +11,7 @@ PCR0=$(echo "$ENCLAVE_OUTPUT" | jq -r '.Measurements.PCR0')
 echo "PCR0: $PCR0"
 
 # Run enclave
-RUN_OUTPUT=$(sudo nitro-cli run-enclave --cpu-count 2 --memory 2588 --enclave-cid 16 --eif-path nginx-sample.eif)
+RUN_OUTPUT=$(sudo nitro-cli run-enclave --cpu-count 2 --memory 2704 --enclave-cid 16 --eif-path nginx-sample.eif)
 
 # Extract EnclaveID
 ENCLAVE_ID=$(echo "$RUN_OUTPUT" | jq -r '.EnclaveID')
