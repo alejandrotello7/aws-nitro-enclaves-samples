@@ -1,0 +1,1 @@
+/home/atello/Downloads/aws-nitro-enclaves-samples/att_doc_retriever_sample/rs/target/debug/attestation_retriever: /home/atello/Downloads/aws-nitro-enclaves-samples/att_doc_retriever_sample/rs/src/bin/attestation_retriever.rs

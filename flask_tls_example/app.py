@@ -90,7 +90,7 @@ def attestation():
 @app.route('/api/attestation_retriever/<arg>')
 def attestation_retriever(arg):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    rs_binary = os.path.join(current_dir, 'attestation_retriever')
+    rs_binary = os.path.join(current_dir, 'attestation_retriever2')
     proc = sp.Popen([rs_binary, arg], stdout=sp.PIPE)
     out, err = proc.communicate()
     return out.rstrip()
@@ -106,6 +106,23 @@ def attestation_retriever(arg):
     # out = out.rstrip()
     # return out
 
+
+@app.route('/api/attestation_retriever/private_key_path', methods=['GET'])
+def get_private_key_path():
+    # Define the filename
+    filename = 'private_key.pem'
+    # Get the current working directory
+    current_directory = os.getcwd()
+    # Create the absolute path
+    file_path = os.path.join(current_directory, filename)
+
+    # Check if the file exists
+    if os.path.exists(file_path):
+        # Return the file path
+        return jsonify({"status": "success", "path": file_path})
+    else:
+        # Return a file not found message
+        return jsonify({"status": "error", "message": "File not found"})
 
 
 @app.route('/api/execute', methods=['POST'])
