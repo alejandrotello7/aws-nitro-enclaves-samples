@@ -12,4 +12,4 @@ docker run -d -p $PORT_NUMBER:$PORT_NUMBER --name socat_$PORT_NUMBER alpine/soca
 
 docker run -d -p $REGULAR_PORT:$REGULAR_PORT --name socat_$REGULAR_PORT alpine/socat tcp-listen:$REGULAR_PORT,fork,keepalive,reuseaddr vsock-connect:16:80,keepalive
 
-socat vsock-listen:6000,reuseaddr,fork tcp-connect:18.195.205.99:30450 & # USE Ip address of Native Process - Route traffic from EC2 Parent instance
+socat vsock-listen:6000,reuseaddr,fork tcp-connect: 172.31.1.8:30450 & # USE Ip address of Native Process - Route traffic from EC2 Parent instance
