@@ -46,7 +46,7 @@ size_t base64_decode(const char *base64_data, unsigned char **decoded_data) {
 
 int main() {
     const char *private_key_path = "private_key.pem";
-    const char *encrypted_base64 = "Your Base64 Encrypted String Here";
+    const char *encrypted_base64 = "cqBXkNgd7zdk0LsrFRJXipYcq6GPyPyQCQhn+oR0MjmYwWqhzackqMOyO6+eecRBo0cqC2Kp14IqmtlVyKRz8dH/e3dIYFLeN3ZEVoFb9q1bAPo66Mwcb8g5lQy4d8Mjs9eGF+ESLxU5mhvyyMQ0/0y5kkgEkqILa3FTYUUebnoc2sT9lPuJ6tsBSiUsIbGAxiZuoR1atW85yWDyVFV+d+RFxM6KDQwZPunB59GKrdd4A9+YwBL5b0ACyzU3oJTCk/KZhKIE4jxRgRfjGJ99F1jpxcvFzyvLtZCznO/R1dKQtcYvvOXAkSor1/dEo/i/eQJVTxuGB3jJIbosF/QAMQ==";
     unsigned char *encrypted_data;
     unsigned char *decrypted_data;
     size_t encrypted_data_len;
