@@ -204,7 +204,7 @@ def decode_message():
         return jsonify({"error": "Encoded message not provided."}), 400
 
     # Retrieve the private key path from attested_document_server
-    private_key_path = attested_document_server['private_key_path']
+    private_key_path = 'private_key.pem'
 
     try:
         # Load the private key from the file
